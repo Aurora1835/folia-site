@@ -212,7 +212,7 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 /* ── SITTER BRIEF PANEL ── */
 .sitter-panel {
   position:fixed; inset:0;
-  z-index:900;
+  z-index:850;
   display:none;
   align-items:flex-end;
   justify-content:center;
@@ -268,6 +268,33 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 }
 .sitter-sheet-inner::-webkit-scrollbar { display:none; }
 
+/* ── AUTH OVERLAY ── */
+.auth-overlay { position:fixed; inset:0; background:rgba(46,40,32,0.6); backdrop-filter:blur(6px); z-index:2000; display:none; align-items:center; justify-content:center; padding:24px; }
+.auth-overlay.open { display:flex; }
+.auth-card { background:var(--white); border:1px solid var(--stone-200); padding:48px 40px; max-width:420px; width:100%; position:relative; animation:mIn 0.35s cubic-bezier(0.34,1.4,0.64,1) forwards; }
+.auth-logo { font-family:'Cormorant Garamond',Georgia,serif; font-size:32px; font-weight:600; font-style:italic; color:var(--accent); text-align:center; margin-bottom:6px; }
+.auth-tagline { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--stone-400); text-align:center; margin-bottom:28px; }
+.auth-tab-row { display:flex; border-bottom:1px solid var(--stone-200); margin-bottom:24px; }
+.auth-tab { flex:1; padding:10px; text-align:center; font-size:13px; font-weight:500; color:var(--stone-400); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; }
+.auth-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.auth-field { margin-bottom:14px; }
+.auth-field label { display:block; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--stone-500); margin-bottom:7px; }
+.auth-field input { width:100%; padding:13px 15px; border:1px solid var(--stone-200); background:var(--stone-50); font-family:'Jost',sans-serif; font-size:14px; color:var(--stone-900); outline:none; border-radius:0; transition:border-color 0.2s; }
+.auth-field input:focus { border-color:var(--accent); }
+.auth-submit { width:100%; padding:14px; background:var(--stone-900); color:var(--white); border:none; font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:background 0.2s; margin-top:8px; }
+.auth-submit:hover { background:var(--accent); }
+.auth-error { font-size:13px; color:var(--red); margin-top:10px; text-align:center; min-height:18px; }
+.auth-loading { display:none; align-items:center; justify-content:center; gap:8px; padding:10px; font-size:13px; color:var(--stone-500); }
+.auth-loading.show { display:flex; }
+.spin { width:16px; height:16px; border:2px solid var(--stone-200); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.auth-divider { text-align:center; font-size:12px; color:var(--stone-300); margin:14px 0; }
+.auth-switch { text-align:center; font-size:13px; color:var(--stone-500); margin-top:16px; }
+.auth-switch a { color:var(--accent); cursor:pointer; text-decoration:underline; }
+.save-indicator { position:absolute; top:58px; left:16px; z-index:300; font-size:10px; letter-spacing:1px; color:rgba(255,255,255,0.4); display:flex; align-items:center; gap:5px; opacity:0; transition:opacity 0.3s; }
+.save-indicator.show { opacity:1; }
+.save-dot { width:5px; height:5px; border-radius:50%; background:#6FCF97; }
+
 /* ── TRY IT STRIP ── */
 .try-strip {
   background:var(--parchment);
@@ -317,7 +344,7 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 }
 
 /* ── LANDING MODAL (waitlist) ── */
-.land-overlay { position:fixed; inset:0; background:rgba(46,40,32,0.6); backdrop-filter:blur(6px); z-index:800; display:none; place-items:center; padding:24px; }
+.land-overlay { position:fixed; inset:0; background:rgba(46,40,32,0.6); backdrop-filter:blur(6px); z-index:2500; display:none; place-items:center; padding:24px; }
 .land-overlay.open { display:grid; }
 .land-modal { background:var(--white); border:1px solid var(--stone-200); padding:52px 48px; max-width:440px; width:100%; position:relative; animation:mIn 0.35s cubic-bezier(0.34,1.4,0.64,1) forwards; }
 @keyframes mIn { from{opacity:0;transform:translateY(20px) scale(0.97)} to{opacity:1;transform:none} }
@@ -689,7 +716,6 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   .app-overlay { padding:0; }
 }
 </style>
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -703,7 +729,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     <a href="#features" class="nav-link">Features</a>
     <a href="#how" class="nav-link">How It Works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
-    <button class="btn btn-dark" onclick="openSitterPanel()">Try Free →</button>
+    <a href="#waitlist" class="btn btn-dark">Join Waitlist</a>
   </div>
 </nav>
 
@@ -717,8 +743,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <h1 class="hero-h1 reveal in d1">No two families<br>are the same.<br><strong>Your app shouldn't be.</strong></h1>
       <p class="hero-body reveal in d2">Folia is built around the specific details, systems, and ever-changing information of your household — and only yours. Think of it as precision medicine, but for the people you love most.</p>
       <div class="hero-actions reveal in d3">
-        <button class="btn btn-accent-land" onclick="openSitterPanel()">Try Free — Sitter Brief →</button>
-        <button class="btn btn-outline" onclick="openApp()">See the Full App</button>
+        <a href="/sitter-brief.html" target="_blank" class="btn btn-accent-land">Try Free — Sitter Brief →</a>
+        <a href="#waitlist" class="btn btn-outline">Join the Waitlist</a>
       </div>
     </div>
     <div class="hero-card reveal in d4">
@@ -766,7 +792,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <p class="reveal d2">Your household has a unique composition, unique rhythms, unique needs. Generic apps weren't built for you. We are.</p>
         <div class="stats reveal d3">
           <div class="stat"><div class="stat-n">1</div><div class="stat-l">App per family</div></div>
-          <div class="stat"><div class="stat-n">∞</div><div class="stat-l">Details it holds</div></div>
+          <div class="stat"><div class="stat-n" style="font-size:32px;padding-top:8px;">Infinite</div><div class="stat-l">Details it holds</div></div>
           <div class="stat"><div class="stat-n">0</div><div class="stat-l">Generic templates</div></div>
         </div>
       </div>
@@ -828,7 +854,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <div class="try-strip-sub">Fill in your family's details once. Get a beautiful printable brief and shareable link — free, forever.</div>
     </div>
     <div class="try-strip-action reveal d2">
-      <button class="try-strip-btn" onclick="openSitterPanel()">Create My Sitter Brief →</button>
+      <a href="/sitter-brief.html" target="_blank" class="try-strip-btn">Create My Sitter Brief →</a>
       <div class="try-strip-note">Printable · Shareable · Takes 3 minutes</div>
     </div>
   </div>
@@ -869,8 +895,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     <h2 class="reveal d1">Start with something<br><em>useful right now.</em></h2>
     <p class="reveal d2">Generate your family's sitter brief in 3 minutes — free, printable, shareable. Then see what Folia can do when it runs automatically in the background.</p>
     <div class="reveal d3" style="display:flex;flex-direction:column;align-items:center;gap:14px;">
-      <button class="btn btn-accent-land" onclick="openSitterPanel()">Make My Free Sitter Brief →</button>
-      <button class="btn btn-outline" style="padding:12px 32px;" onclick="openApp()">See the Full App</button>
+      <a href="/sitter-brief.html" target="_blank" class="btn btn-accent-land">Make My Free Sitter Brief →</a>
+      <a href="#waitlist" style="padding:12px 32px;" class="btn btn-outline">Join the Waitlist</a>
       <p class="cta-note">No account needed · Free forever</p>
     </div>
   </div>
@@ -904,7 +930,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <li><span class="pf-dash">–</span> Connected integrations</li>
           <li><span class="pf-dash">–</span> Ask Agent chat</li>
         </ul>
-        <button class="pricing-btn pricing-btn-outline" onclick="openSitterPanel()">Try Free — Sitter Brief →</button>
+        <a href="/sitter-brief.html" target="_blank" class="pricing-btn pricing-btn-outline">Try Free — Sitter Brief →</a>
       </div>
 
       <!-- $9/mo — FEATURED -->
@@ -956,915 +982,37 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   </div>
 </section>
 
+<!-- WAITLIST -->
+<section id="waitlist" style="padding:80px 40px;background:#2E2820;text-align:center;border-top:1px solid rgba(255,255,255,0.08);">
+  <div style="max-width:480px;margin:0 auto;">
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4B49E;margin-bottom:16px;">Join the Waitlist</div>
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,4vw,44px);font-weight:300;color:#F7F5F2;line-height:1.2;margin-bottom:12px;font-style:italic;">Reserve your family's spot.</div>
+    <p style="font-size:15px;font-weight:300;color:rgba(247,245,242,0.55);line-height:1.7;margin-bottom:32px;">We're onboarding families carefully and personally. We'll be in touch when your app is ready.</p>
+    <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="display:flex;flex-direction:column;gap:10px;max-width:380px;margin:0 auto;">
+      <input type="hidden" name="form-name" value="waitlist" />
+      <p style="display:none;"><input name="bot-field" /></p>
+      <input type="text" name="name" placeholder="Your name" required
+        style="padding:14px 16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-family:'Jost',sans-serif;font-size:14px;color:#F7F5F2;outline:none;border-radius:4px;"/>
+      <input type="email" name="email" placeholder="Email address" required
+        style="padding:14px 16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-family:'Jost',sans-serif;font-size:14px;color:#F7F5F2;outline:none;border-radius:4px;"/>
+      <button type="submit"
+        style="padding:15px;background:#7C6A52;color:#FDFCFA;border:none;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:4px;margin-top:4px;">
+        Join the Waitlist →
+      </button>
+    </form>
+    <p style="margin-top:16px;font-size:12px;color:rgba(247,245,242,0.25);letter-spacing:0.5px;">No spam · No payment required · We'll reach out personally</p>
+  </div>
+</section>
+
 <footer>
   <div class="footer-logo">Folia</div>
   <p>© 2025 Folia &nbsp;·&nbsp; Built for families, by people who have them.</p>
 </footer>
 
 <!-- Waitlist modal -->
-<div class="land-overlay" id="landOverlay" onclick="handleLandClick(event)">
-  <div class="land-modal">
-    <button class="land-modal-close" onclick="closeWaitlist()">×</button>
-    <div class="modal-form-land" id="landForm">
-      <div class="modal-eyebrow">Early Access</div>
-      <h3>Reserve your family's spot.</h3>
-      <p>We're onboarding families carefully and personally. Leave your name and email — we'll reach out when your app is ready.</p>
-      <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleNetlifySubmit(event)" style="margin:0;">
-        <input type="hidden" name="form-name" value="waitlist" />
-        <p style="display:none;"><input name="bot-field" /></p>
-        <input type="text" name="name" id="wlName" placeholder="Your name" required />
-        <input type="email" name="email" id="wlEmail" placeholder="Email address" required style="margin-bottom:20px;" />
-        <button type="submit" class="btn btn-accent-land" style="width:100%;border-radius:0;">Reserve My Spot</button>
-      </form>
-    </div>
-    <div class="modal-success-land" id="landSuccess">
-      <span class="big-serif">Thank you.</span>
-      <p>You're on the list. We'll be in touch personally when it's your family's turn.</p>
-    </div>
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════
-     APP SHELL
-══════════════════════════════════════ -->
-<!-- SITTER BRIEF PANEL -->
-<div class="sitter-panel" id="sitterPanel">
-  <div class="sitter-backdrop" onclick="closeSitterPanel()"></div>
-  <div class="sitter-sheet" id="sitterSheet">
-    <div class="sitter-handle-bar" onclick="closeSitterPanel()">
-      <div class="sitter-handle"></div>
-    </div>
-    <div class="sitter-sheet-inner">
-      <iframe id="sitterIframe" src="" style="width:100%;height:100%;border:none;min-height:85vh;" title="Folia Sitter Brief Generator"></iframe>
-    </div>
-  </div>
-</div>
-
-<!-- AUTH OVERLAY -->
-<div class="auth-overlay" id="authOverlay">
-  <div class="auth-card">
-    <div class="auth-logo">Folia</div>
-    <div class="auth-tagline">Your family. A living record.</div>
-    <div class="auth-tab-row">
-      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign In</div>
-      <div class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</div>
-    </div>
-    <div id="loginForm">
-      <div class="auth-field"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" /></div>
-      <div class="auth-field"><label>Password</label><input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" /></div>
-      <button class="auth-submit" onclick="handleLogin()">Sign In →</button>
-      <div class="auth-loading" id="loginLoading"><div class="spin"></div> Signing in…</div>
-      <div class="auth-error" id="loginError"></div>
-      <div class="auth-divider">or</div>
-      <div class="auth-switch">Don't have an account? <a onclick="switchAuthTab('signup')">Create one free</a></div>
-    </div>
-    <div id="signupForm" style="display:none;">
-      <div class="auth-field"><label>Your name</label><input type="text" id="signupName" placeholder="e.g. Claire" autocomplete="given-name" /></div>
-      <div class="auth-field"><label>Email</label><input type="email" id="signupEmail" placeholder="your@email.com" autocomplete="email" /></div>
-      <div class="auth-field"><label>Password</label><input type="password" id="signupPassword" placeholder="Choose a password (8+ chars)" autocomplete="new-password" /></div>
-      <button class="auth-submit" onclick="handleSignup()">Create My Account →</button>
-      <div class="auth-loading" id="signupLoading"><div class="spin"></div> Creating account…</div>
-      <div class="auth-error" id="signupError"></div>
-      <div class="auth-divider">or</div>
-      <div class="auth-switch">Already have an account? <a onclick="switchAuthTab('login')">Sign in</a></div>
-    </div>
-  </div>
-</div>
-
-<div class="app-overlay" id="appOverlay">
-  <div class="phone">
-    <div class="notch"></div>
-    <button class="shell-close" onclick="closeApp()">×</button>
-
-    <div class="status-bar">
-      <span class="status-time" id="clockTime">9:41</span>
-      <div class="status-icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
-    </div>
-
-    <div class="phone-screens">
-
-      <!-- ── O: WELCOME ── -->
-      <div class="pscreen active" id="p0">
-        <div class="welcome-hero-p">
-          <div class="wlogo">Folia</div>
-          <div class="wtagline">Your family. A living record.</div>
-          <div class="willus">🏡</div>
-          <div class="wdesc">An app built around the <strong>exact details</strong> of your household — updated automatically, so you never have to.</div>
-          <button class="pbtn accent" style="width:100%;max-width:280px;" onclick="pGoTo(1)">Build My Family's App →</button>
-          <button class="pbtn ghost" style="width:100%;max-width:280px;border:none;font-size:12.5px;color:var(--stone-400);">I already have an account</button>
-        </div>
-      </div>
-
-      <!-- ── 1: FAMILY NAME ── -->
-      <div class="pscreen" id="p1">
-        <div class="prog-bar"><div class="prog-fill" style="width:12%"></div></div>
-        <div class="pscroll">
-          <div style="margin-bottom:24px;">
-            <div class="p-eyebrow">Step 1 of 7</div>
-            <div class="p-title">What's your<br><em>family name?</em></div>
-            <div class="p-sub">This is how your app will refer to your household — your family's home base.</div>
-          </div>
-          <div class="f-group"><div class="f-label">Family name</div><input type="text" id="familyName" placeholder="e.g. The Ashfords" /></div>
-          <div class="f-group"><div class="f-label">Your name</div><input type="text" id="parentName" placeholder="e.g. Claire" /></div>
-          <div class="f-group"><div class="f-label">Email</div><input type="email" id="parentEmail" placeholder="your@email.com" /></div>
-          <div style="margin-top:auto;padding-top:20px;">
-            <button class="pbtn accent" onclick="pGoTo(2)">Continue →</button>
-            <button class="pbtn ghost" onclick="pGoTo(0)">← Back</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── 2: MEMBERS ── -->
-      <div class="pscreen" id="p2">
-        <div class="prog-bar"><div class="prog-fill" style="width:26%"></div></div>
-        <div class="pscroll">
-          <div style="margin-bottom:18px;">
-            <div class="p-eyebrow">Step 2 of 7</div>
-            <div class="p-title">Who's in your<br><em>household?</em></div>
-            <div class="p-sub">Add every person and pet. The agent tracks information for each separately.</div>
-          </div>
-          <div class="member-list" id="memberList"></div>
-          <div class="add-form" id="addForm">
-            <div class="f-label">Choose an icon</div>
-            <div class="emoji-picker" id="emojiPicker">
-              <div class="emoji-opt sel" data-e="👩" onclick="selEmoji(this)">👩</div>
-              <div class="emoji-opt" data-e="👨" onclick="selEmoji(this)">👨</div>
-              <div class="emoji-opt" data-e="👧" onclick="selEmoji(this)">👧</div>
-              <div class="emoji-opt" data-e="👦" onclick="selEmoji(this)">👦</div>
-              <div class="emoji-opt" data-e="👶" onclick="selEmoji(this)">👶</div>
-              <div class="emoji-opt" data-e="🧓" onclick="selEmoji(this)">🧓</div>
-              <div class="emoji-opt" data-e="🐕" onclick="selEmoji(this)">🐕</div>
-              <div class="emoji-opt" data-e="🐈" onclick="selEmoji(this)">🐈</div>
-            </div>
-            <div class="row-2" style="margin-top:4px;">
-              <div><div class="f-label">Name</div><input type="text" id="newName" placeholder="e.g. Nora" /></div>
-              <div><div class="f-label">Role / Age</div><input type="text" id="newRole" placeholder="e.g. Age 11" /></div>
-            </div>
-            <div style="display:flex;gap:8px;margin-top:4px;">
-              <button class="pbtn accent" style="flex:2;margin-top:0;padding:10px;" onclick="saveMember()">Add</button>
-              <button class="pbtn ghost" style="flex:1;margin-top:0;padding:10px;font-size:12px;" onclick="cancelMember()">Cancel</button>
-            </div>
-          </div>
-          <button class="add-btn-p" id="addBtn" onclick="showAdd()"><span style="font-size:17px;">+</span> Add person or pet</button>
-          <div style="margin-top:auto;padding-top:18px;">
-            <button class="pbtn accent" onclick="pGoTo(3)">Continue →</button>
-            <button class="pbtn ghost" onclick="pGoTo(1)">← Back</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── 3: HEALTH ── -->
-      <div class="pscreen" id="p3">
-        <div class="prog-bar"><div class="prog-fill" style="width:40%"></div></div>
-        <div class="pscroll">
-          <div style="margin-bottom:18px;">
-            <div class="p-eyebrow">Step 3 of 7</div>
-            <div class="p-title">Health &amp;<br><em>allergies</em></div>
-            <div class="p-sub">The agent protects this information most carefully — health changes always require your confirmation.</div>
-          </div>
-          <div id="healthTabs" style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;"></div>
-          <div class="f-group"><div class="f-label">Allergies</div><input type="text" id="allergies" placeholder="e.g. Peanuts, penicillin…" /></div>
-          <div class="f-group"><div class="f-label">Medications</div><input type="text" id="medications" placeholder="e.g. Albuterol inhaler, Zyrtec…" /></div>
-          <div class="f-group">
-            <div class="f-label">Dietary needs</div>
-            <div class="chip-grid">
-              <div class="chip" onclick="toggleChip(this)">Gluten-free</div>
-              <div class="chip" onclick="toggleChip(this)">Dairy-free</div>
-              <div class="chip" onclick="toggleChip(this)">Vegetarian</div>
-              <div class="chip" onclick="toggleChip(this)">Nut-free</div>
-              <div class="chip" onclick="toggleChip(this)">Kosher</div>
-              <div class="chip" onclick="toggleChip(this)">None</div>
-            </div>
-          </div>
-          <div class="f-group"><div class="f-label">Doctor / Pediatrician</div><input type="text" id="doctor" placeholder="e.g. Dr. Patel, Riverside Pediatrics" /></div>
-          <div style="margin-top:auto;padding-top:14px;">
-            <button class="pbtn accent" onclick="pGoTo(4)">Continue →</button>
-            <button class="pbtn ghost" onclick="pGoTo(2)">← Back</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── 4: SCHEDULES ── -->
-      <div class="pscreen" id="p4">
-        <div class="prog-bar"><div class="prog-fill" style="width:55%"></div></div>
-        <div class="pscroll">
-          <div style="margin-bottom:18px;">
-            <div class="p-eyebrow">Step 4 of 7</div>
-            <div class="p-title">Schedules &amp;<br><em>routines</em></div>
-            <div class="p-sub">The agent will watch for changes to these automatically. Just tell us what's fixed today.</div>
-          </div>
-          <div class="f-group"><div class="f-label">School / Daycare</div><input type="text" id="school" placeholder="e.g. Jefferson Elementary" /></div>
-          <div class="f-group"><div class="f-label">Typical pickup time</div><input type="text" id="pickup" placeholder="e.g. 3:15 PM Mon–Fri, bus Tues" /></div>
-          <div class="f-group"><div class="f-label">Regular activities</div><input type="text" id="activities" placeholder="e.g. Soccer Sat 9am, piano Wed 4pm" /></div>
-          <div class="f-group">
-            <div class="f-label">Work / travel pattern</div>
-            <div class="chip-grid">
-              <div class="chip" onclick="toggleChip(this)">Regular travel</div>
-              <div class="chip" onclick="toggleChip(this)">Remote work</div>
-              <div class="chip" onclick="toggleChip(this)">Shift work</div>
-              <div class="chip" onclick="toggleChip(this)">Standard hours</div>
-              <div class="chip" onclick="toggleChip(this)">Varies</div>
-            </div>
-          </div>
-          <div style="margin-top:auto;padding-top:14px;">
-            <button class="pbtn accent" onclick="pGoTo(5)">Continue →</button>
-            <button class="pbtn ghost" onclick="pGoTo(3)">← Back</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── 5: CONNECT ── -->
-      <div class="pscreen" id="p5">
-        <div class="prog-bar"><div class="prog-fill" style="width:70%"></div></div>
-        <div class="pscroll">
-          <div style="margin-bottom:18px;">
-            <div class="p-eyebrow">Step 5 of 7</div>
-            <div class="p-title">Connect your<br><em>agent's eyes</em></div>
-            <div class="p-sub">The more you connect, the less you'll ever update manually. Each source teaches your agent something new.</div>
-          </div>
-          <div class="int-list">
-            <div class="int-row" id="ir-gmail" onclick="connectInt('gmail')"><div class="int-icon-p" style="background:#FEF2F2;">📧</div><div class="int-info"><div class="int-name">Gmail</div><div class="int-desc">Parses school emails, newsletters, appointment confirmations</div></div><div class="int-status idle" id="is-gmail">Connect</div></div>
-            <div class="int-row" id="ir-gcal" onclick="connectInt('gcal')"><div class="int-icon-p" style="background:#EFF6FF;">📅</div><div class="int-info"><div class="int-name">Google Calendar</div><div class="int-desc">Syncs events, detects conflicts, watches for changes</div></div><div class="int-status idle" id="is-gcal">Connect</div></div>
-            <div class="int-row" id="ir-grocery" onclick="connectInt('grocery')"><div class="int-icon-p" style="background:#FFFBEB;">🛒</div><div class="int-info"><div class="int-name">Grocery / Instacart</div><div class="int-desc">Learns dietary patterns, builds recurring lists</div></div><div class="int-status idle" id="is-grocery">Connect</div></div>
-            <div class="int-row" id="ir-pharmacy" onclick="connectInt('pharmacy')"><div class="int-icon-p" style="background:#FFF0F0;">💊</div><div class="int-info"><div class="int-name">Pharmacy / CVS</div><div class="int-desc">Detects new prescriptions, refill reminders</div></div><div class="int-status idle" id="is-pharmacy">Connect</div></div>
-            <div class="int-row" id="ir-apple" onclick="connectInt('apple')"><div class="int-icon-p" style="background:#F0FDF4;">📱</div><div class="int-info"><div class="int-name">Apple Health</div><div class="int-desc">Optional: health trends for family wellness context</div></div><div class="int-status idle" id="is-apple">Connect</div></div>
-          </div>
-          <div style="margin-top:auto;padding-top:8px;">
-            <button class="pbtn accent" onclick="pGoTo(6)">Continue →</button>
-            <button class="pbtn ghost" onclick="pGoTo(4)">← Back</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── 6: PREFERENCES ── -->
-      <div class="pscreen" id="p6">
-        <div class="prog-bar"><div class="prog-fill" style="width:84%"></div></div>
-        <div class="pscroll">
-          <div style="margin-bottom:18px;">
-            <div class="p-eyebrow">Step 6 of 7</div>
-            <div class="p-title">How should your<br><em>agent behave?</em></div>
-            <div class="p-sub">Set the rules once. Change them anytime.</div>
-          </div>
-          <div class="perm-card"><div class="perm-icon">⚕️</div><div><div class="perm-title">Health changes</div><div class="perm-desc">Always require your confirmation before updating medications, allergies, or health records.</div></div></div>
-          <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:13px;padding:6px 15px;margin-bottom:12px;">
-            <div class="tog-row"><div><div class="tog-lbl">Auto-apply schedule changes</div><div class="tog-sub">Early releases, cancellations, rescheduling</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-            <div class="tog-row"><div><div class="tog-lbl">Auto-update grocery list</div><div class="tog-sub">Add recurring items from purchase history</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-            <div class="tog-row"><div><div class="tog-lbl">Proactive conflict alerts</div><div class="tog-sub">Warn when schedules overlap</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-            <div class="tog-row"><div><div class="tog-lbl">Weekly family briefing</div><div class="tog-sub">Sunday evening summary of the week ahead</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
-            <div class="tog-row"><div><div class="tog-lbl">Sitter-ready profile</div><div class="tog-sub">Generate a shareable brief with one tap</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-          </div>
-          <div style="margin-top:auto;padding-top:8px;">
-            <button class="pbtn accent" onclick="startBuild()">Build My App →</button>
-            <button class="pbtn ghost" onclick="pGoTo(5)">← Back</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── 7: BUILDING ── -->
-      <div class="pscreen" id="p7">
-        <div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div>
-        <div class="ai-building">
-          <div class="ai-orb">🤖</div>
-          <div class="building-title">Building your app…</div>
-          <div class="building-sub">Your agent is reading what you shared<br>and setting everything up.</div>
-          <div class="build-steps">
-            <div class="build-step" id="bs1"><div class="bsicon">👨‍👩‍👧‍👦</div><span>Creating family profiles</span><div class="thinking-dots-sm" id="bs1d" style="display:none"><span></span><span></span><span></span></div><span id="bs1c" style="margin-left:auto;display:none">✅</span></div>
-            <div class="build-step" id="bs2"><div class="bsicon">⚕️</div><span>Securing health records</span><div class="thinking-dots-sm" id="bs2d" style="display:none"><span></span><span></span><span></span></div><span id="bs2c" style="margin-left:auto;display:none">✅</span></div>
-            <div class="build-step" id="bs3"><div class="bsicon">📅</div><span>Mapping schedules &amp; routines</span><div class="thinking-dots-sm" id="bs3d" style="display:none"><span></span><span></span><span></span></div><span id="bs3c" style="margin-left:auto;display:none">✅</span></div>
-            <div class="build-step" id="bs4"><div class="bsicon">🔗</div><span>Connecting data sources</span><div class="thinking-dots-sm" id="bs4d" style="display:none"><span></span><span></span><span></span></div><span id="bs4c" style="margin-left:auto;display:none">✅</span></div>
-            <div class="build-step" id="bs5"><div class="bsicon">🧠</div><span>Agent generating first insight</span><div class="thinking-dots-sm" id="bs5d" style="display:none"><span></span><span></span><span></span></div><span id="bs5c" style="margin-left:auto;display:none">✅</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── 8: PREVIEW ── -->
-      <div class="pscreen" id="p8">
-        <div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div>
-        <div class="pscroll">
-          <div style="margin-bottom:18px;">
-            <div class="p-eyebrow">Almost ready</div>
-            <div class="p-title">Here's what your<br><em>agent built.</em></div>
-            <div class="p-sub">Review your family profile — edit anything at any time.</div>
-          </div>
-          <div class="prev-block"><div class="prev-lbl" id="prevLbl">Your Household</div><div id="prevMembers"></div></div>
-          <div><div class="insight-lbl">🧠 Agent's first observation</div><div class="insight-box" id="firstInsight"><span style="color:var(--stone-300)">Generating…</span></div></div>
-          <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;margin-bottom:12px;">
-            <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin-bottom:9px;">Connected Sources</div>
-            <div id="connSources" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-          </div>
-          <button class="pbtn accent" onclick="pGoTo(9)">Looks Good — Let's Go →</button>
-          <button class="pbtn ghost" onclick="pGoTo(6)">← Edit something</button>
-        </div>
-      </div>
-
-      <!-- ── 9: SUCCESS → DASHBOARD ── -->
-      <div class="pscreen" id="p9">
-        <div class="success-p">
-          <div class="success-ring">🏡</div>
-          <div class="success-title">Your app is<br><em>alive.</em></div>
-          <div class="success-sub" id="successSub">Your agent is now watching, learning, and keeping everything current — so you don't have to.</div>
-          <div class="summary-chips-p">
-            <div class="summary-chip-p">🤖 Agent active</div>
-            <div class="summary-chip-p" id="chipMembers">👨‍👩‍👧‍👦 Family ready</div>
-            <div class="summary-chip-p">⚕️ Health protected</div>
-            <div class="summary-chip-p">📅 Schedules mapped</div>
-          </div>
-          <button class="pbtn accent" style="width:100%;" onclick="openDashboard()">Open My Family's App →</button>
-        </div>
-      </div>
-
-      <!-- ── DASHBOARD SCREENS ── -->
-
-      <!-- Dashboard: Agent Feed -->
-      <div class="pscreen" id="dash-home">
-        <div class="ptop">
-          <div class="ptop-row">
-            <div><div class="ptitle">Folia</div><div class="psub" id="dashFamilyName">Your Family</div></div>
-            <div class="agent-badge"><div class="agent-dot"></div>Agent Active</div>
-          </div>
-        </div>
-        <div class="pscroll" id="agentFeed" style="gap:0;padding-bottom:8px;">
-          <div class="agent-strip">
-            <div class="strip-icon">🤖</div>
-            <div class="strip-text"><div class="strip-title">Agent is watching for you</div><div class="strip-sub">Email · Calendar · Groceries · Health</div></div>
-            <div class="strip-count" id="updCount">0</div>
-          </div>
-          <div class="sec-lbl">INCOMING SIGNALS</div>
-          <!-- cards injected by JS -->
-        </div>
-        <div class="tab-bar">
-          <div class="tab active" id="t-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
-          <div class="tab" id="t-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab" id="t-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
-        </div>
-        <!-- confirm sheet -->
-        <div class="confirm-modal" id="confirmModal">
-          <div class="confirm-sheet">
-            <div class="sheet-eyebrow">⚕️ Health Change · Confirmation Required</div>
-            <div class="sheet-title">Update medication profile?</div>
-            <div class="sheet-body">The agent detected a new prescription from CVS. Medication changes are never applied without your explicit approval.</div>
-            <div class="sheet-change"><strong>Montelukast 5mg — once daily at bedtime</strong>Prescribed by Dr. Patel · Replaces Albuterol as primary controller</div>
-            <div class="sheet-actions">
-              <button class="sheet-confirm" onclick="confirmMed()">Yes, Update Profile</button>
-              <button class="sheet-dismiss" onclick="closeConfirm()">Not Yet</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Dashboard: Family -->
-      <div class="pscreen" id="dash-family">
-        <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your People</div></div></div></div>
-        <div class="pscroll" style="gap:0;">
-          <div class="fam-block">
-            <div class="fam-block-lbl" id="famBlockLbl">Your Household</div>
-            <div id="famChips"></div>
-          </div>
-          <div class="sec-lbl" style="margin-top:8px;">RECENT AGENT UPDATES</div>
-          <div class="acard">
-            <div class="acard-body" style="padding:13px 14px;">
-              <div class="finding-row"><span class="fi">✅</span><div class="ft"><strong>Friday pickup → 1:00 PM</strong><small>From school email · Applied</small></div></div>
-              <div class="finding-row" style="margin-top:7px;"><span class="fi">✅</span><div class="ft"><strong>Spring Concert · Mar 14, 6:30 PM</strong><small>Added to family calendar · Applied</small></div></div>
-              <div class="finding-row" style="margin-top:7px;"><span class="fi">✅</span><div class="ft"><strong>Oat milk → weekly essentials</strong><small>Learned from grocery history · Applied</small></div></div>
-              <div class="finding-row" style="margin-top:7px;"><span class="fi">⏳</span><div class="ft"><strong id="medLog">Medication change — awaiting confirmation</strong><small>Health change · Requires parent approval</small></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-bar">
-          <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
-          <div class="tab active" id="t2-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab" id="t2-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
-        </div>
-      </div>
-
-      <!-- Dashboard: Ask Agent -->
-      <div class="pscreen" id="dash-ask">
-        <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Ask the Agent</div></div><div class="agent-badge"><div class="agent-dot"></div>Ready</div></div></div>
-        <div class="pscroll" id="chatMessages" style="gap:6px;padding-bottom:80px;">
-          <div style="text-align:center;padding:16px 0 10px;">
-            <div style="font-size:32px;margin-bottom:8px;">🤖</div>
-            <div style="font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:19px;font-weight:600;color:var(--stone-900);margin-bottom:5px;">Ask me anything about your family</div>
-            <div style="font-size:12.5px;color:var(--stone-500);font-weight:300;line-height:1.6;">I know your schedules, health needs,<br>allergies, routines, and more.</div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:7px;margin-top:6px;">
-            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`What does the sitter need to know?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 What does the sitter need to know?</div></div>
-            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`Any conflicts next week?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 Any conflicts next week?</div></div>
-            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`What\\'s safe for Nora at the party?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 What's safe for Nora at the party?</div></div>
-            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`Summarize what the agent updated today`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 Summarize what the agent updated today</div></div>
-          </div>
-        </div>
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:9px 14px;background:var(--white);border-top:1px solid var(--stone-200);display:flex;gap:7px;">
-          <input id="chatIn" type="text" placeholder="Ask about your family…" style="flex:1;padding:10px 13px;border-radius:9px;" onkeydown="if(event.key==='Enter')sendChat()" />
-          <button onclick="sendChat()" style="padding:10px 14px;background:var(--stone-900);color:var(--white);border:none;border-radius:9px;font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:13px;cursor:pointer;">→</button>
-        </div>
-        <div class="tab-bar">
-          <div class="tab" id="t3-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
-          <div class="tab" id="t3-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab active" id="t3-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
-        </div>
-      </div>
-
-    </div><!-- /phone-screens -->
-  </div><!-- /phone -->
-</div><!-- /app-overlay -->
-
-
 <script>
-// ════════════════════════════
-// SUPABASE CONFIG
-// ════════════════════════════
-// Replace these with your actual Supabase project values
-// Found at: supabase.com → your project → Settings → API
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-
-// Safe Supabase init — works even if SDK loads slowly
-let sb = null;
-function getSB() {
-  if (!sb && typeof supabase !== 'undefined'
-      && SUPABASE_URL !== 'YOUR_SUPABASE_URL'
-      && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
-    try {
-      sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } catch(e) { return null; }
-  }
-  return sb;
-}
-
-// ════════════════════════════
-// AUTH
-// ════════════════════════════
-function switchAuthTab(tab) {
-  document.getElementById('loginForm').style.display = tab==='login' ? 'block' : 'none';
-  document.getElementById('signupForm').style.display = tab==='signup' ? 'block' : 'none';
-  document.getElementById('tab-login').classList.toggle('active', tab==='login');
-  document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
-  document.getElementById('loginError').textContent = '';
-  document.getElementById('signupError').textContent = '';
-}
-
-async function handleLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass  = document.getElementById('loginPassword').value;
-  if (!email || !pass) { document.getElementById('loginError').textContent = 'Please enter your email and password.'; return; }
-  document.getElementById('loginLoading').classList.add('show');
-  document.getElementById('loginError').textContent = '';
-  const client = getSB(); if(!client){document.getElementById('loginError').textContent='Auth not configured yet.';return;}
-  const { data, error } = await client.auth.signInWithPassword({ email, password: pass });
-  document.getElementById('loginLoading').classList.remove('show');
-  if (error) { document.getElementById('loginError').textContent = error.message; return; }
-  await onAuthSuccess(data.user);
-}
-
-async function handleSignup() {
-  const name  = document.getElementById('signupName').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const pass  = document.getElementById('signupPassword').value;
-  if (!name)  { document.getElementById('signupError').textContent = 'Please enter your name.'; return; }
-  if (!email) { document.getElementById('signupError').textContent = 'Please enter your email.'; return; }
-  if (pass.length < 8) { document.getElementById('signupError').textContent = 'Password must be at least 8 characters.'; return; }
-  document.getElementById('signupLoading').classList.add('show');
-  document.getElementById('signupError').textContent = '';
-  const client = getSB(); if(!client){document.getElementById('signupError').textContent='Auth not configured yet.';return;}
-  const { data, error } = await client.auth.signUp({ email, password: pass, options: { data: { name } } });
-  document.getElementById('signupLoading').classList.remove('show');
-  if (error) { document.getElementById('signupError').textContent = error.message; return; }
-  // Pre-fill name field in onboarding
-  S.parentName = name;
-  await onAuthSuccess(data.user, true);
-}
-
-async function onAuthSuccess(user, isNew = false) {
-  // Close auth overlay, open app
-  document.getElementById('authOverlay').classList.remove('open');
-  document.getElementById('appOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-
-  if (isNew) {
-    // New user — start onboarding
-    pGoTo(0);
-  } else {
-    // Returning user — load their profile
-    await loadProfile(user.id);
-  }
-}
-
-async function handleSignOut() {
-  const sc = getSB(); if(sc) await sc.auth.signOut();
-  // Close app, clear state
-  document.getElementById('appOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-  S.members = []; S.familyName = ''; S.parentName = ''; S.connections = [];
-  cur = 0;
-}
-
-// Check for existing session on page load
-window.addEventListener('DOMContentLoaded', async () => {
-  const client = getSB();
-  if (!client) return; // Supabase not configured yet — skip session check
-  try {
-    const { data: { session } } = await client.auth.getSession();
-    if (session) {
-      document.getElementById('appOverlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-      await loadProfile(session.user.id);
-    }
-  } catch(e) { /* session check failed silently */ }
-});
-
-// ════════════════════════════
-// DATABASE — SAVE & LOAD
-// ════════════════════════════
-async function saveProfile() {
-  const { data: { user } } = await getSB().auth.getUser();
-  if (!user) return;
-
-  const profile = {
-    user_id: user.id,
-    family_name: S.familyName || 'Your Family',
-    parent_name: S.parentName,
-    members: S.members,
-    connections: S.connections,
-    allergies: document.getElementById('allergies')?.value || '',
-    medications: document.getElementById('medications')?.value || '',
-    school: document.getElementById('school')?.value || '',
-    pickup: document.getElementById('pickup')?.value || '',
-    activities: document.getElementById('activities')?.value || '',
-    doctor: document.getElementById('doctor')?.value || '',
-    updated_at: new Date().toISOString()
-  };
-
-  const sbClient = getSB(); if(!sbClient){showSaved();return;}
-  const { error } = await sbClient
-    .from('family_profiles')
-    .upsert(profile, { onConflict: 'user_id' });
-
-  if (!error) showSaved();
-}
-
-async function loadProfile(userId) {
-  const sbClient = getSB(); if(!sbClient) return;
-  const { data, error } = await sbClient
-    .from('family_profiles')
-    .select('*')
-    .eq('user_id', userId)
-    .single();
-
-  if (error || !data) {
-    // No profile yet — send to onboarding
-    pGoTo(0);
-    return;
-  }
-
-  // Restore state from database
-  S.familyName  = data.family_name || '';
-  S.parentName  = data.parent_name || '';
-  S.members     = data.members || [];
-  S.connections = data.connections || [];
-
-  // Restore form fields (they may not exist yet — guard with optional chaining)
-  if (document.getElementById('familyName'))  document.getElementById('familyName').value  = S.familyName;
-  if (document.getElementById('parentName'))  document.getElementById('parentName').value  = S.parentName;
-  if (document.getElementById('allergies'))   document.getElementById('allergies').value   = data.allergies || '';
-  if (document.getElementById('medications')) document.getElementById('medications').value = data.medications || '';
-  if (document.getElementById('school'))      document.getElementById('school').value      = data.school || '';
-  if (document.getElementById('pickup'))      document.getElementById('pickup').value      = data.pickup || '';
-  if (document.getElementById('activities'))  document.getElementById('activities').value  = data.activities || '';
-  if (document.getElementById('doctor'))      document.getElementById('doctor').value      = data.doctor || '';
-
-  // Go straight to dashboard
-  openDashboard();
-}
-
-function showSaved() {
-  const el = document.getElementById('saveIndicator');
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2000);
-}
-
-// ════════════════════════════
-// LANDING
-// ════════════════════════════
-const revEls = document.querySelectorAll('.reveal');
-revEls.forEach(el => el.classList.add('in'));
-
-function openWaitlist(){document.getElementById('landOverlay').classList.add('open');document.body.style.overflow='hidden';}
-function closeWaitlist(){document.getElementById('landOverlay').classList.remove('open');document.body.style.overflow='';}
-function handleLandClick(e){if(e.target===document.getElementById('landOverlay'))closeWaitlist();}
-function submitWaitlist(){
-  if(!document.getElementById('wlName').value.trim()||!document.getElementById('wlEmail').value.trim())return;
-  document.getElementById('landForm').classList.add('hide');
-  document.getElementById('landSuccess').classList.add('show');
-}
-async function handleNetlifySubmit(e){
-  e.preventDefault();
-  const form = e.target;
-  const data = new FormData(form);
-  try {
-    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(data).toString() });
-  } catch(err) { /* fail silently */ }
-  document.getElementById('landForm').classList.add('hide');
-  document.getElementById('landSuccess').classList.add('show');
-}
-
-// ════════════════════════════
-// APP SHELL
-// ════════════════════════════
-// Sitter Brief Panel
-function openSitterPanel() {
-  const panel = document.getElementById('sitterPanel');
-  const iframe = document.getElementById('sitterIframe');
-  const sheet = document.getElementById('sitterSheet');
-  // Load the sitter brief page into the iframe
-  if (!iframe.src || iframe.src === window.location.href) {
-    iframe.src = '/sitter-brief.html';
-  }
-  sheet.classList.remove('closing');
-  panel.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeSitterPanel() {
-  const panel = document.getElementById('sitterPanel');
-  const sheet = document.getElementById('sitterSheet');
-  sheet.classList.add('closing');
-  setTimeout(() => {
-    panel.classList.remove('open');
-    sheet.classList.remove('closing');
-    document.body.style.overflow = '';
-  }, 300);
-}
-
-// "Build My Family's App" and "Get Started Free" now open auth instead of app directly
-function openApp(){
-  document.getElementById('authOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-  switchAuthTab('signup');
-}
-function closeApp(){document.getElementById('appOverlay').classList.remove('open');document.body.style.overflow='';}
-
-// clock
-function updateClock(){const n=new Date(),h=n.getHours()%12||12,m=String(n.getMinutes()).padStart(2,'0');document.getElementById('clockTime').textContent=`${h}:${m}`;}
-updateClock();setInterval(updateClock,10000);
-
-// state
-const S={familyName:'',parentName:'',members:[],connections:[],emoji:'👩'};
-
-// screen nav
-let cur=0;
-const allScreens=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','dash-home','dash-family','dash-ask'];
-function pGoTo(n){
-  const cid=allScreens[cur],nid=allScreens[n];
-  const cel=document.getElementById(cid),nel=document.getElementById(nid);
-  if(!nel)return;
-  cel.classList.add('exit');
-  setTimeout(()=>{cel.classList.remove('active','exit');},350);
-  nel.classList.add('active');
-  cur=n;
-  if(n===2)renderMembers();
-  if(n===3)renderHealthTabs();
-  if(n===8)renderPreview();
-}
-
-// chips
-function toggleChip(el){el.classList.toggle('selected');}
-
-// members
-function showAdd(){document.getElementById('addForm').classList.add('open');document.getElementById('addBtn').style.display='none';}
-function cancelMember(){document.getElementById('addForm').classList.remove('open');document.getElementById('addBtn').style.display='flex';document.getElementById('newName').value='';document.getElementById('newRole').value='';}
-function selEmoji(el){document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');S.emoji=el.dataset.e;}
-function saveMember(){const n=document.getElementById('newName').value.trim(),r=document.getElementById('newRole').value.trim();if(!n)return;S.members.push({emoji:S.emoji,name:n,role:r});cancelMember();renderMembers();}
-function removeMember(i){S.members.splice(i,1);renderMembers();}
-function renderMembers(){
-  const l=document.getElementById('memberList');l.innerHTML='';
-  S.members.forEach((m,i)=>{
-    const d=document.createElement('div');d.className='member-card-p';
-    d.innerHTML=`<div class="mavatar">${m.emoji}</div><div class="minfo"><div class="mname">${m.name}</div><div class="mrole">${m.role||'Household member'}</div></div><button class="mremove" onclick="removeMember(${i})">×</button>`;
-    l.appendChild(d);
-  });
-}
-function renderHealthTabs(){
-  const t=document.getElementById('healthTabs');t.innerHTML='';
-  S.members.filter(m=>!['🐕','🐈'].includes(m.emoji)).forEach((m,i)=>{
-    const b=document.createElement('div');b.className='chip'+(i===0?' selected':'');
-    b.textContent=`${m.emoji} ${m.name}`;b.onclick=()=>{document.querySelectorAll('#healthTabs .chip').forEach(c=>c.classList.remove('selected'));b.classList.add('selected');};
-    t.appendChild(b);
-  });
-}
-
-// integrations
-const intNames={gmail:'Gmail',gcal:'Google Calendar',grocery:'Groceries',pharmacy:'Pharmacy',apple:'Apple Health'};
-function connectInt(id){
-  if(S.connections.includes(id))return;
-  const s=document.getElementById(`is-${id}`),r=document.getElementById(`ir-${id}`);
-  s.textContent='Connecting…';s.className='int-status connecting';
-  setTimeout(()=>{s.textContent='Connected';s.className='int-status live';r.classList.add('connected');S.connections.push(id);},1400);
-}
-
-// build + SAVE to Supabase
-async function startBuild(){
-  S.familyName=document.getElementById('familyName').value||'Your Family';
-  S.parentName=document.getElementById('parentName').value||'You';
-  pGoTo(7);
-  runBuildSeq();
-}
-function runBuildSeq(){
-  const steps=[{i:1,d:600,dur:900},{i:2,d:1600,dur:700},{i:3,d:2400,dur:1000},{i:4,d:3500,dur:800},{i:5,d:4400,dur:1200}];
-  steps.forEach(s=>{
-    setTimeout(()=>{document.getElementById(`bs${s.i}`).classList.add('active');document.getElementById(`bs${s.i}d`).style.display='flex';},s.d);
-    setTimeout(()=>{document.getElementById(`bs${s.i}d`).style.display='none';document.getElementById(`bs${s.i}c`).style.display='inline';document.getElementById(`bs${s.i}`).classList.remove('active');document.getElementById(`bs${s.i}`).classList.add('done');},s.d+s.dur);
-  });
-  // Save to Supabase when build completes
-  setTimeout(async ()=>{
-    await saveProfile();
-    pGoTo(8);
-  }, 6300);
-}
-
-// preview
-function renderPreview(){
-  const name=S.familyName||'Your Family';
-  document.getElementById('prevLbl').textContent=name;
-  const c=document.getElementById('prevMembers');c.innerHTML='';
-  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Parent 1',role:'Primary'},{emoji:'👨',name:'Parent 2',role:'Parent'},{emoji:'👧',name:'Child',role:'Age ?'}];
-  disp.forEach(m=>{const d=document.createElement('div');d.className='prev-member';d.innerHTML=`<div class="prev-av">${m.emoji}</div><div class="prev-nm">${m.name}</div><div class="prev-tg">${m.role||'Member'}</div>`;c.appendChild(d);});
-  const sc=document.getElementById('connSources');sc.innerHTML='';
-  if(S.connections.length===0){sc.innerHTML='<span style="font-size:12px;color:var(--stone-300);">None connected yet — add anytime.</span>';}
-  else{S.connections.forEach(id=>{const ch=document.createElement('div');ch.className='summary-chip-p';ch.style.cssText='background:var(--green-lt);border-color:rgba(74,124,89,0.3);color:var(--green);';ch.textContent='✓ '+intNames[id];sc.appendChild(ch);});}
-  generateInsight();
-}
-async function generateInsight(){
-  const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'a family';
-  const allerg=document.getElementById('allergies')?.value||'none';
-  const sched=document.getElementById('pickup')?.value||'not set';
-  const conns=S.connections.map(c=>intNames[c]).join(', ')||'none yet';
-  const prompt=`New Folia family: "${S.familyName||'unnamed'}". Members: ${mems}. Allergies: ${allerg}. Pickup schedule: ${sched}. Connected sources: ${conns}. Write ONE warm, specific, genuinely useful observation for this family — something concrete about how Folia will help them specifically. 2-3 sentences. Start with a relevant emoji. Be personal, not generic.`;
-  try{
-    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent welcoming a new family. Be warm, specific, practical. Never generic.',messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    document.getElementById('firstInsight').textContent=data.content?.map(b=>b.text||'').join('')||fallbackInsight();
-  }catch(e){document.getElementById('firstInsight').textContent=fallbackInsight();}
-  const fd=S.familyName?`the ${S.familyName}`:'your family';
-  document.getElementById('successSub').textContent=`Your agent is now active for ${fd}. It's watching, learning, and keeping everything current.`;
-  if(S.members.length>0)document.getElementById('chipMembers').textContent=`👨‍👩‍👧‍👦 ${S.members.length} member${S.members.length!==1?'s':''} added`;
-}
-function fallbackInsight(){
-  if(S.members.length>2)return`🗂️ With ${S.members.length} household members, the biggest win is having one source of truth everyone can access. Start with a sitter brief — your agent can generate it in one tap.`;
-  if(document.getElementById('allergies')?.value)return`⚕️ Since you've noted allergies, your agent will automatically flag any grocery purchases or meal suggestions that conflict — and will never update health details without your confirmation.`;
-  return`🧠 The more you use Folia, the smarter your agent gets. Connect Gmail and your calendar first — within a week it will have learned your family's rhythms well enough to start flagging things before you notice them.`;
-}
-
-// ════════════════════════════
-// DASHBOARD
-// ════════════════════════════
-let dashReady=false;
-function openDashboard(){
-  const fname=S.familyName||'Your Family';
-  document.getElementById('dashFamilyName').textContent=fname;
-  document.getElementById('famBlockLbl').textContent=fname;
-  const fc=document.getElementById('famChips');fc.innerHTML='';
-  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent'},{emoji:'👨',name:'Marcus',role:'Parent'},{emoji:'👧',name:'Nora',role:'Age 11'},{emoji:'👦',name:'Ben',role:'Age 7'}];
-  disp.forEach(m=>{const d=document.createElement('div');d.className='fam-chip';d.innerHTML=`<div class="chip-av">${m.emoji}</div><div class="chip-nm">${m.name}</div><div class="chip-tg">${m.role}</div>`;fc.appendChild(d);});
-  pGoTo(10);
-  if(!dashReady){dashReady=true;setTimeout(()=>animateAgentCards(),600);}
-}
-
-function switchTab(name){
-  const map={home:'dash-home',family:'dash-family',ask:'dash-ask'};
-  Object.entries(map).forEach(([k,v])=>{
-    document.getElementById(v).classList.toggle('active',k===name);
-    document.getElementById(v).classList.toggle('exit',false);
-  });
-  ['home','family','ask'].forEach(t=>{
-    ['t','t2','t3'].forEach(prefix=>{
-      const el=document.getElementById(`${prefix}-${t}`);
-      if(el)el.classList.toggle('active',t===name);
-    });
-  });
-  if(name==='ask')cur=12; else if(name==='family')cur=11; else cur=10;
-}
-
-let updCount=0;
-function bump(n=1){updCount+=n;document.getElementById('updCount').textContent=updCount;}
-
-function animateAgentCards(){
-  const feed=document.getElementById('agentFeed');
-  const cards=[
-    {id:'c-email',icon:'📧',ibg:'#EAF0FD',src:'School Email · Jefferson Elementary',time:'8:14 AM',raw:'Dear Parents, Friday's early release has been moved to 1:00 PM due to teacher professional development. The Spring Concert has been rescheduled to March 14th at 6:30 PM...',findings:[{i:'🕐',strong:'Friday early release → 1:00 PM',small:'Auto-applied to children's schedules'},{i:'🎵',strong:'Spring Concert moved to March 14, 6:30 PM',small:'Auto-added to family calendar'}],type:'applied',count:2,delay:400},
-    {id:'c-cal',icon:'📅',ibg:'#EAF2EC',src:'Google Calendar · Parent',time:'8:31 AM',raw:'Business Trip — Chicago · Mon Mar 11 → Wed Mar 13 · Flight departs 6:45 AM. Hotel: Marriott River North.',findings:[{i:'✈️',strong:'Away Mon–Wed, Mar 11–13',small:'Availability updated automatically'},{i:'⚠️',strong:'Pickup conflict flagged: Tue & Thu carpool',small:'Sitter may be needed'}],type:'applied',count:1,delay:2200},
-    {id:'c-grocery',icon:'🛒',ibg:'#FDF3E3',src:'Grocery History · Whole Foods',time:'Yesterday',raw:'Oat milk ×2, Gluten-free pasta ×3, Almond flour, Coconut yogurt, Sunflower butter ×2 — $94.18',findings:[{i:'🥛',strong:'Oat milk → recurring weekly list',small:'Purchased 4 times — auto-added'},{i:'🍞',strong:'Gluten-free pattern detected',small:'Dietary profile updated'},{i:'🥜',strong:'Sunflower butter (nut-safe) — consistent',small:'Allergy-safe shopping confirmed'}],type:'applied',count:3,delay:3800},
-    {id:'c-med',icon:'💊',ibg:'#FDEAEA',src:'Pharmacy / CVS',time:'Today',raw:'Rx filled: Montelukast 5mg (new) · Prescribed by Dr. Patel · Take once daily at bedtime',findings:[{i:'⚕️',strong:'New medication: Montelukast 5mg nightly',small:'Significant health change — requires your confirmation'}],type:'confirm',count:0,delay:5400},
-  ];
-
-  cards.forEach(card=>{
-    const el=document.createElement('div');el.id=card.id;el.className='acard';
-    el.innerHTML=`
-      <div class="acard-header">
-        <div class="src-icon" style="background:${card.ibg}">${card.icon}</div>
-        <div class="src-meta"><div class="src-name">${card.src}</div><div class="src-time">${card.time}</div></div>
-        <div class="src-status ss-scan" id="st-${card.id}">Scanning</div>
-      </div>
-      <div class="acard-body">
-        <div class="raw-in"><div class="raw-lbl">Raw Input</div>${card.raw}</div>
-        <div class="a-thinking" id="th-${card.id}"><div class="t-dots"><span></span><span></span><span></span></div>Agent is reading this…</div>
-        <div class="a-finding" id="fi-${card.id}">
-          ${card.findings.map(f=>`<div class="finding-row"><span class="fi">${f.i}</span><div class="ft"><strong>${f.strong}</strong><small>${f.small}</small></div></div>`).join('')}
-          ${card.type==='applied'?`<div class="applied-banner show">✓ ${card.count} update${card.count!==1?'s':''} applied automatically</div>`:`<div class="action-row"><button class="btn-sm-c confirm" onclick="openConfirm()">Review &amp; Confirm</button><button class="btn-sm-c dismiss" onclick="dismissMed(this)">Not Now</button></div>`}
-        </div>
-      </div>`;
-    feed.appendChild(el);
-    setTimeout(()=>{document.getElementById(`st-${card.id}`).textContent='Found';document.getElementById(`st-${card.id}`).className='src-status ss-found';},card.delay);
-    setTimeout(()=>{
-      document.getElementById(`th-${card.id}`).style.display='none';
-      document.getElementById(`fi-${card.id}`).classList.add('show');
-      const st=document.getElementById(`st-${card.id}`);
-      st.textContent=card.type==='applied'?'Applied':'Review';
-      st.className=`src-status ${card.type==='applied'?'ss-applied':'ss-confirm'}`;
-      if(card.count>0)bump(card.count);
-    },card.delay+1400);
-  });
-  setTimeout(()=>addInsightCard(feed),7500);
-}
-
-function addInsightCard(feed){
-  const el=document.createElement('div');el.className='acard';
-  el.innerHTML=`<div class="acard-header"><div class="src-icon" style="background:#F0EBE3;">🧠</div><div class="src-meta"><div class="src-name">Agent Insight</div><div class="src-time">Generated now</div></div><div class="src-status ss-applied">New</div></div><div class="acard-body"><div class="a-thinking" id="ins-thinking"><div class="t-dots"><span></span><span></span><span></span></div>Generating insight…</div><div id="ins-body" style="display:none;font-size:12.5px;color:var(--stone-700);line-height:1.65;font-weight:300;"></div></div>`;
-  feed.appendChild(el);
-  generateDashInsight();
-}
-
-async function generateDashInsight(){
-  const fname=S.familyName||'the family';
-  const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'Claire (mom, travel Mon-Wed), Marcus (dad), Nora (age 11, peanut allergy), Ben (age 7, asthma)';
-  const prompt=`Family: ${fname}. Members: ${mems}. Today the agent found: school early release Friday 1pm, Spring Concert Mar 14, travel conflict with school pickup, gluten-free grocery pattern, new Ben medication pending. Write ONE practical, specific heads-up for the parents — something they might have missed. 2-3 sentences. Start with an emoji.`;
-  try{
-    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent. Be warm, specific, practical. 2-3 sentences max.',messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    const text=data.content?.map(b=>b.text||'').join('')||'';
-    document.getElementById('ins-thinking').style.display='none';
-    const ib=document.getElementById('ins-body');ib.textContent=text||defaultInsight();ib.style.display='block';
-  }catch(e){
-    document.getElementById('ins-thinking').style.display='none';
-    const ib=document.getElementById('ins-body');ib.textContent=defaultInsight();ib.style.display='block';
-  }
-}
-function defaultInsight(){return'🗓️ With travel away Mar 11–13 and Friday's early release that same week, there's a solo pickup crunch. Consider looping in your sitter now — especially for Tuesday and Thursday when you normally share the carpool.';}
-
-function openConfirm(){document.getElementById('confirmModal').classList.add('open');}
-function closeConfirm(){document.getElementById('confirmModal').classList.remove('open');}
-function confirmMed(){
-  closeConfirm();
-  const st=document.getElementById('st-c-med');if(st){st.textContent='Applied';st.className='src-status ss-applied';}
-  const ar=document.querySelector('#c-med .action-row');if(ar)ar.innerHTML='<div class="applied-banner show">✓ Medication profile updated</div>';
-  document.getElementById('medLog').textContent='Medication change — confirmed & applied';
-  bump(1);
-  // Save the update
-  saveProfile();
-}
-function dismissMed(btn){btn.closest('.action-row').style.opacity='0.3';}
-
-const famCtx={
-  members:()=>S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'Claire (mom, carpool Tue/Thu, gluten-free), Marcus (dad, away Mar 11-13), Nora (age 11, peanut allergy, soccer Sat 9am), Ben (age 7, asthma, new Montelukast), Pepper (lab, vet Dr. Hale)',
-  updates:'Friday pickup 1pm (applied), Spring Concert Mar 14 6:30pm (applied), travel conflict Mar 11-13 (flagged), oat milk recurring (applied), gluten-free pattern (applied), Montelukast 5mg pending confirmation'
-};
-
-function addMsg(role,text){
-  const chat=document.getElementById('chatMessages');
-  const d=document.createElement('div');d.className=`chat-bubble ${role}`;
-  d.innerHTML=`<div class="bubble-inner">${text}</div>`;
-  chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});
-}
-function addTyping(){
-  const chat=document.getElementById('chatMessages');
-  const d=document.createElement('div');d.id='typing';d.className='chat-bubble agent-b';
-  d.innerHTML=`<div class="bubble-inner"><div class="t-dots"><span></span><span></span><span></span></div></div>`;
-  chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});
-}
-function rmTyping(){document.getElementById('typing')?.remove();}
-
-async function askQ(el,q){el.style.display='none';switchTab('ask');await runChat(q);}
-async function sendChat(){const i=document.getElementById('chatIn');const q=i.value.trim();if(!q)return;i.value='';await runChat(q);}
-
-async function runChat(q){
-  addMsg('user',q);addTyping();
-  const sys=`You are the Folia agent for ${S.familyName||'this family'}. Family members: ${famCtx.members()}. Recent agent updates: ${famCtx.updates}. Answer questions concisely and practically in 2-4 sentences. Be warm but efficient. Use actual names and specific details.`;
-  try{
-    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
-    const data=await res.json();
-    const reply=data.content?.map(b=>b.text||'').join('')||"I'm having trouble connecting right now.";
-    rmTyping();addMsg('agent-b',reply);
-  }catch(e){
-    rmTyping();
-    const ql=q.toLowerCase();
-    let r="I'm having trouble connecting right now.";
-    if(ql.includes('sitter')||ql.includes('ben'))r="Ben needs his Albuterol inhaler (blue backpack, side pocket) and just started Montelukast 5mg at bedtime. He also has a reading tutor Fridays at 4pm. Sara Chen has a key and knows the full routine.";
-    else if(ql.includes('conflict')||ql.includes('week'))r="Next week has a real crunch: travel away Mon–Wed Mar 11–13, departing 6:45am Monday. Solo school pickups all week including the Tue/Thu carpool. Friday also has early release at 1:00 PM.";
-    else if(ql.includes('nora')||ql.includes('safe')||ql.includes('eat'))r="Nora has a severe peanut allergy — Epi-pen in the red pouch, backpack front pocket, second in the kitchen drawer. Avoid anything with peanuts or made in shared peanut facilities.";
-    else if(ql.includes('today')||ql.includes('summary')||ql.includes('update'))r="Today the agent applied 6 updates: Friday early release 1pm, Spring Concert Mar 14, travel conflict flagged, oat milk added to weekly list, gluten-free pattern confirmed, and Ben's new medication awaiting confirmation.";
-    addMsg('agent-b',r);
-  }
-}
+// Scroll reveal
+document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 </script>
 </body>
 </html>
