@@ -703,7 +703,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     <a href="#features" class="nav-link">Features</a>
     <a href="#how" class="nav-link">How It Works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
-    <button class="btn btn-dark" onclick="openSitterPanel()">Try Free →</button>
+    <button class="btn btn-dark" onclick="openWaitlist()">Join Waitlist</button>
   </div>
 </nav>
 
@@ -717,8 +717,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <h1 class="hero-h1 reveal in d1">No two families<br>are the same.<br><strong>Your app shouldn't be.</strong></h1>
       <p class="hero-body reveal in d2">Folia is built around the specific details, systems, and ever-changing information of your household — and only yours. Think of it as precision medicine, but for the people you love most.</p>
       <div class="hero-actions reveal in d3">
-        <button class="btn btn-accent-land" onclick="openSitterPanel()">Try Free — Sitter Brief →</button>
-        <button class="btn btn-outline" onclick="openApp()">See the Full App</button>
+        <button class="btn btn-accent-land" onclick="window.open('/sitter-brief.html','_blank')">Try Free — Sitter Brief →</button>
+        <button class="btn btn-outline" onclick="openWaitlist()">Join the Waitlist</button>
       </div>
     </div>
     <div class="hero-card reveal in d4">
@@ -766,7 +766,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <p class="reveal d2">Your household has a unique composition, unique rhythms, unique needs. Generic apps weren't built for you. We are.</p>
         <div class="stats reveal d3">
           <div class="stat"><div class="stat-n">1</div><div class="stat-l">App per family</div></div>
-          <div class="stat"><div class="stat-n">∞</div><div class="stat-l">Details it holds</div></div>
+          <div class="stat"><div class="stat-n" style="font-size:32px;padding-top:8px;">Infinite</div><div class="stat-l">Details it holds</div></div>
           <div class="stat"><div class="stat-n">0</div><div class="stat-l">Generic templates</div></div>
         </div>
       </div>
@@ -828,7 +828,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <div class="try-strip-sub">Fill in your family's details once. Get a beautiful printable brief and shareable link — free, forever.</div>
     </div>
     <div class="try-strip-action reveal d2">
-      <button class="try-strip-btn" onclick="openSitterPanel()">Create My Sitter Brief →</button>
+      <button class="try-strip-btn" onclick="window.open('/sitter-brief.html','_blank')">Create My Sitter Brief →</button>
       <div class="try-strip-note">Printable · Shareable · Takes 3 minutes</div>
     </div>
   </div>
@@ -869,8 +869,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     <h2 class="reveal d1">Start with something<br><em>useful right now.</em></h2>
     <p class="reveal d2">Generate your family's sitter brief in 3 minutes — free, printable, shareable. Then see what Folia can do when it runs automatically in the background.</p>
     <div class="reveal d3" style="display:flex;flex-direction:column;align-items:center;gap:14px;">
-      <button class="btn btn-accent-land" onclick="openSitterPanel()">Make My Free Sitter Brief →</button>
-      <button class="btn btn-outline" style="padding:12px 32px;" onclick="openApp()">See the Full App</button>
+      <button class="btn btn-accent-land" onclick="window.open('/sitter-brief.html','_blank')">Make My Free Sitter Brief →</button>
+      <button class="btn btn-outline" style="padding:12px 32px;" onclick="openWaitlist()">Join the Waitlist</button>
       <p class="cta-note">No account needed · Free forever</p>
     </div>
   </div>
@@ -904,7 +904,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <li><span class="pf-dash">–</span> Connected integrations</li>
           <li><span class="pf-dash">–</span> Ask Agent chat</li>
         </ul>
-        <button class="pricing-btn pricing-btn-outline" onclick="openSitterPanel()">Try Free — Sitter Brief →</button>
+        <button class="pricing-btn pricing-btn-outline" onclick="window.open('/sitter-brief.html','_blank')">Try Free — Sitter Brief →</button>
       </div>
 
       <!-- $9/mo — FEATURED -->
@@ -966,15 +966,15 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   <div class="land-modal">
     <button class="land-modal-close" onclick="closeWaitlist()">×</button>
     <div class="modal-form-land" id="landForm">
-      <div class="modal-eyebrow">Early Access</div>
+      <div class="modal-eyebrow">Join the Waitlist</div>
       <h3>Reserve your family's spot.</h3>
-      <p>We're onboarding families carefully and personally. Leave your name and email — we'll reach out when your app is ready.</p>
+      <p>We're onboarding families carefully. Leave your name and email — we'll be in touch personally.</p>
       <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleNetlifySubmit(event)" style="margin:0;">
         <input type="hidden" name="form-name" value="waitlist" />
         <p style="display:none;"><input name="bot-field" /></p>
-        <input type="text" name="name" id="wlName" placeholder="Your name" required />
-        <input type="email" name="email" id="wlEmail" placeholder="Email address" required style="margin-bottom:20px;" />
-        <button type="submit" class="btn btn-accent-land" style="width:100%;border-radius:0;">Reserve My Spot</button>
+        <input type="text" name="name" id="wlName" placeholder="Your name" required style="margin-bottom:10px;" />
+        <input type="email" name="email" id="wlEmail" placeholder="Email address" required style="margin-bottom:16px;" />
+        <button type="submit" class="btn btn-accent-land" style="width:100%;border-radius:0;">Join Waitlist →</button>
       </form>
     </div>
     <div class="modal-success-land" id="landSuccess">
@@ -1576,10 +1576,13 @@ function openSitterPanel() {
   const panel = document.getElementById('sitterPanel');
   const iframe = document.getElementById('sitterIframe');
   const sheet = document.getElementById('sitterSheet');
-  // Load the sitter brief page into the iframe
-  if (!iframe.src || iframe.src === window.location.href) {
-    iframe.src = '/sitter-brief.html';
+  if (!panel || !iframe || !sheet) {
+    // Fallback — open in new tab if panel missing
+    window.open('/sitter-brief.html', '_blank');
+    return;
   }
+  // Set src every time to ensure it loads
+  iframe.src = '/sitter-brief.html';
   sheet.classList.remove('closing');
   panel.classList.add('open');
   document.body.style.overflow = 'hidden';
