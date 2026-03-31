@@ -988,6 +988,50 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 <!-- ══════════════════════════════════════
      APP SHELL
 ══════════════════════════════════════ -->
+<!-- SITTER BRIEF PANEL -->
+<div class="sitter-panel" id="sitterPanel">
+  <div class="sitter-backdrop" onclick="closeSitterPanel()"></div>
+  <div class="sitter-sheet" id="sitterSheet">
+    <div class="sitter-handle-bar" onclick="closeSitterPanel()">
+      <div class="sitter-handle"></div>
+    </div>
+    <div class="sitter-sheet-inner">
+      <iframe id="sitterIframe" src="" style="width:100%;height:100%;border:none;min-height:85vh;" title="Folia Sitter Brief Generator"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-card">
+    <div class="auth-logo">Folia</div>
+    <div class="auth-tagline">Your family. A living record.</div>
+    <div class="auth-tab-row">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign In</div>
+      <div class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</div>
+    </div>
+    <div id="loginForm">
+      <div class="auth-field"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" /></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" /></div>
+      <button class="auth-submit" onclick="handleLogin()">Sign In →</button>
+      <div class="auth-loading" id="loginLoading"><div class="spin"></div> Signing in…</div>
+      <div class="auth-error" id="loginError"></div>
+      <div class="auth-divider">or</div>
+      <div class="auth-switch">Don't have an account? <a onclick="switchAuthTab('signup')">Create one free</a></div>
+    </div>
+    <div id="signupForm" style="display:none;">
+      <div class="auth-field"><label>Your name</label><input type="text" id="signupName" placeholder="e.g. Claire" autocomplete="given-name" /></div>
+      <div class="auth-field"><label>Email</label><input type="email" id="signupEmail" placeholder="your@email.com" autocomplete="email" /></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="signupPassword" placeholder="Choose a password (8+ chars)" autocomplete="new-password" /></div>
+      <button class="auth-submit" onclick="handleSignup()">Create My Account →</button>
+      <div class="auth-loading" id="signupLoading"><div class="spin"></div> Creating account…</div>
+      <div class="auth-error" id="signupError"></div>
+      <div class="auth-divider">or</div>
+      <div class="auth-switch">Already have an account? <a onclick="switchAuthTab('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
 <div class="app-overlay" id="appOverlay">
   <div class="phone">
     <div class="notch"></div>
