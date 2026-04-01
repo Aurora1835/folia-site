@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folia — New Reels</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stone-50:#F7F5F2;--stone-100:#EDE9E3;--stone-200:#DDD7CE;
+  --stone-500:#9A8E81;--stone-700:#5C5147;--stone-900:#2E2820;
+  --parchment:#F0EBE1;--sage-lt:#EEF2EB;--sand:#E8E0D0;
+  --accent:#7C6A52;--accent-lt:#C4B49E;--white:#FDFCFA;
+  --green:#4A7C59;--green-lt:#EAF2EC;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Jost',sans-serif;background:#1A1612;min-height:100vh;padding:32px 20px;}
+h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:600;font-style:italic;color:var(--accent-lt);text-align:center;margin-bottom:6px;}
+.subtitle{text-align:center;font-size:11px;color:var(--stone-500);letter-spacing:2px;text-transform:uppercase;margin-bottom:36px;}
+.section-head{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--stone-500);margin:40px 0 18px;text-align:center;}
+.assets-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+.asset-frame{display:flex;flex-direction:column;align-items:center;gap:7px;}
+.asset-label{font-size:10px;color:var(--stone-500);letter-spacing:1px;text-transform:uppercase;text-align:center;}
+.asset-hint{font-size:10px;color:var(--stone-700);}
+
+/* Phone frame */
+.reel-wrap{width:270px;height:480px;border-radius:16px;overflow:hidden;position:relative;box-shadow:0 8px 40px rgba(0,0,0,0.5);cursor:pointer;}
+.play-hint{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:44px;z-index:50;border-radius:16px;transition:opacity 0.4s ease;}
+.play-hint span{font-family:'Jost',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.play-hint.hidden{opacity:0;pointer-events:none;}
+
+/* ═══════════════════
+   REEL 1 — DEFAULT PARENT
+═══════════════════ */
+#reel1{width:100%;height:100%;background:#2E2820;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:40px 28px;position:relative;overflow:hidden;}
+#reel1::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,#3D3228 0%,#2E2820 60%,#1A1612 100%);}
+.r1-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-lt);margin-bottom:20px;position:relative;z-index:1;opacity:0;}
+.r1-q{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:300;font-style:italic;color:var(--white);line-height:1.3;margin-bottom:28px;position:relative;z-index:1;opacity:0;}
+.r1-item{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;font-weight:300;color:rgba(247,245,242,0.75);line-height:1.5;margin-bottom:10px;position:relative;z-index:1;opacity:0;transform:translateX(-10px);}
+.r1-dot{width:5px;height:5px;border-radius:50%;background:var(--accent-lt);flex-shrink:0;margin-top:6px;}
+.r1-answer{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:600;color:var(--accent-lt);line-height:1.3;margin-top:20px;position:relative;z-index:1;opacity:0;}
+.r1-brand{position:absolute;bottom:24px;left:0;right:0;text-align:center;font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:600;font-style:italic;color:var(--accent);z-index:1;opacity:0;}
+.r1-url{position:absolute;bottom:11px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-500);z-index:1;opacity:0;}
+
+.reel1-on .r1-tag{animation:fup .5s ease forwards .3s;}
+.reel1-on .r1-q{animation:fup .7s ease forwards .7s;}
+.reel1-on .r1-item:nth-child(3){animation:sir .5s ease forwards 1.5s;}
+.reel1-on .r1-item:nth-child(4){animation:sir .5s ease forwards 2.1s;}
+.reel1-on .r1-item:nth-child(5){animation:sir .5s ease forwards 2.7s;}
+.reel1-on .r1-item:nth-child(6){animation:sir .5s ease forwards 3.3s;}
+.reel1-on .r1-answer{animation:fup .7s ease forwards 4.1s;}
+.reel1-on .r1-brand{animation:fup .5s ease forwards 5.0s;}
+.reel1-on .r1-url{animation:fup .5s ease forwards 5.2s;}
+
+/* ═══════════════════
+   REEL 2 — THE SITTER
+═══════════════════ */
+#reel2{width:100%;height:100%;background:var(--parchment);display:flex;flex-direction:column;justify-content:center;padding:44px 28px;position:relative;overflow:hidden;}
+#reel2::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,transparent,var(--accent-lt),var(--accent),var(--accent-lt),transparent);}
+.r2-scene{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:0;position:relative;z-index:1;}
+.r2-line{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;line-height:1.25;color:var(--stone-900);position:relative;z-index:1;opacity:0;}
+.r2-line em{font-style:italic;font-weight:600;}
+.r2-rule{width:36px;height:2px;background:var(--accent);margin:20px 0;opacity:0;position:relative;z-index:1;}
+.r2-small{font-size:14px;font-weight:300;color:var(--stone-500);line-height:1.7;position:relative;z-index:1;opacity:0;}
+.r2-cta{margin-top:26px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--stone-900);position:relative;z-index:1;opacity:0;}
+.r2-brand{position:absolute;bottom:24px;right:26px;font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;font-weight:600;font-style:italic;color:var(--accent);z-index:1;opacity:0;}
+.r2-ghost{position:absolute;right:-20px;bottom:50px;font-family:'Cormorant Garamond',Georgia,serif;font-size:180px;font-weight:600;color:rgba(124,106,82,0.05);line-height:1;pointer-events:none;}
+
+.reel2-on .r2-scene{animation:fup .5s ease forwards .3s;}
+.reel2-on .r2-line:nth-child(2){animation:fup .7s ease forwards .7s;}
+.reel2-on .r2-rule{animation:fup .4s ease forwards 1.5s;}
+.reel2-on .r2-small{animation:fup .6s ease forwards 1.8s;}
+.reel2-on .r2-cta{animation:fup .5s ease forwards 2.8s;}
+.reel2-on .r2-brand{animation:fup .5s ease forwards 3.3s;}
+
+/* ═══════════════════
+   REEL 3 — THE CHAOS
+═══════════════════ */
+#reel3{width:100%;height:100%;background:var(--stone-900);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 26px;position:relative;overflow:hidden;}
+#reel3::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,#3D3228 0%,#2E2820 50%,#1A1612 100%);}
+.r3-intro{font-size:13px;font-weight:300;color:rgba(247,245,242,0.5);text-align:center;margin-bottom:20px;position:relative;z-index:1;opacity:0;letter-spacing:.5px;}
+.r3-app{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 13px;margin-bottom:7px;width:100%;position:relative;z-index:1;opacity:0;transform:translateY(8px);}
+.r3-app-name{font-size:11px;font-weight:500;color:var(--accent-lt);margin-bottom:2px;letter-spacing:.5px;}
+.r3-app-detail{font-size:12px;color:rgba(247,245,242,0.5);font-weight:300;}
+.r3-plus{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;color:var(--stone-700);text-align:center;position:relative;z-index:1;opacity:0;margin:4px 0;}
+.r3-answer{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:600;font-style:italic;color:var(--white);text-align:center;line-height:1.25;margin-top:16px;position:relative;z-index:1;opacity:0;}
+.r3-brand{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:600;font-style:italic;color:var(--accent);z-index:1;opacity:0;}
+.r3-url{position:absolute;bottom:9px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-500);z-index:1;opacity:0;}
+
+.reel3-on .r3-intro{animation:fup .5s ease forwards .3s;}
+.reel3-on .r3-app:nth-child(2){animation:fup2 .4s ease forwards .8s;}
+.reel3-on .r3-plus:nth-child(3){animation:fup .3s ease forwards 1.3s;}
+.reel3-on .r3-app:nth-child(4){animation:fup2 .4s ease forwards 1.5s;}
+.reel3-on .r3-plus:nth-child(5){animation:fup .3s ease forwards 2.0s;}
+.reel3-on .r3-app:nth-child(6){animation:fup2 .4s ease forwards 2.2s;}
+.reel3-on .r3-plus:nth-child(7){animation:fup .3s ease forwards 2.7s;}
+.reel3-on .r3-app:nth-child(8){animation:fup2 .4s ease forwards 2.9s;}
+.reel3-on .r3-answer{animation:fup .8s ease forwards 3.8s;}
+.reel3-on .r3-brand{animation:fup .5s ease forwards 4.8s;}
+.reel3-on .r3-url{animation:fup .5s ease forwards 5.0s;}
+
+@keyframes fup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fup2{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sir{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+
+/* Instructions */
+.instructions{max-width:680px;margin:48px auto 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:26px 28px;}
+.instructions h3{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:600;font-style:italic;color:var(--accent-lt);margin-bottom:14px;}
+.is{display:flex;gap:12px;margin-bottom:10px;font-size:13px;color:var(--stone-400);line-height:1.6;}
+.in{font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;font-weight:600;color:var(--accent);flex-shrink:0;line-height:1.3;}
+.sb{background:rgba(0,0,0,0.3);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 16px;margin-top:18px;}
+.sb h4{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.sl{font-size:10px;color:var(--stone-500);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;margin-top:12px;}
+.sp{font-size:13px;color:var(--stone-300);line-height:1.75;font-style:italic;}
+</style>
+</head>
+<body>
+
+<h1>Folia</h1>
+<div class="subtitle">New Reels · No Health Framing</div>
+
+<div class="section-head">Tap each reel to preview · Screen-record for Instagram</div>
+<div class="assets-row">
+
+  <!-- REEL 1: DEFAULT PARENT -->
+  <div class="asset-frame">
+    <div class="asset-label">Reel 1 — The Default Parent</div>
+    <div class="reel-wrap" id="wrap1" onclick="play('reel1','reel1-on','wrap1')">
+      <div class="play-hint">▶<span>Tap to play</span></div>
+      <div id="reel1">
+        <div class="r1-tag">Every household has one</div>
+        <div class="r1-q">There's always one parent<br>who knows everything.</div>
+        <div class="r1-item"><div class="r1-dot"></div>The exact bus stop and what to do if it's late</div>
+        <div class="r1-item"><div class="r1-dot"></div>What the kids can and can't eat</div>
+        <div class="r1-item"><div class="r1-dot"></div>The sitter's number, the doctor's number, the neighbor's number</div>
+        <div class="r1-item"><div class="r1-dot"></div>Every password, every code, every routine</div>
+        <div class="r1-answer">Folia means that information<br>doesn't only live in<br>one person's head.</div>
+        <div class="r1-brand">Folia</div>
+        <div class="r1-url">withfolia.com</div>
+      </div>
+    </div>
+    <div class="asset-hint">Tap → overlay disappears → screen-record</div>
+  </div>
+
+  <!-- REEL 2: THE SITTER -->
+  <div class="asset-frame">
+    <div class="asset-label">Reel 2 — The Sitter Situation</div>
+    <div class="reel-wrap" id="wrap2" onclick="play('reel2','reel2-on','wrap2')">
+      <div class="play-hint">▶<span>Tap to play</span></div>
+      <div id="reel2">
+        <div class="r2-ghost">☞</div>
+        <div class="r2-scene">Every single time</div>
+        <div class="r2-line" style="font-size:30px;">Every time we get a new sitter, I spend 20 minutes explaining my family <em>from scratch.</em></div>
+        <div class="r2-rule"></div>
+        <div class="r2-small">I built a tool that does it in three minutes — free, printable, shareable. And an app that keeps it current automatically.</div>
+        <div class="r2-cta">Free sitter brief → withfolia.com</div>
+        <div class="r2-brand">Folia</div>
+      </div>
+    </div>
+    <div class="asset-hint">Tap → overlay disappears → screen-record</div>
+  </div>
+
+  <!-- REEL 3: THE CHAOS -->
+  <div class="asset-frame">
+    <div class="asset-label">Reel 3 — The Chaos</div>
+    <div class="reel-wrap" id="wrap3" onclick="play('reel3','reel3-on','wrap3')">
+      <div class="play-hint">▶<span>Tap to play</span></div>
+      <div id="reel3">
+        <div class="r3-intro">My family's info currently lives in:</div>
+        <div class="r3-app"><div class="r3-app-name">Notes app</div><div class="r3-app-detail">3 different docs, none up to date</div></div>
+        <div class="r3-plus">+</div>
+        <div class="r3-app"><div class="r3-app-name">Group text thread</div><div class="r3-app-detail">Scroll up 400 messages to find it</div></div>
+        <div class="r3-plus">+</div>
+        <div class="r3-app"><div class="r3-app-name">Sticky note on the fridge</div><div class="r3-app-detail">Half of it has fallen off</div></div>
+        <div class="r3-plus">+</div>
+        <div class="r3-app"><div class="r3-app-name">My brain</div><div class="r3-app-detail">Not always available</div></div>
+        <div class="r3-answer">I fixed this.<br>withfolia.com</div>
+        <div class="r3-brand">Folia</div>
+        <div class="r3-url">free sitter brief · full app coming soon</div>
+      </div>
+    </div>
+    <div class="asset-hint">Tap → overlay disappears → screen-record</div>
+  </div>
+
+</div>
+
+<!-- SCRIPTS & INSTRUCTIONS -->
+<div class="instructions">
+  <h3>Voiceover scripts</h3>
+
+  <div class="sl">Reel 1 — The Default Parent (15–20 sec)</div>
+  <div class="sp">"In every household there's one person who knows everything. The bus stop. What the kids can and can't eat. Every password, every code, every routine. And if that person isn't available — nobody knows. I built Folia so that information doesn't only live in one person's head."</div>
+
+  <div class="sl">Reel 2 — The Sitter Situation (15 sec)</div>
+  <div class="sp">"Every single time we get a new sitter I spend twenty minutes explaining my family from scratch. The same information, every time. I built a free tool that does it in three minutes — you fill it in once, you get a printable brief and a shareable link. Withfolia.com."</div>
+
+  <div class="sl">Reel 3 — The Chaos (20 sec)</div>
+  <div class="sp">"My family's information lives in three different notes, a group text thread you'd have to scroll back 400 messages to find, a sticky note on the fridge that's half fallen off, and my brain — which is not always available. I built something about it. Withfolia.com."</div>
+
+  <div class="sb">
+    <h4>Caption template (works for all three)</h4>
+    <div class="sp">"Built something for this. Free sitter brief tool at the link in bio — takes 3 minutes, no account needed."</div>
+  </div>
+</div>
+
+<script>
+function play(id, cls, wrapId) {
+  const wrap = document.getElementById(wrapId);
+  const hint = wrap.querySelector('.play-hint');
+  hint.classList.add('hidden');
+  const el = document.getElementById(id);
+  el.classList.remove(cls);
+  void el.offsetWidth;
+  el.classList.add(cls);
+  setTimeout(() => hint.classList.remove('hidden'), 6500);
+}
+</script>
+</body>
+</html>
