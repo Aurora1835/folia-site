@@ -448,14 +448,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.6;}
     </div>
 
     <div class="share-link-box" id="shareLinkBox">
-      <div class="share-link-label">Share this link with your sitter</div>
+      <div class="share-link-label">✓ Your brief is ready — bookmark this link or share it with your sitter</div>
       <div class="share-link-url">
         <input type="text" id="shareLinkInput" readonly />
         <button class="copy-btn" id="copyBtn" onclick="copyLink()">Copy</button>
       </div>
     </div>
 
-    <div class="folia-nudge">
+    <div style="background:var(--sage-lt);border:1px solid rgba(107,127,94,0.2);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--stone-700);line-height:1.6;">
+  <strong style="display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Save as PDF</strong>
+  On your phone or computer, tap <strong>Print</strong> below → choose <strong>"Save as PDF"</strong> as the printer. That's your shareable PDF — send it to any sitter any time.
+</div>
+<div class="folia-nudge">
       <div class="fn-text">
         <div class="fn-title">Want this to update itself automatically?</div>
         <div class="fn-sub">Folia's agent watches your email, calendar, and more — so your sitter brief is always current without you touching it.</div>
@@ -524,9 +528,13 @@ const progressPcts = [20, 35, 50, 65, 82, 100];
 
 // ── INIT ──
 window.addEventListener('load', () => {
-  addChild(); // Start with one child
   document.getElementById('briefDate').textContent = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   document.getElementById('briefFooterDate').textContent = new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+  // If URL has a brief hash, load from it (sitter viewing shared link)
+  if (!loadFromHash()) {
+    addChild(); // Normal flow — start with one child
+  }
 });
 
 // ── NAVIGATION ──
@@ -655,7 +663,14 @@ async function submitGate() {
   if (!name) { document.getElementById('gate-name').focus(); return; }
   if (!email || !email.includes('@')) { document.getElementById('gate-email').focus(); return; }
 
-  // Submit to Netlify Forms
+  // Build brief and share link first so we can include link in form submission
+  buildBrief(name);
+  const shareUrl = buildShareLink();
+
+  // Update URL hash so page is bookmarkable
+  try { window.history.replaceState(null, '', shareUrl); } catch(e) {}
+
+  // Submit to Netlify Forms — include share link so Zapier can pass it to Mailchimp
   try {
     await fetch('/', {
       method: 'POST',
@@ -664,20 +679,20 @@ async function submitGate() {
         'form-name': 'sitter-brief',
         name,
         email,
+        share_link: shareUrl,
         source: 'sitter-brief-generator'
       }).toString()
     });
   } catch(e) { /* fail silently */ }
 
-  // Build and show brief
-  buildBrief(name);
+  // Show brief
   document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
   document.getElementById('step-brief').style.display = 'block';
   document.getElementById('progressFill').style.width = '100%';
   window.scrollTo({top: 0, behavior: 'smooth'});
 
-  // Build shareable link (encodes data in URL hash)
-  buildShareLink();
+  // Auto-show share link box
+  document.getElementById('shareLinkBox').classList.add('show');
 }
 
 // ── BUILD BRIEF ──
@@ -766,20 +781,144 @@ function buildBrief(parentName) {
 
 // ── SHARE LINK ──
 function buildShareLink() {
-  // Encode key data into URL hash for sharing
+  // Encode ALL form data into URL hash
   const data = {
-    p1n: document.getElementById('p1name')?.value,
-    p1p: document.getElementById('p1phone')?.value,
+    // Parents
+    p1n: document.getElementById('p1name')?.value || '',
+    p1p: document.getElementById('p1phone')?.value || '',
+    p1l: document.getElementById('p1location')?.value || '',
+    p2n: document.getElementById('p2name')?.value || '',
+    p2p: document.getElementById('p2phone')?.value || '',
+    p2l: document.getElementById('p2location')?.value || '',
+    b1n: document.getElementById('b1name')?.value || '',
+    b1p: document.getElementById('b1phone')?.value || '',
+    b1r: document.getElementById('b1relation')?.value || '',
+    drn: document.getElementById('drname')?.value || '',
+    drp: document.getElementById('drphone')?.value || '',
+    drt: document.getElementById('drnotes')?.value || '',
+    // Schedule
+    sa:  document.getElementById('sched-arrival')?.value || '',
+    sr:  document.getElementById('sched-return')?.value || '',
+    sp:  document.getElementById('sched-pickup')?.value || '',
+    sd:  document.getElementById('sched-dinner')?.value || '',
+    sb:  document.getElementById('sched-bedtime')?.value || '',
+    // House
+    hr:  document.getElementById('house-rules')?.value || '',
+    hs:  document.getElementById('house-screens')?.value || '',
+    hwn: document.getElementById('house-wifi-name')?.value || '',
+    hwp: document.getElementById('house-wifi-pass')?.value || '',
+    hd:  document.getElementById('house-door')?.value || '',
+    ha:  document.getElementById('house-alarm')?.value || '',
+    hn:  document.getElementById('house-notes')?.value || '',
+    // Children — full details
     children: children.map(id => ({
-      name: document.getElementById(`c${id}-name`)?.value,
-      age: document.getElementById(`c${id}-age`)?.value,
-      allergies: document.getElementById(`c${id}-allergies`)?.value,
-      meds: document.getElementById(`c${id}-meds`)?.value,
+      name: document.getElementById(`c${id}-name`)?.value || '',
+      age:  document.getElementById(`c${id}-age`)?.value || '',
+      notes: document.getElementById(`c${id}-notes`)?.value || '',
+      allergies: document.getElementById(`c${id}-allergies`)?.value || '',
+      meds: document.getElementById(`c${id}-meds`)?.value || '',
+      epipen: document.getElementById(`c${id}-epipen`)?.value || '',
+      conditions: document.getElementById(`c${id}-conditions`)?.value || '',
     }))
   };
-  const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
-  const url = `${window.location.origin}${window.location.pathname}#brief=${encoded}`;
-  document.getElementById('shareLinkInput').value = url;
+  try {
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    const url = `${window.location.origin}${window.location.pathname}#brief=${encoded}`;
+    document.getElementById('shareLinkInput').value = url;
+    return url;
+  } catch(e) {
+    console.error('Share link error:', e);
+    return window.location.href;
+  }
+}
+
+// ── LOAD FROM SHARE LINK ──
+// If page loads with #brief= in URL, decode and render the brief directly
+function loadFromHash() {
+  const hash = window.location.hash;
+  if (!hash.startsWith('#brief=')) return false;
+  try {
+    const encoded = hash.replace('#brief=', '');
+    const data = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+
+    // Show brief directly — skip the form
+    buildBriefFromData(data);
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-brief').style.display = 'block';
+    document.getElementById('progressFill').style.width = '100%';
+
+    // Set share link to current URL
+    document.getElementById('shareLinkInput').value = window.location.href;
+
+    // Auto-show share link box
+    document.getElementById('shareLinkBox').classList.add('show');
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+// Build brief from decoded data object (for share link loads)
+function buildBriefFromData(d) {
+  const lastName = d.p1n ? d.p1n.split(' ').slice(-1)[0] : '';
+  const familyLabel = lastName ? `The ${lastName} Family` : 'Your Family';
+  document.getElementById('briefFamilyName').textContent = familyLabel + ' · Sitter Brief';
+
+  // Children
+  const cc = document.getElementById('brief-children-content');
+  cc.innerHTML = '';
+  (d.children || []).forEach(c => {
+    if (!c.name && !c.age) return;
+    const div = document.createElement('div');
+    div.className = 'child-brief';
+    div.innerHTML = `
+      <div class="cb-name">${c.name || 'Child'}${c.age ? ' · Age ' + c.age : ''}</div>
+      ${c.notes ? `<div class="cb-item"><span class="cb-label">Notes:</span>${c.notes}</div>` : ''}
+      ${c.allergies ? `<div class="cb-item"><span class="cb-label">Allergies:</span><span class="allergy-pill">⚠ ${c.allergies}</span></div>` : ''}
+      ${c.meds ? `<div class="cb-item"><span class="cb-label">Medications:</span>${c.meds}</div>` : ''}
+      ${c.epipen ? `<div class="cb-item"><span class="cb-label">Emergency meds:</span>${c.epipen}</div>` : ''}
+      ${c.conditions ? `<div class="cb-item"><span class="cb-label">Medical:</span>${c.conditions}</div>` : ''}
+    `;
+    cc.appendChild(div);
+  });
+
+  // Contacts
+  const contacts = [
+    { role:'Parent / Guardian', name:d.p1n, phone:d.p1p, extra:d.p1l },
+    { role:'Parent / Guardian', name:d.p2n, phone:d.p2p, extra:d.p2l },
+    { role:'Backup Contact',    name:d.b1n, phone:d.b1p, extra:d.b1r },
+    { role:'Doctor / Pediatrician', name:d.drn, phone:d.drp, extra:d.drt },
+  ].filter(c => c.name || c.phone);
+  const ctc = document.getElementById('brief-contacts-content');
+  ctc.innerHTML = '';
+  contacts.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'cb-contact';
+    div.innerHTML = `<div class="cbc-role">${c.role}</div><div class="cbc-name">${c.name||'—'}</div><div class="cbc-phone">${c.phone||''}${c.extra?' · '+c.extra:''}</div>`;
+    ctc.appendChild(div);
+  });
+
+  // Schedule
+  const sc = document.getElementById('brief-schedule-content');
+  const rows = [
+    {label:'Sitter arrives', val:d.sa},
+    {label:'We return',      val:d.sr},
+    {label:'Pickups',        val:d.sp},
+    {label:'Dinner',         val:d.sd},
+    {label:'Bedtime',        val:d.sb},
+  ].filter(r => r.val);
+  sc.innerHTML = rows.map(r => `<div class="schedule-row"><span class="sr-label">${r.label}</span><span>${r.val}</span></div>`).join('');
+
+  // House
+  const hc = document.getElementById('brief-house-content');
+  const items = [];
+  if (d.hwn || d.hwp) items.push(`Wifi: ${d.hwn||''}${d.hwp?' · Password: '+d.hwp:''}`);
+  if (d.hd)  items.push(`Entry: ${d.hd}`);
+  if (d.ha)  items.push(`Alarm: ${d.ha}`);
+  if (d.hs)  items.push(`Screens: ${d.hs}`);
+  const ruleLines = d.hr ? d.hr.split('\n').filter(Boolean) : [];
+  const allItems = [...items, ...ruleLines, ...(d.hn ? [d.hn] : [])];
+  hc.innerHTML = `<div class="rules-list">${allItems.map(r=>`<div class="rule-item"><div class="rule-dot"></div><span>${r}</span></div>`).join('')}</div>`;
 }
 
 function toggleShareLink() {
@@ -807,6 +946,7 @@ function editBrief() {
 <form name="sitter-brief" netlify netlify-honeypot="bot-field" hidden>
   <input name="name" />
   <input name="email" />
+  <input name="share_link" />
   <input name="source" />
 </form>
 
