@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Folia — Your family. A living record.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ════════════════════════════════════════
@@ -47,7 +46,6 @@ html { scroll-behavior: smooth; font-size: 16px; }
    LANDING PAGE BODY
 ════════════════════════════════════════ */
 body {
-  color: #2E2820;
   font-family: 'Jost', sans-serif;
   background: var(--stone-50);
   color: var(--stone-900);
@@ -64,12 +62,10 @@ body::after {
 
 /* ── LANDING UTILITIES ── */
 .container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
-.lbl { font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:10.5px; font-weight:500; letter-spacing:3.5px; text-transform:uppercase; color:var(--taupe); }
+.lbl { font-family:'Jost',sans-serif; font-size:10.5px; font-weight:500; letter-spacing:3.5px; text-transform:uppercase; color:var(--taupe); }
 
-.reveal { opacity:1; transform:none; transition:opacity 0.9s ease,transform 0.9s ease; }
+.reveal { opacity:0; transform:translateY(22px); transition:opacity 0.9s ease,transform 0.9s ease; }
 .reveal.in { opacity:1; transform:none; }
-.reveal.visible { opacity:1; transform:none; }
-.reveal.d1,.reveal.d2,.reveal.d3,.reveal.d4 { opacity:1; transform:none; }
 .reveal.d1 { transition-delay:0.12s; }
 .reveal.d2 { transition-delay:0.24s; }
 .reveal.d3 { transition-delay:0.36s; }
@@ -84,12 +80,12 @@ nav {
   backdrop-filter:blur(14px);
   border-bottom:1px solid var(--stone-200);
 }
-.logo { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:24px; font-weight:600; font-style:italic; color:var(--stone-900); letter-spacing:0.5px; }
+.logo { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; font-style:italic; color:var(--stone-900); letter-spacing:0.5px; }
 .logo em { font-style:normal; color:var(--accent); }
 .nav-right { display:flex; align-items:center; gap:32px; }
 .nav-link { font-size:13px; color:var(--stone-500); text-decoration:none; letter-spacing:0.4px; transition:color 0.2s; }
 .nav-link:hover { color:var(--stone-900); }
-.btn { font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:13px; font-weight:500; letter-spacing:1.2px; text-transform:uppercase; padding:11px 26px; border-radius:2px; border:none; cursor:pointer; transition:all 0.22s; display:inline-block; text-decoration:none; }
+.btn { font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:1.2px; text-transform:uppercase; padding:11px 26px; border-radius:2px; border:none; cursor:pointer; transition:all 0.22s; display:inline-block; text-decoration:none; }
 .btn-dark { background:var(--stone-900); color:var(--stone-50); }
 .btn-dark:hover { background:var(--accent); }
 .btn-outline { background:transparent; color:var(--stone-900); border:1px solid var(--stone-300); }
@@ -104,7 +100,7 @@ nav {
 .hero-eyebrow { display:flex; align-items:center; gap:14px; margin-bottom:28px; }
 .hero-eyebrow .lbl { color:var(--accent); }
 .eyebrow-line { width:40px; height:1px; background:var(--accent); }
-.hero-h1 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:clamp(52px,6.5vw,86px); font-weight:300; line-height:1.08; letter-spacing:-1px; color:var(--stone-900); margin-bottom:28px; }
+.hero-h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,6.5vw,86px); font-weight:300; line-height:1.08; letter-spacing:-1px; color:var(--stone-900); margin-bottom:28px; }
 .hero-h1 strong { font-weight:600; font-style:italic; }
 .hero-body { font-size:17px; font-weight:300; line-height:1.8; color:var(--stone-500); max-width:480px; margin-bottom:44px; }
 .hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
@@ -113,7 +109,7 @@ nav {
 .card-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--taupe); margin-bottom:22px; padding-bottom:14px; border-bottom:1px solid var(--stone-100); }
 .member-row { display:flex; align-items:flex-start; gap:13px; padding:13px 0; border-bottom:1px solid var(--stone-100); }
 .member-row:last-child { border-bottom:none; }
-.member-initial { width:34px; height:34px; border-radius:50%; background:var(--sand); display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:16px; font-weight:600; color:var(--accent); flex-shrink:0; }
+.member-initial { width:34px; height:34px; border-radius:50%; background:var(--sand); display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; color:var(--accent); flex-shrink:0; }
 .member-name { font-size:13.5px; font-weight:500; color:var(--stone-900); margin-bottom:4px; }
 .member-detail { font-size:12px; color:var(--stone-500); line-height:1.5; }
 .card-footer { margin-top:20px; padding-top:16px; border-top:1px solid var(--stone-100); font-size:11px; color:var(--taupe); letter-spacing:1.5px; text-align:center; text-transform:uppercase; }
@@ -129,12 +125,12 @@ nav {
 .precision { padding:120px 0; background:linear-gradient(180deg, var(--stone-50) 0%, var(--sage-lt) 100%); }
 .precision-grid { display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:start; }
 .precision-text .lbl { margin-bottom:18px; }
-.precision-text h2 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:clamp(36px,4vw,54px); font-weight:300; line-height:1.15; letter-spacing:-0.5px; margin-bottom:26px; }
+.precision-text h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,4vw,54px); font-weight:300; line-height:1.15; letter-spacing:-0.5px; margin-bottom:26px; }
 .precision-text h2 em { font-style:italic; font-weight:400; }
 .precision-text p { font-size:16px; font-weight:300; line-height:1.85; color:var(--stone-500); margin-bottom:18px; }
 .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--stone-200); border:1px solid var(--stone-200); margin-top:48px; }
 .stat { background:var(--parchment); padding:28px 20px; text-align:center; }
-.stat-n { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:44px; font-weight:600; color:var(--accent); line-height:1; margin-bottom:6px; }
+.stat-n { font-family:'Cormorant Garamond',serif; font-size:44px; font-weight:600; color:var(--accent); line-height:1; margin-bottom:6px; }
 .stat-l { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-500); }
 .precision-right { padding-top:20px; }
 .prec-block { border-left:2px solid var(--stone-200); padding:0 0 40px 28px; position:relative; transition:border-color 0.3s; }
@@ -142,33 +138,33 @@ nav {
 .prec-block:hover { border-color:var(--accent); }
 .prec-block::before { content:''; position:absolute; left:-5px; top:4px; width:8px; height:8px; border-radius:50%; background:var(--stone-200); border:2px solid var(--stone-50); transition:background 0.3s; }
 .prec-block:hover::before { background:var(--accent); }
-.prec-block h3 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:22px; font-weight:600; margin-bottom:8px; color:var(--stone-900); }
+.prec-block h3 { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; margin-bottom:8px; color:var(--stone-900); }
 .prec-block p { font-size:15px; font-weight:300; color:var(--stone-500); line-height:1.75; }
 
 /* ── FEATURES ── */
 .features { padding:120px 0; background:var(--sage-lt); border-top:1px solid var(--sage-mid); border-bottom:1px solid var(--sage-mid); }
 .features-head { max-width:580px; margin-bottom:72px; }
 .features-head .lbl { margin-bottom:18px; }
-.features-head h2 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:clamp(36px,4vw,52px); font-weight:300; line-height:1.15; letter-spacing:-0.5px; margin-bottom:18px; }
+.features-head h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,4vw,52px); font-weight:300; line-height:1.15; letter-spacing:-0.5px; margin-bottom:18px; }
 .features-head p { font-size:16px; font-weight:300; color:var(--stone-500); line-height:1.8; }
 .feat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--stone-200); border:1px solid var(--stone-200); }
 .feat { background:var(--white); padding:44px 36px; transition:background 0.25s; border-bottom:2px solid transparent; }
 .feat:hover { background:var(--sage-lt); border-bottom-color:var(--accent); }
-.feat-glyph { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:32px; color:var(--accent); margin-bottom:20px; font-style:italic; font-weight:300; }
-.feat h3 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:21px; font-weight:600; margin-bottom:12px; }
+.feat-glyph { font-family:'Cormorant Garamond',serif; font-size:32px; color:var(--accent); margin-bottom:20px; font-style:italic; font-weight:300; }
+.feat h3 { font-family:'Cormorant Garamond',serif; font-size:21px; font-weight:600; margin-bottom:12px; }
 .feat p { font-size:14.5px; font-weight:300; color:var(--stone-500); line-height:1.75; }
 
 /* ── HOW ── */
 .how { padding:120px 0; background:var(--parchment); }
 .how-head { text-align:center; max-width:560px; margin:0 auto 80px; }
 .how-head .lbl { margin-bottom:18px; }
-.how-head h2 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:clamp(36px,4vw,52px); font-weight:300; line-height:1.12; letter-spacing:-0.5px; }
+.how-head h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,4vw,52px); font-weight:300; line-height:1.12; letter-spacing:-0.5px; }
 .steps-land { display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--stone-200); background:var(--stone-200); }
 .step-land { background:var(--parchment); padding:48px 32px; transition:background 0.25s; }
 .step-land:hover { background:var(--sage-lt); }
-.step-num { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:56px; font-weight:300; color:var(--stone-200); line-height:1; margin-bottom:20px; transition:color 0.25s; }
+.step-num { font-family:'Cormorant Garamond',serif; font-size:56px; font-weight:300; color:var(--stone-200); line-height:1; margin-bottom:20px; transition:color 0.25s; }
 .step-land:hover .step-num { color:var(--accent-lt); }
-.step-land h3 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:20px; font-weight:600; margin-bottom:12px; }
+.step-land h3 { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin-bottom:12px; }
 .step-land p { font-size:14px; font-weight:300; color:var(--stone-500); line-height:1.75; }
 
 /* ── PULLQUOTE ── */
@@ -176,14 +172,14 @@ nav {
 .pullquote::before,.pullquote::after { content:''; position:absolute; left:50%; transform:translateX(-50%); width:1px; background:var(--stone-700); }
 .pullquote::before { top:0; height:40px; }
 .pullquote::after  { bottom:0; height:40px; }
-.pullquote blockquote { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:clamp(26px,4vw,48px); font-weight:300; font-style:italic; color:var(--stone-100); line-height:1.45; max-width:820px; margin:0 auto 28px; }
+.pullquote blockquote { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,4vw,48px); font-weight:300; font-style:italic; color:var(--stone-100); line-height:1.45; max-width:820px; margin:0 auto 28px; }
 .pullquote cite { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--taupe); font-style:normal; }
 
 /* ── WHY ── */
 .why { padding:120px 0; background:linear-gradient(160deg, var(--sage-lt) 0%, var(--parchment) 100%); border-top:1px solid var(--stone-200); }
 .why-grid { display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:start; }
 .why-left .lbl { margin-bottom:18px; }
-.why-left h2 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:clamp(34px,3.8vw,50px); font-weight:300; line-height:1.15; letter-spacing:-0.5px; margin-bottom:24px; }
+.why-left h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,3.8vw,50px); font-weight:300; line-height:1.15; letter-spacing:-0.5px; margin-bottom:24px; }
 .why-left p { font-size:16px; font-weight:300; line-height:1.85; color:var(--stone-500); margin-bottom:18px; }
 .checklist { list-style:none; margin-top:36px; display:flex; flex-direction:column; gap:14px; }
 .checklist li { display:flex; align-items:flex-start; gap:14px; font-size:15px; font-weight:300; color:var(--stone-700); line-height:1.55; }
@@ -199,173 +195,39 @@ nav {
 .final-cta { padding:140px 40px; background:linear-gradient(160deg, var(--parchment) 0%, var(--sage-lt) 100%); text-align:center; border-top:1px solid var(--sage-mid); }
 .final-cta::before { content:'◆'; display:block; font-size:14px; color:var(--stone-300); margin-bottom:40px; }
 .final-cta .lbl { margin-bottom:20px; }
-.final-cta h2 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:clamp(40px,5.5vw,72px); font-weight:300; line-height:1.1; letter-spacing:-1px; margin-bottom:22px; }
+.final-cta h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(40px,5.5vw,72px); font-weight:300; line-height:1.1; letter-spacing:-1px; margin-bottom:22px; }
 .final-cta h2 em { font-style:italic; }
 .final-cta p { font-size:17px; font-weight:300; color:var(--stone-500); line-height:1.75; max-width:480px; margin:0 auto 48px; }
 .cta-note { margin-top:18px; font-size:12px; color:var(--stone-300); letter-spacing:1px; }
 
 /* ── FOOTER ── */
 footer { padding:30px 40px; border-top:1px solid var(--stone-200); display:flex; justify-content:space-between; align-items:center; background:var(--parchment); }
-.footer-logo { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:20px; font-weight:600; font-style:italic; color:var(--stone-500); letter-spacing:0.5px; }
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; font-style:italic; color:var(--stone-500); letter-spacing:0.5px; }
 footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 
-/* ── SITTER BRIEF PANEL ── */
-.sitter-panel {
-  position:fixed; inset:0;
-  z-index:850;
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-}
-.sitter-panel.open { display:flex; }
-
-.sitter-backdrop {
-  position:absolute; inset:0;
-  background:rgba(46,40,32,0.65);
-  backdrop-filter:blur(6px);
-  cursor:pointer;
-}
-
-.sitter-sheet {
-  position:relative; z-index:1;
-  background:var(--stone-50);
-  width:100%; max-width:780px;
-  height:92vh;
-  border-radius:20px 20px 0 0;
-  overflow:hidden;
-  display:flex; flex-direction:column;
-  animation:sheetSlideUp 0.45s cubic-bezier(0.34,1.1,0.64,1) forwards;
-  box-shadow:0 -8px 60px rgba(0,0,0,0.3);
-}
-@keyframes sheetSlideUp {
-  from { transform:translateY(100%); opacity:0; }
-  to   { transform:translateY(0); opacity:1; }
-}
-.sitter-sheet.closing {
-  animation:sheetSlideDown 0.3s ease forwards;
-}
-@keyframes sheetSlideDown {
-  from { transform:translateY(0); opacity:1; }
-  to   { transform:translateY(100%); opacity:0; }
-}
-
-.sitter-handle-bar {
-  flex-shrink:0;
-  padding:14px 0 8px;
-  display:flex; align-items:center; justify-content:center;
-  background:var(--stone-50);
-  cursor:pointer;
-}
-.sitter-handle {
-  width:36px; height:4px;
-  background:var(--stone-200);
-  border-radius:2px;
-}
-
-.sitter-sheet-inner {
-  flex:1; overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-}
-.sitter-sheet-inner::-webkit-scrollbar { display:none; }
-
-/* ── AUTH OVERLAY ── */
-.auth-overlay { position:fixed; inset:0; background:rgba(46,40,32,0.6); backdrop-filter:blur(6px); z-index:2000; display:none; align-items:center; justify-content:center; padding:24px; }
-.auth-overlay.open { display:flex; }
-.auth-card { background:var(--white); border:1px solid var(--stone-200); padding:48px 40px; max-width:420px; width:100%; position:relative; animation:mIn 0.35s cubic-bezier(0.34,1.4,0.64,1) forwards; }
-.auth-logo { font-family:'Cormorant Garamond',Georgia,serif; font-size:32px; font-weight:600; font-style:italic; color:var(--accent); text-align:center; margin-bottom:6px; }
-.auth-tagline { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--stone-400); text-align:center; margin-bottom:28px; }
-.auth-tab-row { display:flex; border-bottom:1px solid var(--stone-200); margin-bottom:24px; }
-.auth-tab { flex:1; padding:10px; text-align:center; font-size:13px; font-weight:500; color:var(--stone-400); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; }
-.auth-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
-.auth-field { margin-bottom:14px; }
-.auth-field label { display:block; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--stone-500); margin-bottom:7px; }
-.auth-field input { width:100%; padding:13px 15px; border:1px solid var(--stone-200); background:var(--stone-50); font-family:'Jost',sans-serif; font-size:14px; color:var(--stone-900); outline:none; border-radius:0; transition:border-color 0.2s; }
-.auth-field input:focus { border-color:var(--accent); }
-.auth-submit { width:100%; padding:14px; background:var(--stone-900); color:var(--white); border:none; font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:background 0.2s; margin-top:8px; }
-.auth-submit:hover { background:var(--accent); }
-.auth-error { font-size:13px; color:var(--red); margin-top:10px; text-align:center; min-height:18px; }
-.auth-loading { display:none; align-items:center; justify-content:center; gap:8px; padding:10px; font-size:13px; color:var(--stone-500); }
-.auth-loading.show { display:flex; }
-.spin { width:16px; height:16px; border:2px solid var(--stone-200); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-.auth-divider { text-align:center; font-size:12px; color:var(--stone-300); margin:14px 0; }
-.auth-switch { text-align:center; font-size:13px; color:var(--stone-500); margin-top:16px; }
-.auth-switch a { color:var(--accent); cursor:pointer; text-decoration:underline; }
-.save-indicator { position:absolute; top:58px; left:16px; z-index:300; font-size:10px; letter-spacing:1px; color:rgba(255,255,255,0.4); display:flex; align-items:center; gap:5px; opacity:0; transition:opacity 0.3s; }
-.save-indicator.show { opacity:1; }
-.save-dot { width:5px; height:5px; border-radius:50%; background:#6FCF97; }
-
-/* ── TRY IT STRIP ── */
-.try-strip {
-  background:var(--parchment);
-  border-top:1px solid var(--stone-200);
-  border-bottom:1px solid var(--stone-200);
-  padding:48px 40px;
-}
-.try-strip-inner {
-  max-width:1080px; margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between;
-  gap:40px; flex-wrap:wrap;
-}
-.try-strip-text { flex:1; min-width:260px; }
-.try-strip-eyebrow {
-  font-size:10px; letter-spacing:3px; text-transform:uppercase;
-  color:var(--accent); margin-bottom:10px;
-}
-.try-strip-title {
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:clamp(26px,3.5vw,38px); font-weight:300; line-height:1.2;
-  color:var(--stone-900); margin-bottom:10px;
-}
-.try-strip-title em { font-style:italic; font-weight:600; }
-.try-strip-sub {
-  font-size:15px; font-weight:300; color:var(--stone-500); line-height:1.65;
-}
-.try-strip-action { flex-shrink:0; text-align:center; }
-.try-strip-btn {
-  display:inline-block; padding:16px 36px;
-  background:var(--accent); color:var(--white);
-  border:none; border-radius:2px; cursor:pointer;
-  font-family:'Jost',-apple-system,sans-serif;
-  font-size:12.5px; font-weight:500; letter-spacing:2px;
-  text-transform:uppercase; transition:background 0.2s;
-  white-space:nowrap;
-}
-.try-strip-btn:hover { background:var(--stone-700); }
-.try-strip-note {
-  font-size:11px; color:var(--stone-400); margin-top:9px;
-  letter-spacing:0.5px;
-}
-@media(max-width:700px) {
-  .try-strip { padding:36px 24px; }
-  .try-strip-inner { flex-direction:column; gap:24px; }
-  .try-strip-action { width:100%; }
-  .try-strip-btn { width:100%; }
-}
-
 /* ── LANDING MODAL (waitlist) ── */
-.land-overlay { position:fixed; inset:0; background:rgba(46,40,32,0.6); backdrop-filter:blur(6px); z-index:2500; display:none; place-items:center; padding:24px; }
+.land-overlay { position:fixed; inset:0; background:rgba(46,40,32,0.6); backdrop-filter:blur(6px); z-index:800; display:none; place-items:center; padding:24px; }
 .land-overlay.open { display:grid; }
 .land-modal { background:var(--white); border:1px solid var(--stone-200); padding:52px 48px; max-width:440px; width:100%; position:relative; animation:mIn 0.35s cubic-bezier(0.34,1.4,0.64,1) forwards; }
 @keyframes mIn { from{opacity:0;transform:translateY(20px) scale(0.97)} to{opacity:1;transform:none} }
 .land-modal-close { position:absolute; top:16px; right:20px; background:none; border:none; font-size:22px; color:var(--stone-300); cursor:pointer; transition:color 0.2s; }
 .land-modal-close:hover { color:var(--stone-700); }
 .modal-eyebrow { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
-.land-modal h3 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:32px; font-weight:400; margin-bottom:10px; line-height:1.2; }
+.land-modal h3 { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:400; margin-bottom:10px; line-height:1.2; }
 .land-modal > p { font-size:14.5px; color:var(--stone-500); line-height:1.7; margin-bottom:30px; font-weight:300; }
-.land-modal input { width:100%; padding:13px 16px; border:1px solid var(--stone-200); background:var(--stone-50); font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:14px; color:var(--stone-900); margin-bottom:10px; outline:none; border-radius:0; transition:border-color 0.2s; }
+.land-modal input { width:100%; padding:13px 16px; border:1px solid var(--stone-200); background:var(--stone-50); font-family:'Jost',sans-serif; font-size:14px; color:var(--stone-900); margin-bottom:10px; outline:none; border-radius:0; transition:border-color 0.2s; }
 .land-modal input:focus { border-color:var(--accent); }
 .modal-success-land { display:none; text-align:center; }
 .modal-success-land.show { display:block; }
 .modal-form-land.hide { display:none; }
-.modal-success-land .big-serif { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:42px; font-weight:300; font-style:italic; color:var(--accent); display:block; margin-bottom:12px; }
+.modal-success-land .big-serif { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:300; font-style:italic; color:var(--accent); display:block; margin-bottom:12px; }
 .modal-success-land p { font-size:15px; color:var(--stone-500); line-height:1.7; font-weight:300; }
 
 /* ── PRICING ── */
 .pricing { padding:120px 0; background:linear-gradient(180deg, var(--sage-lt) 0%, var(--stone-50) 100%); border-top:1px solid var(--sage-mid); }
 .pricing-head { text-align:center; max-width:560px; margin:0 auto 72px; }
 .pricing-head .lbl { margin-bottom:18px; }
-.pricing-head h2 { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:clamp(36px,4vw,52px); font-weight:300; line-height:1.12; letter-spacing:-0.5px; margin-bottom:16px; }
+.pricing-head h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,4vw,52px); font-weight:300; line-height:1.12; letter-spacing:-0.5px; margin-bottom:16px; }
 .pricing-head p { font-size:16px; font-weight:300; color:var(--stone-500); line-height:1.75; }
 .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--stone-200); border:1px solid var(--stone-200); }
 .pricing-card { background:var(--parchment); padding:48px 36px; display:flex; flex-direction:column; position:relative; transition:background 0.25s; }
@@ -374,12 +236,12 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 .pricing-card.featured:hover { background:var(--stone-900); }
 .pricing-tag { font-size:10px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase; color:var(--taupe); margin-bottom:20px; }
 .pricing-card.featured .pricing-tag { color:var(--accent-lt); }
-.pricing-name { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:28px; font-weight:600; color:var(--stone-900); margin-bottom:8px; }
+.pricing-name { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; color:var(--stone-900); margin-bottom:8px; }
 .pricing-card.featured .pricing-name { color:var(--white); }
 .pricing-price { display:flex; align-items:baseline; gap:4px; margin-bottom:6px; }
-.price-amt { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:52px; font-weight:600; color:var(--stone-900); line-height:1; }
+.price-amt { font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:600; color:var(--stone-900); line-height:1; }
 .pricing-card.featured .price-amt { color:var(--white); }
-.price-free { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:52px; font-weight:300; font-style:italic; color:var(--accent); line-height:1; }
+.price-free { font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:300; font-style:italic; color:var(--accent); line-height:1; }
 .price-per { font-size:13px; color:var(--stone-400); font-weight:300; align-self:flex-end; padding-bottom:8px; }
 .pricing-card.featured .price-per { color:var(--stone-500); }
 .pricing-desc { font-size:14px; font-weight:300; color:var(--stone-500); line-height:1.65; margin-bottom:32px; }
@@ -390,7 +252,46 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 .pf-check { flex-shrink:0; font-size:12px; color:var(--accent); margin-top:2px; }
 .pricing-card.featured .pf-check { color:var(--accent-lt); }
 .pf-dash { flex-shrink:0; font-size:12px; color:var(--stone-300); margin-top:2px; }
-.pricing-btn { display:block; text-align:center; padding:14px 24px; border-radius:2px; font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:12.5px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:all 0.22s; text-decoration:none; border:none; }
+.pricing-btn { display:block; text-align:center; padding:14px 24px; border-radius:2px; font-family:'Jost',sans-serif; font-size:12.5px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:all 0.22s; text-decoration:none; border:none; }
+.pricing-btn-dark { background:var(--stone-900); color:var(--white); }
+.pricing-btn-dark:hover { background:var(--accent); }
+.pricing-btn-outline { background:transparent; color:var(--stone-900); border:1px solid var(--stone-300); }
+.pricing-btn-outline:hover { border-color:var(--stone-900); }
+.pricing-btn-light { background:var(--white); color:var(--stone-900); }
+.pricing-btn-light:hover { background:var(--stone-100); }
+.featured-badge { position:absolute; top:-1px; left:50%; transform:translateX(-50%); background:var(--accent); color:var(--white); font-size:10px; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:5px 16px; border-radius:0 0 8px 8px; white-space:nowrap; }
+@media(max-width:900px) { .pricing-grid { grid-template-columns:1fr; } }
+
+/* ── PRICING ── */
+.pricing { padding:120px 0; background:linear-gradient(180deg, var(--sage-lt) 0%, var(--stone-50) 100%); border-top:1px solid var(--sage-mid); }
+.pricing-head { text-align:center; max-width:560px; margin:0 auto 72px; }
+.pricing-head .lbl { margin-bottom:18px; }
+.pricing-head h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,4vw,52px); font-weight:300; line-height:1.12; letter-spacing:-0.5px; margin-bottom:16px; }
+.pricing-head p { font-size:16px; font-weight:300; color:var(--stone-500); line-height:1.75; }
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--stone-200); border:1px solid var(--stone-200); }
+.pricing-card { background:var(--parchment); padding:48px 36px; display:flex; flex-direction:column; position:relative; transition:background 0.25s; }
+.pricing-card:hover { background:var(--sage-lt); }
+.pricing-card.featured { background:var(--stone-900); }
+.pricing-card.featured:hover { background:var(--stone-900); }
+.pricing-tag { font-size:10px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase; color:var(--taupe); margin-bottom:20px; }
+.pricing-card.featured .pricing-tag { color:var(--accent-lt); }
+.pricing-name { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; color:var(--stone-900); margin-bottom:8px; }
+.pricing-card.featured .pricing-name { color:var(--white); }
+.pricing-price { display:flex; align-items:baseline; gap:4px; margin-bottom:6px; }
+.price-amt { font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:600; color:var(--stone-900); line-height:1; }
+.pricing-card.featured .price-amt { color:var(--white); }
+.price-free { font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:300; font-style:italic; color:var(--accent); line-height:1; }
+.price-per { font-size:13px; color:var(--stone-400); font-weight:300; align-self:flex-end; padding-bottom:8px; }
+.pricing-card.featured .price-per { color:var(--stone-500); }
+.pricing-desc { font-size:14px; font-weight:300; color:var(--stone-500); line-height:1.65; margin-bottom:32px; }
+.pricing-card.featured .pricing-desc { color:rgba(247,245,242,0.6); }
+.pricing-features { list-style:none; display:flex; flex-direction:column; gap:12px; margin-bottom:40px; flex:1; }
+.pricing-features li { display:flex; align-items:flex-start; gap:10px; font-size:14px; font-weight:300; color:var(--stone-700); line-height:1.5; }
+.pricing-card.featured .pricing-features li { color:rgba(247,245,242,0.8); }
+.pf-check { flex-shrink:0; font-size:12px; color:var(--accent); margin-top:2px; }
+.pricing-card.featured .pf-check { color:var(--accent-lt); }
+.pf-dash { flex-shrink:0; font-size:12px; color:var(--stone-300); margin-top:2px; }
+.pricing-btn { display:block; text-align:center; padding:14px 24px; border-radius:2px; font-family:'Jost',sans-serif; font-size:12.5px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:all 0.22s; text-decoration:none; border:none; }
 .pricing-btn-dark { background:var(--stone-900); color:var(--white); }
 .pricing-btn-dark:hover { background:var(--accent); }
 .pricing-btn-outline { background:transparent; color:var(--stone-900); border:1px solid var(--stone-300); }
@@ -418,6 +319,32 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
   .stats { grid-template-columns:1fr; }
 }
 
+
+/* ── AUTH OVERLAY ── */
+.auth-overlay { position:fixed; inset:0; background:rgba(46,40,32,0.7); backdrop-filter:blur(8px); z-index:2000; display:none; align-items:center; justify-content:center; padding:24px; }
+.auth-overlay.open { display:flex; }
+.auth-card { background:var(--white); border:1px solid var(--stone-200); padding:48px 40px; max-width:420px; width:100%; position:relative; animation:mIn 0.35s cubic-bezier(0.34,1.4,0.64,1) forwards; }
+.auth-logo { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:600; font-style:italic; color:var(--accent); text-align:center; margin-bottom:6px; }
+.auth-tagline { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--stone-400); text-align:center; margin-bottom:28px; }
+.auth-tab-row { display:flex; border-bottom:1px solid var(--stone-200); margin-bottom:24px; }
+.auth-tab { flex:1; padding:10px; text-align:center; font-size:13px; font-weight:500; color:var(--stone-400); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.2s; }
+.auth-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.auth-field { margin-bottom:14px; }
+.auth-field label { display:block; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--stone-500); margin-bottom:6px; }
+.auth-field input { width:100%; padding:12px 14px; border:1px solid var(--stone-200); background:var(--stone-50); font-family:'Jost',sans-serif; font-size:14px; color:var(--stone-900); outline:none; transition:border-color 0.2s; }
+.auth-field input:focus { border-color:var(--accent); }
+.auth-submit { width:100%; padding:13px; background:var(--stone-900); color:var(--white); border:none; font-family:'Jost',sans-serif; font-size:13px; font-weight:500; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:background 0.2s; margin-top:6px; }
+.auth-submit:hover { background:var(--accent); }
+.auth-error { font-size:13px; color:#8B3A3A; margin-top:10px; text-align:center; min-height:18px; font-weight:300; }
+.auth-switch { text-align:center; font-size:13px; color:var(--stone-400); margin-top:16px; }
+.auth-switch a { color:var(--accent); cursor:pointer; text-decoration:underline; }
+.auth-loading { display:none; align-items:center; justify-content:center; gap:8px; padding:10px; font-size:13px; color:var(--stone-500); }
+.auth-loading.show { display:flex; }
+.spin { width:16px; height:16px; border:2px solid var(--stone-200); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.save-indicator { position:absolute; top:58px; left:16px; z-index:300; font-size:10px; letter-spacing:1px; color:rgba(255,255,255,0.5); display:flex; align-items:center; gap:5px; opacity:0; transition:opacity 0.3s; }
+.save-indicator.show { opacity:1; }
+.save-dot { width:5px; height:5px; border-radius:50%; background:#6FCF97; }
 
 /* ════════════════════════════════════════
    APP SHELL OVERLAY
@@ -487,7 +414,7 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 /* ── PHONE TOP BAR ── */
 .ptop { background:var(--stone-900); padding:13px 22px 14px; flex-shrink:0; }
 .ptop-row { display:flex; align-items:center; justify-content:space-between; }
-.ptitle { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:22px; font-weight:600; font-style:italic; color:var(--white); letter-spacing:0.5px; }
+.ptitle { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; font-style:italic; color:var(--white); letter-spacing:0.5px; }
 .ptitle em { font-style:italic; color:var(--accent-lt); }
 .psub { font-size:10px; color:var(--stone-500); letter-spacing:1.5px; text-transform:uppercase; margin-top:2px; }
 .agent-badge { display:flex; align-items:center; gap:6px; background:rgba(124,106,82,0.2); border:1px solid rgba(124,106,82,0.4); border-radius:100px; padding:5px 12px; font-size:11px; color:var(--accent-lt); }
@@ -496,7 +423,7 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 
 /* ── PHONE TYPOGRAPHY ── */
 .p-eyebrow { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
-.p-title { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:28px; font-weight:600; line-height:1.15; color:var(--stone-900); margin-bottom:8px; letter-spacing:-0.3px; }
+.p-title { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; line-height:1.15; color:var(--stone-900); margin-bottom:8px; letter-spacing:-0.3px; }
 .p-title em { font-style:italic; }
 .p-sub { font-size:13.5px; font-weight:300; color:var(--stone-500); line-height:1.65; margin-bottom:22px; }
 
@@ -506,14 +433,14 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 .row-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 input[type=text],input[type=email],input[type=tel],select,textarea {
   width:100%; padding:12px 14px; border:1px solid var(--stone-200); border-radius:10px;
-  background:var(--white); font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:13.5px; color:var(--stone-900);
+  background:var(--white); font-family:'Jost',sans-serif; font-size:13.5px; color:var(--stone-900);
   outline:none; transition:border-color 0.2s,box-shadow 0.2s; -webkit-appearance:none;
 }
 input:focus,select:focus,textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(124,106,82,0.1); }
 input::placeholder,textarea::placeholder { color:var(--stone-300); }
 
 /* ── PHONE BUTTONS ── */
-.pbtn { width:100%; padding:14px; background:var(--stone-900); color:var(--white); border:none; border-radius:12px; font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:13.5px; font-weight:500; letter-spacing:0.5px; cursor:pointer; transition:background 0.2s,transform 0.15s; margin-top:8px; }
+.pbtn { width:100%; padding:14px; background:var(--stone-900); color:var(--white); border:none; border-radius:12px; font-family:'Jost',sans-serif; font-size:13.5px; font-weight:500; letter-spacing:0.5px; cursor:pointer; transition:background 0.2s,transform 0.15s; margin-top:8px; }
 .pbtn:hover { background:var(--accent); }
 .pbtn:active { transform:scale(0.98); }
 .pbtn.accent { background:var(--accent); }
@@ -541,7 +468,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .emoji-picker { display:flex; gap:7px; flex-wrap:wrap; }
 .emoji-opt { width:34px; height:34px; border-radius:50%; background:var(--stone-100); border:2px solid transparent; display:flex; align-items:center; justify-content:center; font-size:17px; cursor:pointer; transition:all 0.2s; }
 .emoji-opt:hover,.emoji-opt.sel { border-color:var(--accent); background:var(--sand); }
-.add-btn-p { width:100%; padding:11px; border:1.5px dashed var(--stone-200); border-radius:12px; background:transparent; font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:13px; color:var(--stone-400); cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:6px; }
+.add-btn-p { width:100%; padding:11px; border:1.5px dashed var(--stone-200); border-radius:12px; background:transparent; font-family:'Jost',sans-serif; font-size:13px; color:var(--stone-400); cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:6px; }
 .add-btn-p:hover { border-color:var(--accent); color:var(--accent); }
 
 /* ── INTEGRATIONS ── */
@@ -572,7 +499,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .ai-building { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:28px 20px; text-align:center; }
 .ai-orb { width:90px; height:90px; border-radius:50%; background:radial-gradient(circle at 35% 35%,var(--accent-lt),var(--accent)); display:flex; align-items:center; justify-content:center; font-size:38px; margin-bottom:24px; animation:orb-pulse 2s ease-in-out infinite; }
 @keyframes orb-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(124,106,82,0.3)} 50%{box-shadow:0 0 0 18px rgba(124,106,82,0)} }
-.building-title { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:24px; font-weight:600; color:var(--stone-900); margin-bottom:6px; }
+.building-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; color:var(--stone-900); margin-bottom:6px; }
 .building-sub { font-size:13px; font-weight:300; color:var(--stone-500); line-height:1.65; margin-bottom:28px; }
 .build-steps { width:100%; display:flex; flex-direction:column; gap:8px; text-align:left; }
 .build-step { display:flex; align-items:center; gap:12px; padding:11px 13px; background:var(--white); border:1px solid var(--stone-200); border-radius:10px; font-size:13px; color:var(--stone-400); opacity:0.4; transition:opacity 0.5s,border-color 0.5s,color 0.5s; }
@@ -586,7 +513,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 
 /* ── WELCOME SCREEN ── */
 .welcome-hero-p { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:28px 24px; }
-.wlogo { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:38px; font-weight:600; font-style:italic; color:var(--stone-900); margin-bottom:4px; letter-spacing:0.5px; }
+.wlogo { font-family:'Cormorant Garamond',serif; font-size:38px; font-weight:600; font-style:italic; color:var(--stone-900); margin-bottom:4px; letter-spacing:0.5px; }
 .wtagline { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--stone-400); margin-bottom:32px; }
 .willus { width:140px; height:140px; border-radius:50%; background:var(--sand); display:flex; align-items:center; justify-content:center; font-size:60px; margin:0 auto 28px; border:5px solid var(--stone-200); animation:gentle-float 4s ease-in-out infinite; }
 @keyframes gentle-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
@@ -619,7 +546,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .ft strong { font-weight:600; color:var(--stone-900); }
 .ft small { display:block; font-size:11px; color:var(--stone-400); margin-top:1px; }
 .action-row { display:flex; gap:7px; margin-top:9px; }
-.btn-sm-c { flex:1; padding:9px 0; border-radius:8px; border:none; font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:11.5px; font-weight:500; cursor:pointer; transition:all 0.2s; }
+.btn-sm-c { flex:1; padding:9px 0; border-radius:8px; border:none; font-family:'Jost',sans-serif; font-size:11.5px; font-weight:500; cursor:pointer; transition:all 0.2s; }
 .btn-sm-c.confirm { background:var(--stone-900); color:var(--white); }
 .btn-sm-c.confirm:hover { background:var(--accent); }
 .btn-sm-c.dismiss { background:var(--stone-100); color:var(--stone-400); border:1px solid var(--stone-200); }
@@ -632,7 +559,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .strip-text { flex:1; }
 .strip-title { font-size:12.5px; font-weight:500; color:var(--white); margin-bottom:1px; }
 .strip-sub { font-size:11px; color:var(--stone-500); }
-.strip-count { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:26px; font-weight:600; color:var(--accent-lt); }
+.strip-count { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--accent-lt); }
 
 /* ── FAMILY PREVIEW BLOCK ── */
 .fam-block { background:var(--stone-900); border-radius:13px; padding:14px; color:var(--white); margin-bottom:9px; }
@@ -658,20 +585,20 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .confirm-sheet { background:var(--white); border-radius:18px; padding:22px 18px 18px; width:100%; animation:sheetUp 0.35s cubic-bezier(0.34,1.3,0.64,1) forwards; }
 @keyframes sheetUp{from{transform:translateY(50px);opacity:0}to{transform:none;opacity:1}}
 .sheet-eyebrow { font-size:9.5px; letter-spacing:2px; text-transform:uppercase; color:var(--red); margin-bottom:8px; }
-.sheet-title { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:20px; font-weight:600; color:var(--stone-900); margin-bottom:7px; line-height:1.2; }
+.sheet-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--stone-900); margin-bottom:7px; line-height:1.2; }
 .sheet-body { font-size:12.5px; color:var(--stone-500); line-height:1.6; margin-bottom:14px; font-weight:300; }
 .sheet-change { background:var(--red-lt); border-left:3px solid var(--red); border-radius:0 8px 8px 0; padding:9px 11px; font-size:12.5px; color:var(--red); margin-bottom:14px; line-height:1.5; }
 .sheet-change strong { display:block; font-weight:600; margin-bottom:2px; }
 .sheet-actions { display:flex; gap:9px; }
-.sheet-confirm { flex:2; padding:12px; background:var(--stone-900); color:var(--white); border:none; border-radius:10px; font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:12.5px; font-weight:500; cursor:pointer; transition:background 0.2s; }
+.sheet-confirm { flex:2; padding:12px; background:var(--stone-900); color:var(--white); border:none; border-radius:10px; font-family:'Jost',sans-serif; font-size:12.5px; font-weight:500; cursor:pointer; transition:background 0.2s; }
 .sheet-confirm:hover { background:var(--accent); }
-.sheet-dismiss { flex:1; padding:12px; background:var(--stone-100); color:var(--stone-500); border:1px solid var(--stone-200); border-radius:10px; font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; font-size:12.5px; cursor:pointer; }
+.sheet-dismiss { flex:1; padding:12px; background:var(--stone-100); color:var(--stone-500); border:1px solid var(--stone-200); border-radius:10px; font-family:'Jost',sans-serif; font-size:12.5px; cursor:pointer; }
 
 /* ── SUCCESS SCREEN ── */
 .success-p { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 22px; text-align:center; }
 .success-ring { width:100px; height:100px; border-radius:50%; background:var(--green-lt); border:3px solid var(--green); display:flex; align-items:center; justify-content:center; font-size:46px; margin-bottom:24px; animation:pop-in 0.5s cubic-bezier(0.34,1.5,0.64,1) forwards; }
 @keyframes pop-in{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-.success-title { font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:30px; font-weight:600; color:var(--stone-900); margin-bottom:10px; line-height:1.2; }
+.success-title { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:600; color:var(--stone-900); margin-bottom:10px; line-height:1.2; }
 .success-title em { font-style:italic; }
 .success-sub { font-size:13.5px; font-weight:300; color:var(--stone-500); line-height:1.7; margin-bottom:28px; }
 .summary-chips-p { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:28px; }
@@ -716,6 +643,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   .app-overlay { padding:0; }
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -729,25 +657,26 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     <a href="#features" class="nav-link">Features</a>
     <a href="#how" class="nav-link">How It Works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
-    <a href="#waitlist" class="btn btn-dark">Join Waitlist</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <button class="btn btn-dark" onclick="openWaitlist()">Request Early Access</button>
   </div>
 </nav>
 
 <section class="hero">
   <div class="hero-inner">
     <div>
-      <div class="hero-eyebrow reveal in">
+      <div class="hero-eyebrow reveal">
         <div class="eyebrow-line"></div>
         <span class="lbl" style="color:var(--accent)">Your family. A living record.</span>
       </div>
-      <h1 class="hero-h1 reveal in d1">No two families<br>are the same.<br><strong>Your app shouldn't be.</strong></h1>
-      <p class="hero-body reveal in d2">Folia is built around the specific details, systems, and ever-changing information of your household — and only yours. Think of it as precision medicine, but for the people you love most.</p>
-      <div class="hero-actions reveal in d3">
-        <a href="/sitter-brief.html" target="_blank" class="btn btn-accent-land">Try Free — Sitter Brief →</a>
-        <a href="#waitlist" class="btn btn-outline">Join the Waitlist</a>
+      <h1 class="hero-h1 reveal d1">No two families<br>are the same.<br><strong>Your app shouldn't be.</strong></h1>
+      <p class="hero-body reveal d2">Folia is built around the specific details, systems, and ever-changing information of your household — and only yours. Think of it as precision medicine, but for the people you love most.</p>
+      <div class="hero-actions reveal d3">
+        <button class="btn btn-accent-land" onclick="openApp()">Build My Family's App</button>
+        <a href="#how" class="btn btn-outline">See How It Works</a>
       </div>
     </div>
-    <div class="hero-card reveal in d4">
+    <div class="hero-card reveal d4">
       <div class="card-label">The Ashford Family · Est. 2014</div>
       <div class="member-row"><div class="member-initial">C</div><div><div class="member-name">Claire — Parent</div><div class="member-detail">Carpool Tue &amp; Thu · Dairy-free · Rx: Zyrtec daily</div></div></div>
       <div class="member-row"><div class="member-initial">M</div><div><div class="member-name">Marcus — Parent</div><div class="member-detail">Travel Mon–Wed · School board · Emergency: Sara</div></div></div>
@@ -792,7 +721,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <p class="reveal d2">Your household has a unique composition, unique rhythms, unique needs. Generic apps weren't built for you. We are.</p>
         <div class="stats reveal d3">
           <div class="stat"><div class="stat-n">1</div><div class="stat-l">App per family</div></div>
-          <div class="stat"><div class="stat-n" style="font-size:32px;padding-top:8px;">Infinite</div><div class="stat-l">Details it holds</div></div>
+          <div class="stat"><div class="stat-n">∞</div><div class="stat-l">Details it holds</div></div>
           <div class="stat"><div class="stat-n">0</div><div class="stat-l">Generic templates</div></div>
         </div>
       </div>
@@ -846,20 +775,6 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   </div>
 </section>
 
-<div class="try-strip">
-  <div class="try-strip-inner">
-    <div class="try-strip-text reveal">
-      <div class="try-strip-eyebrow">Free Tool · No Account Needed</div>
-      <div class="try-strip-title">Make your family's sitter brief<br><em>in 3 minutes.</em></div>
-      <div class="try-strip-sub">Fill in your family's details once. Get a beautiful printable brief and shareable link — free, forever.</div>
-    </div>
-    <div class="try-strip-action reveal d2">
-      <a href="/sitter-brief.html" target="_blank" class="try-strip-btn">Create My Sitter Brief →</a>
-      <div class="try-strip-note">Printable · Shareable · Takes 3 minutes</div>
-    </div>
-  </div>
-</div>
-
 <section class="why">
   <div class="container">
     <div class="why-grid">
@@ -892,12 +807,11 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 <section class="final-cta">
   <div class="container">
     <div class="lbl reveal" style="margin-bottom:20px;">Begin</div>
-    <h2 class="reveal d1">Start with something<br><em>useful right now.</em></h2>
-    <p class="reveal d2">Generate your family's sitter brief in 3 minutes — free, printable, shareable. Then see what Folia can do when it runs automatically in the background.</p>
-    <div class="reveal d3" style="display:flex;flex-direction:column;align-items:center;gap:14px;">
-      <a href="/sitter-brief.html" target="_blank" class="btn btn-accent-land">Make My Free Sitter Brief →</a>
-      <a href="#waitlist" style="padding:12px 32px;" class="btn btn-outline">Join the Waitlist</a>
-      <p class="cta-note">No account needed · Free forever</p>
+    <h2 class="reveal d1">Your family deserves<br>an app that is <em>entirely its own.</em></h2>
+    <p class="reveal d2">Be among the first families to have an app built around the specific, beautiful, complicated reality of how your household actually works.</p>
+    <div class="reveal d3">
+      <button class="btn btn-accent-land" onclick="openApp()">Build My Family's App</button>
+      <p class="cta-note">No payment required · Limited early access</p>
     </div>
   </div>
 </section>
@@ -930,7 +844,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <li><span class="pf-dash">–</span> Connected integrations</li>
           <li><span class="pf-dash">–</span> Ask Agent chat</li>
         </ul>
-        <a href="/sitter-brief.html" target="_blank" class="pricing-btn pricing-btn-outline">Try Free — Sitter Brief →</a>
+        <button class="pricing-btn pricing-btn-outline" onclick="openApp()">Get Started Free</button>
       </div>
 
       <!-- $9/mo — FEATURED -->
@@ -982,27 +896,97 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   </div>
 </section>
 
-<!-- WAITLIST -->
-<section id="waitlist" style="padding:80px 40px;background:#2E2820;text-align:center;border-top:1px solid rgba(255,255,255,0.08);">
-  <div style="max-width:480px;margin:0 auto;">
-    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4B49E;margin-bottom:16px;">Join the Waitlist</div>
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,4vw,44px);font-weight:300;color:#F7F5F2;line-height:1.2;margin-bottom:12px;font-style:italic;">Reserve your family's spot.</div>
-    <p style="font-size:15px;font-weight:300;color:rgba(247,245,242,0.55);line-height:1.7;margin-bottom:32px;">We're onboarding families carefully and personally. We'll be in touch when your app is ready.</p>
-    <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="display:flex;flex-direction:column;gap:10px;max-width:380px;margin:0 auto;">
-      <input type="hidden" name="form-name" value="waitlist" />
-      <p style="display:none;"><input name="bot-field" /></p>
-      <input type="text" name="name" placeholder="Your name" required
-        style="padding:14px 16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-family:'Jost',sans-serif;font-size:14px;color:#F7F5F2;outline:none;border-radius:4px;"/>
-      <input type="email" name="email" placeholder="Email address" required
-        style="padding:14px 16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);font-family:'Jost',sans-serif;font-size:14px;color:#F7F5F2;outline:none;border-radius:4px;"/>
-      <button type="submit"
-        style="padding:15px;background:#7C6A52;color:#FDFCFA;border:none;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:4px;margin-top:4px;">
-        Join the Waitlist →
-      </button>
-    </form>
-    <p style="margin-top:16px;font-size:12px;color:rgba(247,245,242,0.25);letter-spacing:0.5px;">No spam · No payment required · We'll reach out personally</p>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="pricing-head reveal">
+      <div class="lbl">Simple Pricing</div>
+      <h2>One app per family.<br><em>Choose your plan.</em></h2>
+      <p>Start free. Upgrade when you're ready. No contracts, cancel anytime.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-tag">Always free</div>
+        <div class="pricing-name">Essential</div>
+        <div class="pricing-price"><div class="price-free">Free</div></div>
+        <div class="pricing-desc">Get started with the basics. One household, manual updates, no agent.</div>
+        <ul class="pricing-features">
+          <li><span class="pf-check">✓</span> Up to 5 household members</li>
+          <li><span class="pf-check">✓</span> Health &amp; allergy profiles</li>
+          <li><span class="pf-check">✓</span> Schedules &amp; routines</li>
+          <li><span class="pf-check">✓</span> Sitter-ready brief</li>
+          <li><span class="pf-dash">–</span> AI agent &amp; auto-updates</li>
+          <li><span class="pf-dash">–</span> Connected integrations</li>
+          <li><span class="pf-dash">–</span> Ask Agent chat</li>
+        </ul>
+        <button class="pricing-btn pricing-btn-outline" onclick="openApp()">Get Started Free</button>
+      </div>
+      <div class="pricing-card featured reveal d1">
+        <div class="featured-badge">Most Popular</div>
+        <div class="pricing-tag">Full agent</div>
+        <div class="pricing-name">Family</div>
+        <div class="pricing-price"><div class="price-amt">$9</div><div class="price-per">/ month</div></div>
+        <div class="pricing-desc">The full Folia experience. Your agent watches, learns, and keeps everything current automatically.</div>
+        <ul class="pricing-features">
+          <li><span class="pf-check">✓</span> Everything in Essential</li>
+          <li><span class="pf-check">✓</span> AI agent — always on</li>
+          <li><span class="pf-check">✓</span> Gmail &amp; Calendar sync</li>
+          <li><span class="pf-check">✓</span> Grocery pattern learning</li>
+          <li><span class="pf-check">✓</span> Pharmacy &amp; health alerts</li>
+          <li><span class="pf-check">✓</span> Ask Agent chat</li>
+          <li><span class="pf-check">✓</span> Weekly family briefing</li>
+        </ul>
+        <a href="https://buy.stripe.com/00w9AM4KUgVrfuE7Ft53O00" class="pricing-btn pricing-btn-light">Start Free Trial →</a>
+      </div>
+      <div class="pricing-card reveal d2">
+        <div class="pricing-tag">Extended household</div>
+        <div class="pricing-name">Family+</div>
+        <div class="pricing-price"><div class="price-amt">$15</div><div class="price-per">/ month</div></div>
+        <div class="pricing-desc">For families that span multiple homes — co-parents, grandparents, caregivers all in the loop.</div>
+        <ul class="pricing-features">
+          <li><span class="pf-check">✓</span> Everything in Family</li>
+          <li><span class="pf-check">✓</span> Multiple household views</li>
+          <li><span class="pf-check">✓</span> Caregiver shared access</li>
+          <li><span class="pf-check">✓</span> Co-parent coordination</li>
+          <li><span class="pf-check">✓</span> Grandparent profiles</li>
+          <li><span class="pf-check">✓</span> Priority support</li>
+          <li><span class="pf-check">✓</span> Early access to new features</li>
+        </ul>
+        <a href="https://buy.stripe.com/bJedR23GQ0Wtcis9NB53O01" class="pricing-btn pricing-btn-dark">Start Free Trial →</a>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay" id="authOverlay" onclick="handleAuthOverlayClick(event)">
+  <div class="auth-card">
+    <div class="auth-logo">Folia</div>
+    <div class="auth-tagline">Your family. A living record.</div>
+    <div class="auth-tab-row">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign In</div>
+      <div class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</div>
+    </div>
+    <div id="loginForm">
+      <div class="auth-field"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" /></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" /></div>
+      <button class="auth-submit" onclick="handleLogin()">Sign In →</button>
+      <div class="auth-loading" id="loginLoading"><div class="spin"></div> Signing in…</div>
+      <div class="auth-error" id="loginError"></div>
+      <div class="auth-switch">No account? <a onclick="switchAuthTab('signup')">Create one free</a></div>
+    </div>
+    <div id="signupForm" style="display:none;">
+      <div class="auth-field"><label>Your name</label><input type="text" id="signupName" placeholder="e.g. Claire" autocomplete="given-name" /></div>
+      <div class="auth-field"><label>Email</label><input type="email" id="signupEmail" placeholder="your@email.com" autocomplete="email" /></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="signupPassword" placeholder="8+ characters" autocomplete="new-password" /></div>
+      <button class="auth-submit" onclick="handleSignup()">Create My Account →</button>
+      <div class="auth-loading" id="signupLoading"><div class="spin"></div> Creating account…</div>
+      <div class="auth-error" id="signupError"></div>
+      <div class="auth-switch">Have an account? <a onclick="switchAuthTab('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="footer-logo">Folia</div>
@@ -1010,9 +994,729 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 </footer>
 
 <!-- Waitlist modal -->
+<div class="land-overlay" id="landOverlay" onclick="handleLandClick(event)">
+  <div class="land-modal">
+    <button class="land-modal-close" onclick="closeWaitlist()">×</button>
+    <div class="modal-form-land" id="landForm">
+      <div class="modal-eyebrow">Early Access</div>
+      <h3>Reserve your family's spot.</h3>
+      <p>We're onboarding families carefully and personally. Leave your name and email — we'll reach out when your app is ready.</p>
+      <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleNetlifySubmit(event)" style="margin:0;">
+        <input type="hidden" name="form-name" value="waitlist" />
+        <p style="display:none;"><input name="bot-field" /></p>
+        <input type="text" name="name" id="wlName" placeholder="Your name" required />
+        <input type="email" name="email" id="wlEmail" placeholder="Email address" required style="margin-bottom:20px;" />
+        <button type="submit" class="btn btn-accent-land" style="width:100%;border-radius:0;">Reserve My Spot</button>
+      </form>
+    </div>
+    <div class="modal-success-land" id="landSuccess">
+      <span class="big-serif">Thank you.</span>
+      <p>You're on the list. We'll be in touch personally when it's your family's turn.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     APP SHELL
+══════════════════════════════════════ -->
+<div class="app-overlay" id="appOverlay">
+  <div class="phone">
+    <div class="notch"></div>
+    <button class="shell-close" onclick="closeApp()">×</button>
+    <div class="save-indicator" id="saveIndicator"><div class="save-dot"></div>Saved</div>
+
+    <div class="status-bar">
+      <span class="status-time" id="clockTime">9:41</span>
+      <div class="status-icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+    </div>
+
+    <div class="phone-screens">
+
+      <!-- ── O: WELCOME ── -->
+      <div class="pscreen active" id="p0">
+        <div class="welcome-hero-p">
+          <div class="wlogo">Folia</div>
+          <div class="wtagline">Your family. A living record.</div>
+          <div class="willus">🏡</div>
+          <div class="wdesc">An app built around the <strong>exact details</strong> of your household — updated automatically, so you never have to.</div>
+          <button class="pbtn accent" style="width:100%;max-width:280px;" onclick="pGoTo(1)">Build My Family's App →</button>
+          <button class="pbtn ghost" style="width:100%;max-width:280px;border:none;font-size:12.5px;color:var(--stone-400);">I already have an account</button>
+        </div>
+      </div>
+
+      <!-- ── 1: FAMILY NAME ── -->
+      <div class="pscreen" id="p1">
+        <div class="prog-bar"><div class="prog-fill" style="width:12%"></div></div>
+        <div class="pscroll">
+          <div style="margin-bottom:24px;">
+            <div class="p-eyebrow">Step 1 of 7</div>
+            <div class="p-title">What's your<br><em>family name?</em></div>
+            <div class="p-sub">This is how your app will refer to your household — your family's home base.</div>
+          </div>
+          <div class="f-group"><div class="f-label">Family name</div><input type="text" id="familyName" placeholder="e.g. The Ashfords" /></div>
+          <div class="f-group"><div class="f-label">Your name</div><input type="text" id="parentName" placeholder="e.g. Claire" /></div>
+          <div class="f-group"><div class="f-label">Email</div><input type="email" id="parentEmail" placeholder="your@email.com" /></div>
+          <div style="margin-top:auto;padding-top:20px;">
+            <button class="pbtn accent" onclick="pGoTo(2)">Continue →</button>
+            <button class="pbtn ghost" onclick="pGoTo(0)">← Back</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2: MEMBERS ── -->
+      <div class="pscreen" id="p2">
+        <div class="prog-bar"><div class="prog-fill" style="width:26%"></div></div>
+        <div class="pscroll">
+          <div style="margin-bottom:18px;">
+            <div class="p-eyebrow">Step 2 of 7</div>
+            <div class="p-title">Who's in your<br><em>household?</em></div>
+            <div class="p-sub">Add every person and pet. The agent tracks information for each separately.</div>
+          </div>
+          <div class="member-list" id="memberList"></div>
+          <div class="add-form" id="addForm">
+            <div class="f-label">Choose an icon</div>
+            <div class="emoji-picker" id="emojiPicker">
+              <div class="emoji-opt sel" data-e="👩" onclick="selEmoji(this)">👩</div>
+              <div class="emoji-opt" data-e="👨" onclick="selEmoji(this)">👨</div>
+              <div class="emoji-opt" data-e="👧" onclick="selEmoji(this)">👧</div>
+              <div class="emoji-opt" data-e="👦" onclick="selEmoji(this)">👦</div>
+              <div class="emoji-opt" data-e="👶" onclick="selEmoji(this)">👶</div>
+              <div class="emoji-opt" data-e="🧓" onclick="selEmoji(this)">🧓</div>
+              <div class="emoji-opt" data-e="🐕" onclick="selEmoji(this)">🐕</div>
+              <div class="emoji-opt" data-e="🐈" onclick="selEmoji(this)">🐈</div>
+            </div>
+            <div class="row-2" style="margin-top:4px;">
+              <div><div class="f-label">Name</div><input type="text" id="newName" placeholder="e.g. Nora" /></div>
+              <div><div class="f-label">Role / Age</div><input type="text" id="newRole" placeholder="e.g. Age 11" /></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+              <button class="pbtn accent" style="flex:2;margin-top:0;padding:10px;" onclick="saveMember()">Add</button>
+              <button class="pbtn ghost" style="flex:1;margin-top:0;padding:10px;font-size:12px;" onclick="cancelMember()">Cancel</button>
+            </div>
+          </div>
+          <button class="add-btn-p" id="addBtn" onclick="showAdd()"><span style="font-size:17px;">+</span> Add person or pet</button>
+          <div style="margin-top:auto;padding-top:18px;">
+            <button class="pbtn accent" onclick="pGoTo(3)">Continue →</button>
+            <button class="pbtn ghost" onclick="pGoTo(1)">← Back</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 3: HEALTH ── -->
+      <div class="pscreen" id="p3">
+        <div class="prog-bar"><div class="prog-fill" style="width:40%"></div></div>
+        <div class="pscroll">
+          <div style="margin-bottom:18px;">
+            <div class="p-eyebrow">Step 3 of 7</div>
+            <div class="p-title">Health &amp;<br><em>allergies</em></div>
+            <div class="p-sub">The agent protects this information most carefully — health changes always require your confirmation.</div>
+          </div>
+          <div id="healthTabs" style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;"></div>
+          <div class="f-group"><div class="f-label">Allergies</div><input type="text" id="allergies" placeholder="e.g. Peanuts, penicillin…" /></div>
+          <div class="f-group"><div class="f-label">Medications</div><input type="text" id="medications" placeholder="e.g. Albuterol inhaler, Zyrtec…" /></div>
+          <div class="f-group">
+            <div class="f-label">Dietary needs</div>
+            <div class="chip-grid">
+              <div class="chip" onclick="toggleChip(this)">Gluten-free</div>
+              <div class="chip" onclick="toggleChip(this)">Dairy-free</div>
+              <div class="chip" onclick="toggleChip(this)">Vegetarian</div>
+              <div class="chip" onclick="toggleChip(this)">Nut-free</div>
+              <div class="chip" onclick="toggleChip(this)">Kosher</div>
+              <div class="chip" onclick="toggleChip(this)">None</div>
+            </div>
+          </div>
+          <div class="f-group"><div class="f-label">Doctor / Pediatrician</div><input type="text" id="doctor" placeholder="e.g. Dr. Patel, Riverside Pediatrics" /></div>
+          <div style="margin-top:auto;padding-top:14px;">
+            <button class="pbtn accent" onclick="pGoTo(4)">Continue →</button>
+            <button class="pbtn ghost" onclick="pGoTo(2)">← Back</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 4: SCHEDULES ── -->
+      <div class="pscreen" id="p4">
+        <div class="prog-bar"><div class="prog-fill" style="width:55%"></div></div>
+        <div class="pscroll">
+          <div style="margin-bottom:18px;">
+            <div class="p-eyebrow">Step 4 of 7</div>
+            <div class="p-title">Schedules &amp;<br><em>routines</em></div>
+            <div class="p-sub">The agent will watch for changes to these automatically. Just tell us what's fixed today.</div>
+          </div>
+          <div class="f-group"><div class="f-label">School / Daycare</div><input type="text" id="school" placeholder="e.g. Jefferson Elementary" /></div>
+          <div class="f-group"><div class="f-label">Typical pickup time</div><input type="text" id="pickup" placeholder="e.g. 3:15 PM Mon–Fri, bus Tues" /></div>
+          <div class="f-group"><div class="f-label">Regular activities</div><input type="text" id="activities" placeholder="e.g. Soccer Sat 9am, piano Wed 4pm" /></div>
+          <div class="f-group">
+            <div class="f-label">Work / travel pattern</div>
+            <div class="chip-grid">
+              <div class="chip" onclick="toggleChip(this)">Regular travel</div>
+              <div class="chip" onclick="toggleChip(this)">Remote work</div>
+              <div class="chip" onclick="toggleChip(this)">Shift work</div>
+              <div class="chip" onclick="toggleChip(this)">Standard hours</div>
+              <div class="chip" onclick="toggleChip(this)">Varies</div>
+            </div>
+          </div>
+          <div style="margin-top:auto;padding-top:14px;">
+            <button class="pbtn accent" onclick="pGoTo(5)">Continue →</button>
+            <button class="pbtn ghost" onclick="pGoTo(3)">← Back</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5: CONNECT ── -->
+      <div class="pscreen" id="p5">
+        <div class="prog-bar"><div class="prog-fill" style="width:70%"></div></div>
+        <div class="pscroll">
+          <div style="margin-bottom:18px;">
+            <div class="p-eyebrow">Step 5 of 7</div>
+            <div class="p-title">Connect your<br><em>agent's eyes</em></div>
+            <div class="p-sub">The more you connect, the less you'll ever update manually. Each source teaches your agent something new.</div>
+          </div>
+          <div class="int-list">
+            <div class="int-row" id="ir-gmail" onclick="connectInt('gmail')"><div class="int-icon-p" style="background:#FEF2F2;">📧</div><div class="int-info"><div class="int-name">Gmail</div><div class="int-desc">Parses school emails, newsletters, appointment confirmations</div></div><div class="int-status idle" id="is-gmail">Connect</div></div>
+            <div class="int-row" id="ir-gcal" onclick="connectInt('gcal')"><div class="int-icon-p" style="background:#EFF6FF;">📅</div><div class="int-info"><div class="int-name">Google Calendar</div><div class="int-desc">Syncs events, detects conflicts, watches for changes</div></div><div class="int-status idle" id="is-gcal">Connect</div></div>
+            <div class="int-row" id="ir-grocery" onclick="connectInt('grocery')"><div class="int-icon-p" style="background:#FFFBEB;">🛒</div><div class="int-info"><div class="int-name">Grocery / Instacart</div><div class="int-desc">Learns dietary patterns, builds recurring lists</div></div><div class="int-status idle" id="is-grocery">Connect</div></div>
+            <div class="int-row" id="ir-pharmacy" onclick="connectInt('pharmacy')"><div class="int-icon-p" style="background:#FFF0F0;">💊</div><div class="int-info"><div class="int-name">Pharmacy / CVS</div><div class="int-desc">Detects new prescriptions, refill reminders</div></div><div class="int-status idle" id="is-pharmacy">Connect</div></div>
+            <div class="int-row" id="ir-apple" onclick="connectInt('apple')"><div class="int-icon-p" style="background:#F0FDF4;">📱</div><div class="int-info"><div class="int-name">Apple Health</div><div class="int-desc">Optional: health trends for family wellness context</div></div><div class="int-status idle" id="is-apple">Connect</div></div>
+          </div>
+          <div style="margin-top:auto;padding-top:8px;">
+            <button class="pbtn accent" onclick="pGoTo(6)">Continue →</button>
+            <button class="pbtn ghost" onclick="pGoTo(4)">← Back</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 6: PREFERENCES ── -->
+      <div class="pscreen" id="p6">
+        <div class="prog-bar"><div class="prog-fill" style="width:84%"></div></div>
+        <div class="pscroll">
+          <div style="margin-bottom:18px;">
+            <div class="p-eyebrow">Step 6 of 7</div>
+            <div class="p-title">How should your<br><em>agent behave?</em></div>
+            <div class="p-sub">Set the rules once. Change them anytime.</div>
+          </div>
+          <div class="perm-card"><div class="perm-icon">⚕️</div><div><div class="perm-title">Health changes</div><div class="perm-desc">Always require your confirmation before updating medications, allergies, or health records.</div></div></div>
+          <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:13px;padding:6px 15px;margin-bottom:12px;">
+            <div class="tog-row"><div><div class="tog-lbl">Auto-apply schedule changes</div><div class="tog-sub">Early releases, cancellations, rescheduling</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+            <div class="tog-row"><div><div class="tog-lbl">Auto-update grocery list</div><div class="tog-sub">Add recurring items from purchase history</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+            <div class="tog-row"><div><div class="tog-lbl">Proactive conflict alerts</div><div class="tog-sub">Warn when schedules overlap</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+            <div class="tog-row"><div><div class="tog-lbl">Weekly family briefing</div><div class="tog-sub">Sunday evening summary of the week ahead</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+            <div class="tog-row"><div><div class="tog-lbl">Sitter-ready profile</div><div class="tog-sub">Generate a shareable brief with one tap</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          </div>
+          <div style="margin-top:auto;padding-top:8px;">
+            <button class="pbtn accent" onclick="startBuild()">Build My App →</button>
+            <button class="pbtn ghost" onclick="pGoTo(5)">← Back</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 7: BUILDING ── -->
+      <div class="pscreen" id="p7">
+        <div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div>
+        <div class="ai-building">
+          <div class="ai-orb">🤖</div>
+          <div class="building-title">Building your app…</div>
+          <div class="building-sub">Your agent is reading what you shared<br>and setting everything up.</div>
+          <div class="build-steps">
+            <div class="build-step" id="bs1"><div class="bsicon">👨‍👩‍👧‍👦</div><span>Creating family profiles</span><div class="thinking-dots-sm" id="bs1d" style="display:none"><span></span><span></span><span></span></div><span id="bs1c" style="margin-left:auto;display:none">✅</span></div>
+            <div class="build-step" id="bs2"><div class="bsicon">⚕️</div><span>Securing health records</span><div class="thinking-dots-sm" id="bs2d" style="display:none"><span></span><span></span><span></span></div><span id="bs2c" style="margin-left:auto;display:none">✅</span></div>
+            <div class="build-step" id="bs3"><div class="bsicon">📅</div><span>Mapping schedules &amp; routines</span><div class="thinking-dots-sm" id="bs3d" style="display:none"><span></span><span></span><span></span></div><span id="bs3c" style="margin-left:auto;display:none">✅</span></div>
+            <div class="build-step" id="bs4"><div class="bsicon">🔗</div><span>Connecting data sources</span><div class="thinking-dots-sm" id="bs4d" style="display:none"><span></span><span></span><span></span></div><span id="bs4c" style="margin-left:auto;display:none">✅</span></div>
+            <div class="build-step" id="bs5"><div class="bsicon">🧠</div><span>Agent generating first insight</span><div class="thinking-dots-sm" id="bs5d" style="display:none"><span></span><span></span><span></span></div><span id="bs5c" style="margin-left:auto;display:none">✅</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 8: PREVIEW ── -->
+      <div class="pscreen" id="p8">
+        <div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div>
+        <div class="pscroll">
+          <div style="margin-bottom:18px;">
+            <div class="p-eyebrow">Almost ready</div>
+            <div class="p-title">Here's what your<br><em>agent built.</em></div>
+            <div class="p-sub">Review your family profile — edit anything at any time.</div>
+          </div>
+          <div class="prev-block"><div class="prev-lbl" id="prevLbl">Your Household</div><div id="prevMembers"></div></div>
+          <div><div class="insight-lbl">🧠 Agent's first observation</div><div class="insight-box" id="firstInsight"><span style="color:var(--stone-300)">Generating…</span></div></div>
+          <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;margin-bottom:12px;">
+            <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin-bottom:9px;">Connected Sources</div>
+            <div id="connSources" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+          </div>
+          <button class="pbtn accent" onclick="pGoTo(9)">Looks Good — Let's Go →</button>
+          <button class="pbtn ghost" onclick="pGoTo(6)">← Edit something</button>
+        </div>
+      </div>
+
+      <!-- ── 9: SUCCESS → DASHBOARD ── -->
+      <div class="pscreen" id="p9">
+        <div class="success-p">
+          <div class="success-ring">🏡</div>
+          <div class="success-title">Your app is<br><em>alive.</em></div>
+          <div class="success-sub" id="successSub">Your agent is now watching, learning, and keeping everything current — so you don't have to.</div>
+          <div class="summary-chips-p">
+            <div class="summary-chip-p">🤖 Agent active</div>
+            <div class="summary-chip-p" id="chipMembers">👨‍👩‍👧‍👦 Family ready</div>
+            <div class="summary-chip-p">⚕️ Health protected</div>
+            <div class="summary-chip-p">📅 Schedules mapped</div>
+          </div>
+          <button class="pbtn accent" style="width:100%;" onclick="openDashboard()">Open My Family's App →</button>
+        </div>
+      </div>
+
+      <!-- ── DASHBOARD SCREENS ── -->
+
+      <!-- Dashboard: Agent Feed -->
+      <div class="pscreen" id="dash-home">
+        <div class="ptop">
+          <div class="ptop-row">
+            <div><div class="ptitle">Folia</div><div class="psub" id="dashFamilyName">Your Family</div></div>
+            <div class="agent-badge"><div class="agent-dot"></div>Agent Active</div>
+          </div>
+        </div>
+        <div class="pscroll" id="agentFeed" style="gap:0;padding-bottom:8px;">
+          <div class="agent-strip">
+            <div class="strip-icon">🤖</div>
+            <div class="strip-text"><div class="strip-title">Agent is watching for you</div><div class="strip-sub">Email · Calendar · Groceries · Health</div></div>
+            <div class="strip-count" id="updCount">0</div>
+          </div>
+          <div class="sec-lbl">INCOMING SIGNALS</div>
+          <!-- cards injected by JS -->
+        </div>
+        <div class="tab-bar">
+          <div class="tab active" id="t-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
+          <div class="tab" id="t-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
+          <div class="tab" id="t-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
+        </div>
+        <!-- confirm sheet -->
+        <div class="confirm-modal" id="confirmModal">
+          <div class="confirm-sheet">
+            <div class="sheet-eyebrow">⚕️ Health Change · Confirmation Required</div>
+            <div class="sheet-title">Update medication profile?</div>
+            <div class="sheet-body">The agent detected a new prescription from CVS. Medication changes are never applied without your explicit approval.</div>
+            <div class="sheet-change"><strong>Montelukast 5mg — once daily at bedtime</strong>Prescribed by Dr. Patel · Replaces Albuterol as primary controller</div>
+            <div class="sheet-actions">
+              <button class="sheet-confirm" onclick="confirmMed()">Yes, Update Profile</button>
+              <button class="sheet-dismiss" onclick="closeConfirm()">Not Yet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard: Family -->
+      <div class="pscreen" id="dash-family">
+        <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your People</div></div></div></div>
+        <div class="pscroll" style="gap:0;">
+          <div class="fam-block">
+            <div class="fam-block-lbl" id="famBlockLbl">Your Household</div>
+            <div id="famChips"></div>
+          </div>
+          <div class="sec-lbl" style="margin-top:8px;">RECENT AGENT UPDATES</div>
+          <div class="acard">
+            <div class="acard-body" style="padding:13px 14px;">
+              <div class="finding-row"><span class="fi">✅</span><div class="ft"><strong>Friday pickup → 1:00 PM</strong><small>From school email · Applied</small></div></div>
+              <div class="finding-row" style="margin-top:7px;"><span class="fi">✅</span><div class="ft"><strong>Spring Concert · Mar 14, 6:30 PM</strong><small>Added to family calendar · Applied</small></div></div>
+              <div class="finding-row" style="margin-top:7px;"><span class="fi">✅</span><div class="ft"><strong>Oat milk → weekly essentials</strong><small>Learned from grocery history · Applied</small></div></div>
+              <div class="finding-row" style="margin-top:7px;"><span class="fi">⏳</span><div class="ft"><strong id="medLog">Medication change — awaiting confirmation</strong><small>Health change · Requires parent approval</small></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-bar">
+          <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
+          <div class="tab active" id="t2-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
+          <div class="tab" id="t2-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
+        </div>
+      </div>
+
+      <!-- Dashboard: Ask Agent -->
+      <div class="pscreen" id="dash-ask">
+        <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Ask the Agent</div></div><div class="agent-badge"><div class="agent-dot"></div>Ready</div></div></div>
+        <div class="pscroll" id="chatMessages" style="gap:6px;padding-bottom:80px;">
+          <div style="text-align:center;padding:16px 0 10px;">
+            <div style="font-size:32px;margin-bottom:8px;">🤖</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--stone-900);margin-bottom:5px;">Ask me anything about your family</div>
+            <div style="font-size:12.5px;color:var(--stone-500);font-weight:300;line-height:1.6;">I know your schedules, health needs,<br>allergies, routines, and more.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-top:6px;">
+            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`What does the sitter need to know?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 What does the sitter need to know?</div></div>
+            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`Any conflicts next week?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 Any conflicts next week?</div></div>
+            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`What\\'s safe for Nora at the party?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 What's safe for Nora at the party?</div></div>
+            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`Summarize what the agent updated today`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 Summarize what the agent updated today</div></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:9px 14px;background:var(--white);border-top:1px solid var(--stone-200);display:flex;gap:7px;">
+          <input id="chatIn" type="text" placeholder="Ask about your family…" style="flex:1;padding:10px 13px;border-radius:9px;" onkeydown="if(event.key==='Enter')sendChat()" />
+          <button onclick="sendChat()" style="padding:10px 14px;background:var(--stone-900);color:var(--white);border:none;border-radius:9px;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;">→</button>
+        </div>
+        <div class="tab-bar">
+          <div class="tab" id="t3-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
+          <div class="tab" id="t3-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
+          <div class="tab active" id="t3-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
+        </div>
+      </div>
+
+    </div><!-- /phone-screens -->
+  </div><!-- /phone -->
+</div><!-- /app-overlay -->
+
+
 <script>
-// Scroll reveal
-document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+// ════════════════════════════
+// SUPABASE CONFIG
+// Replace with your actual values from supabase.com → your project → Settings → API
+// ════════════════════════════
+const SUPABASE_URL = 'https://fbjkeivlabzwpgghxkjh.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_T75PiM4gBZRNJPV1seQ-yA_Sq4ZQDxr';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ════════════════════════════
+// AUTH
+// ════════════════════════════
+function switchAuthTab(tab){
+  document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
+  document.getElementById('signupForm').style.display=tab==='signup'?'block':'none';
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-signup').classList.toggle('active',tab==='signup');
+  document.getElementById('loginError').textContent='';
+  document.getElementById('signupError').textContent='';
+}
+
+function handleAuthOverlayClick(e){
+  if(e.target===document.getElementById('authOverlay'))closeAuth();
+}
+function closeAuth(){
+  document.getElementById('authOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+async function handleLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPassword').value;
+  if(!email||!pass){document.getElementById('loginError').textContent='Please enter your email and password.';return;}
+  document.getElementById('loginLoading').classList.add('show');
+  document.getElementById('loginError').textContent='';
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  document.getElementById('loginLoading').classList.remove('show');
+  if(error){document.getElementById('loginError').textContent=error.message;return;}
+  closeAuth();
+  document.getElementById('appOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  await loadProfile(data.user.id);
+}
+
+async function handleSignup(){
+  const name=document.getElementById('signupName').value.trim();
+  const email=document.getElementById('signupEmail').value.trim();
+  const pass=document.getElementById('signupPassword').value;
+  if(!name){document.getElementById('signupError').textContent='Please enter your name.';return;}
+  if(!email){document.getElementById('signupError').textContent='Please enter your email.';return;}
+  if(pass.length<8){document.getElementById('signupError').textContent='Password must be at least 8 characters.';return;}
+  document.getElementById('signupLoading').classList.add('show');
+  document.getElementById('signupError').textContent='';
+  const {data,error}=await sb.auth.signUp({email,password:pass,options:{data:{name}}});
+  document.getElementById('signupLoading').classList.remove('show');
+  if(error){document.getElementById('signupError').textContent=error.message;return;}
+  S.parentName=name;
+  closeAuth();
+  document.getElementById('appOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  pGoTo(0);
+}
+
+// Check for existing session on load
+window.addEventListener('load',async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){
+    document.getElementById('appOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
+    await loadProfile(session.user.id);
+  }
+});
+
+// ════════════════════════════
+// DATABASE
+// ════════════════════════════
+async function saveProfile(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const profile={
+    user_id:user.id,
+    family_name:S.familyName||'Your Family',
+    parent_name:S.parentName,
+    members:S.members,
+    connections:S.connections,
+    allergies:document.getElementById('allergies')?.value||'',
+    medications:document.getElementById('medications')?.value||'',
+    school:document.getElementById('school')?.value||'',
+    pickup:document.getElementById('pickup')?.value||'',
+    activities:document.getElementById('activities')?.value||'',
+    doctor:document.getElementById('doctor')?.value||'',
+    updated_at:new Date().toISOString()
+  };
+  const {error}=await sb.from('family_profiles').upsert(profile,{onConflict:'user_id'});
+  if(!error)showSaved();
+}
+
+async function loadProfile(userId){
+  const {data,error}=await sb.from('family_profiles').select('*').eq('user_id',userId).single();
+  if(error||!data){pGoTo(0);return;}
+  S.familyName=data.family_name||'';
+  S.parentName=data.parent_name||'';
+  S.members=data.members||[];
+  S.connections=data.connections||[];
+  if(document.getElementById('familyName'))document.getElementById('familyName').value=S.familyName;
+  if(document.getElementById('parentName'))document.getElementById('parentName').value=S.parentName;
+  if(document.getElementById('allergies'))document.getElementById('allergies').value=data.allergies||'';
+  if(document.getElementById('medications'))document.getElementById('medications').value=data.medications||'';
+  if(document.getElementById('school'))document.getElementById('school').value=data.school||'';
+  if(document.getElementById('pickup'))document.getElementById('pickup').value=data.pickup||'';
+  if(document.getElementById('activities'))document.getElementById('activities').value=data.activities||'';
+  if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
+  openDashboard();
+}
+
+function showSaved(){
+  const el=document.getElementById('saveIndicator');
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2000);
+}
+
+// ════════════════════════════
+// LANDING
+// ════════════════════════════
+const revEls=document.querySelectorAll('.reveal');
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revObs.unobserve(e.target);}});
+},{threshold:0.1});
+revEls.forEach(el=>revObs.observe(el));
+
+function openWaitlist(){document.getElementById('landOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeWaitlist(){document.getElementById('landOverlay').classList.remove('open');document.body.style.overflow='';}
+function handleLandClick(e){if(e.target===document.getElementById('landOverlay'))closeWaitlist();}
+function submitWaitlist(){
+  if(!document.getElementById('wlName').value.trim()||!document.getElementById('wlEmail').value.trim())return;
+  document.getElementById('landForm').classList.add('hide');
+  document.getElementById('landSuccess').classList.add('show');
+}
+async function handleNetlifySubmit(e){
+  e.preventDefault();
+  const form=e.target;
+  const data=new FormData(form);
+  try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()});}catch(err){}
+  document.getElementById('landForm').classList.add('hide');
+  document.getElementById('landSuccess').classList.add('show');
+}
+
+// ════════════════════════════
+// APP SHELL
+// ════════════════════════════
+function openApp(){
+  document.getElementById('authOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  switchAuthTab('signup');
+}
+function closeApp(){document.getElementById('appOverlay').classList.remove('open');document.body.style.overflow='';}
+
+function updateClock(){const n=new Date(),h=n.getHours()%12||12,m=String(n.getMinutes()).padStart(2,'0');document.getElementById('clockTime').textContent=`${h}:${m}`;}
+updateClock();setInterval(updateClock,10000);
+
+const S={familyName:'',parentName:'',members:[],connections:[],emoji:'👩'};
+let cur=0;
+const allScreens=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','dash-home','dash-family','dash-ask'];
+function pGoTo(n){
+  const cid=allScreens[cur],nid=allScreens[n];
+  const cel=document.getElementById(cid),nel=document.getElementById(nid);
+  if(!nel)return;
+  cel.classList.add('exit');
+  setTimeout(()=>{cel.classList.remove('active','exit');},350);
+  nel.classList.add('active');
+  cur=n;
+  if(n===2)renderMembers();
+  if(n===3)renderHealthTabs();
+  if(n===8)renderPreview();
+}
+
+function toggleChip(el){el.classList.toggle('selected');}
+function showAdd(){document.getElementById('addForm').classList.add('open');document.getElementById('addBtn').style.display='none';}
+function cancelMember(){document.getElementById('addForm').classList.remove('open');document.getElementById('addBtn').style.display='flex';document.getElementById('newName').value='';document.getElementById('newRole').value='';}
+function selEmoji(el){document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');S.emoji=el.dataset.e;}
+function saveMember(){const n=document.getElementById('newName').value.trim(),r=document.getElementById('newRole').value.trim();if(!n)return;S.members.push({emoji:S.emoji,name:n,role:r});cancelMember();renderMembers();}
+function removeMember(i){S.members.splice(i,1);renderMembers();}
+function renderMembers(){
+  const l=document.getElementById('memberList');l.innerHTML='';
+  S.members.forEach((m,i)=>{
+    const d=document.createElement('div');d.className='member-card-p';
+    d.innerHTML=`<div class="mavatar">${m.emoji}</div><div class="minfo"><div class="mname">${m.name}</div><div class="mrole">${m.role||'Household member'}</div></div><button class="mremove" onclick="removeMember(${i})">×</button>`;
+    l.appendChild(d);
+  });
+}
+function renderHealthTabs(){
+  const t=document.getElementById('healthTabs');t.innerHTML='';
+  S.members.filter(m=>!['🐕','🐈'].includes(m.emoji)).forEach((m,i)=>{
+    const b=document.createElement('div');b.className='chip'+(i===0?' selected':'');
+    b.textContent=`${m.emoji} ${m.name}`;b.onclick=()=>{document.querySelectorAll('#healthTabs .chip').forEach(c=>c.classList.remove('selected'));b.classList.add('selected');};
+    t.appendChild(b);
+  });
+}
+
+const intNames={gmail:'Gmail',gcal:'Google Calendar',grocery:'Groceries',pharmacy:'Pharmacy',apple:'Apple Health'};
+function connectInt(id){
+  if(S.connections.includes(id))return;
+  const s=document.getElementById(`is-${id}`),r=document.getElementById(`ir-${id}`);
+  s.textContent='Connecting…';s.className='int-status connecting';
+  setTimeout(()=>{s.textContent='Connected';s.className='int-status live';r.classList.add('connected');S.connections.push(id);},1400);
+}
+
+async function startBuild(){
+  S.familyName=document.getElementById('familyName').value||'Your Family';
+  S.parentName=document.getElementById('parentName').value||'You';
+  pGoTo(7);
+  runBuildSeq();
+}
+function runBuildSeq(){
+  const steps=[{i:1,d:600,dur:900},{i:2,d:1600,dur:700},{i:3,d:2400,dur:1000},{i:4,d:3500,dur:800},{i:5,d:4400,dur:1200}];
+  steps.forEach(s=>{
+    setTimeout(()=>{document.getElementById(`bs${s.i}`).classList.add('active');document.getElementById(`bs${s.i}d`).style.display='flex';},s.d);
+    setTimeout(()=>{document.getElementById(`bs${s.i}d`).style.display='none';document.getElementById(`bs${s.i}c`).style.display='inline';document.getElementById(`bs${s.i}`).classList.remove('active');document.getElementById(`bs${s.i}`).classList.add('done');},s.d+s.dur);
+  });
+  setTimeout(async()=>{await saveProfile();pGoTo(8);},6300);
+}
+
+function renderPreview(){
+  const name=S.familyName||'Your Family';
+  document.getElementById('prevLbl').textContent=name;
+  const c=document.getElementById('prevMembers');c.innerHTML='';
+  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Parent 1',role:'Primary'},{emoji:'👨',name:'Parent 2',role:'Parent'},{emoji:'👧',name:'Child',role:'Age ?'}];
+  disp.forEach(m=>{const d=document.createElement('div');d.className='prev-member';d.innerHTML=`<div class="prev-av">${m.emoji}</div><div class="prev-nm">${m.name}</div><div class="prev-tg">${m.role||'Member'}</div>`;c.appendChild(d);});
+  const sc=document.getElementById('connSources');sc.innerHTML='';
+  if(S.connections.length===0){sc.innerHTML='<span style="font-size:12px;color:var(--stone-300);">None connected yet — add anytime.</span>';}
+  else{S.connections.forEach(id=>{const ch=document.createElement('div');ch.className='summary-chip-p';ch.style.cssText='background:var(--green-lt);border-color:rgba(74,124,89,0.3);color:var(--green);';ch.textContent='✓ '+intNames[id];sc.appendChild(ch);});}
+  generateInsight();
+}
+
+async function generateInsight(){
+  const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'a family';
+  const allerg=document.getElementById('allergies')?.value||'none';
+  const sched=document.getElementById('pickup')?.value||'not set';
+  const conns=S.connections.map(c=>intNames[c]).join(', ')||'none yet';
+  const prompt=`New Folia family: "${S.familyName||'unnamed'}". Members: ${mems}. Allergies: ${allerg}. Pickup: ${sched}. Connected: ${conns}. Write ONE warm specific observation, 2-3 sentences, emoji first, personal not generic.`;
+  try{
+    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent welcoming a new family. Warm, specific, practical.',messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    document.getElementById('firstInsight').textContent=data.content?.map(b=>b.text||'').join('')||fallbackInsight();
+  }catch(e){document.getElementById('firstInsight').textContent=fallbackInsight();}
+  const fd=S.familyName?`the ${S.familyName}`:'your family';
+  document.getElementById('successSub').textContent=`Your agent is now active for ${fd}. It's watching, learning, and keeping everything current.`;
+  if(S.members.length>0)document.getElementById('chipMembers').textContent=`👨‍👩‍👧‍👦 ${S.members.length} member${S.members.length!==1?'s':''} added`;
+}
+function fallbackInsight(){
+  if(S.members.length>2)return`🗂️ With ${S.members.length} household members, the biggest win is having one source of truth everyone can access.`;
+  if(document.getElementById('allergies')?.value)return`⚕️ Since you've noted allergies, your agent will flag any conflicts and never update health details without your confirmation.`;
+  return`🧠 Connect Gmail and your calendar first — within a week Folia will have learned your family's rhythms well enough to start flagging things before you notice them.`;
+}
+
+let dashReady=false;
+function openDashboard(){
+  const fname=S.familyName||'Your Family';
+  document.getElementById('dashFamilyName').textContent=fname;
+  document.getElementById('famBlockLbl').textContent=fname;
+  const fc=document.getElementById('famChips');fc.innerHTML='';
+  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent'},{emoji:'👨',name:'Marcus',role:'Parent'},{emoji:'👧',name:'Nora',role:'Age 11'},{emoji:'👦',name:'Ben',role:'Age 7'}];
+  disp.forEach(m=>{const d=document.createElement('div');d.className='fam-chip';d.innerHTML=`<div class="chip-av">${m.emoji}</div><div class="chip-nm">${m.name}</div><div class="chip-tg">${m.role}</div>`;fc.appendChild(d);});
+  pGoTo(10);
+  if(!dashReady){dashReady=true;setTimeout(()=>animateAgentCards(),600);}
+}
+
+function switchTab(name){
+  const map={home:'dash-home',family:'dash-family',ask:'dash-ask'};
+  Object.entries(map).forEach(([k,v])=>{document.getElementById(v).classList.toggle('active',k===name);});
+  ['home','family','ask'].forEach(t=>{['t','t2','t3'].forEach(prefix=>{const el=document.getElementById(`${prefix}-${t}`);if(el)el.classList.toggle('active',t===name);});});
+  if(name==='ask')cur=12;else if(name==='family')cur=11;else cur=10;
+}
+
+let updCount=0;
+function bump(n=1){updCount+=n;document.getElementById('updCount').textContent=updCount;}
+
+function animateAgentCards(){
+  const feed=document.getElementById('agentFeed');
+  const cards=[
+    {id:'c-email',icon:'📧',ibg:'#EAF0FD',src:'School Email · Jefferson Elementary',time:'8:14 AM',raw:'Friday early release moved to 1:00 PM. Spring Concert rescheduled to March 14th at 6:30 PM.',findings:[{i:'🕐',strong:'Friday early release → 1:00 PM',small:'Auto-applied to schedules'},{i:'🎵',strong:'Spring Concert → March 14, 6:30 PM',small:'Added to family calendar'}],type:'applied',count:2,delay:400},
+    {id:'c-cal',icon:'📅',ibg:'#EAF2EC',src:'Google Calendar · Parent',time:'8:31 AM',raw:'Business Trip — Chicago · Mon Mar 11 → Wed Mar 13 · Flight departs 6:45 AM.',findings:[{i:'✈️',strong:'Away Mon–Wed, Mar 11–13',small:'Availability updated'},{i:'⚠️',strong:'Pickup conflict: Tue & Thu carpool',small:'Sitter may be needed'}],type:'applied',count:1,delay:2200},
+    {id:'c-grocery',icon:'🛒',ibg:'#FDF3E3',src:'Grocery History · Whole Foods',time:'Yesterday',raw:'Oat milk ×2, Gluten-free pasta ×3, Sunflower butter ×2 — $94.18',findings:[{i:'🥛',strong:'Oat milk → recurring weekly list',small:'Auto-added'},{i:'🍞',strong:'Gluten-free pattern detected',small:'Dietary profile updated'}],type:'applied',count:2,delay:3800},
+    {id:'c-med',icon:'💊',ibg:'#FDEAEA',src:'Pharmacy / CVS',time:'Today',raw:'Rx: Montelukast 5mg · Dr. Patel · Once daily at bedtime',findings:[{i:'⚕️',strong:'New medication: Montelukast 5mg nightly',small:'Health change — requires confirmation'}],type:'confirm',count:0,delay:5400},
+  ];
+  cards.forEach(card=>{
+    const el=document.createElement('div');el.id=card.id;el.className='acard';
+    el.innerHTML=`<div class="acard-header"><div class="src-icon" style="background:${card.ibg}">${card.icon}</div><div class="src-meta"><div class="src-name">${card.src}</div><div class="src-time">${card.time}</div></div><div class="src-status ss-scan" id="st-${card.id}">Scanning</div></div><div class="acard-body"><div class="raw-in"><div class="raw-lbl">Raw Input</div>${card.raw}</div><div class="a-thinking" id="th-${card.id}"><div class="t-dots"><span></span><span></span><span></span></div>Agent reading…</div><div class="a-finding" id="fi-${card.id}">${card.findings.map(f=>`<div class="finding-row"><span class="fi">${f.i}</span><div class="ft"><strong>${f.strong}</strong><small>${f.small}</small></div></div>`).join('')}${card.type==='applied'?`<div class="applied-banner show">✓ ${card.count} update${card.count!==1?'s':''} applied</div>`:`<div class="action-row"><button class="btn-sm-c confirm" onclick="openConfirm()">Review &amp; Confirm</button><button class="btn-sm-c dismiss" onclick="dismissMed(this)">Not Now</button></div>`}</div></div>`;
+    feed.appendChild(el);
+    setTimeout(()=>{document.getElementById(`st-${card.id}`).textContent='Found';document.getElementById(`st-${card.id}`).className='src-status ss-found';},card.delay);
+    setTimeout(()=>{document.getElementById(`th-${card.id}`).style.display='none';document.getElementById(`fi-${card.id}`).classList.add('show');const st=document.getElementById(`st-${card.id}`);st.textContent=card.type==='applied'?'Applied':'Review';st.className=`src-status ${card.type==='applied'?'ss-applied':'ss-confirm'}`;if(card.count>0)bump(card.count);},card.delay+1400);
+  });
+  setTimeout(()=>addInsightCard(feed),7200);
+}
+
+function addInsightCard(feed){
+  const el=document.createElement('div');el.className='acard';
+  el.innerHTML=`<div class="acard-header"><div class="src-icon" style="background:#F0EBE3;">🧠</div><div class="src-meta"><div class="src-name">Agent Insight</div><div class="src-time">Generated now</div></div><div class="src-status ss-applied">New</div></div><div class="acard-body"><div class="a-thinking" id="ins-thinking"><div class="t-dots"><span></span><span></span><span></span></div>Generating…</div><div id="ins-body" style="display:none;font-size:12.5px;color:var(--stone-700);line-height:1.65;font-weight:300;"></div></div>`;
+  feed.appendChild(el);
+  generateDashInsight();
+}
+
+async function generateDashInsight(){
+  const fname=S.familyName||'this family';
+  const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'Claire, Marcus, Nora (age 11, peanut allergy), Ben (age 7, asthma)';
+  try{
+    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent. Warm, specific, practical. 2-3 sentences max.',messages:[{role:'user',content:`Family: ${fname}. Members: ${mems}. Agent found today: school early release Fri 1pm, travel conflict Mar 11-13, oat milk recurring, gluten-free pattern, new medication pending. ONE practical heads-up they might have missed.`}]})});
+    const data=await res.json();
+    const text=data.content?.map(b=>b.text||'').join('')||'';
+    document.getElementById('ins-thinking').style.display='none';
+    const ib=document.getElementById('ins-body');ib.textContent=text||'🗓️ With travel away Mar 11–13 and Friday early release the same week, consider confirming your sitter now for Tuesday and Thursday pickup.';ib.style.display='block';
+  }catch(e){
+    document.getElementById('ins-thinking').style.display='none';
+    const ib=document.getElementById('ins-body');ib.textContent='🗓️ With travel away Mar 11–13 and Friday early release the same week, consider confirming your sitter now for Tuesday and Thursday pickup.';ib.style.display='block';
+  }
+}
+
+function openConfirm(){document.getElementById('confirmModal').classList.add('open');}
+function closeConfirm(){document.getElementById('confirmModal').classList.remove('open');}
+function confirmMed(){
+  closeConfirm();
+  const st=document.getElementById('st-c-med');if(st){st.textContent='Applied';st.className='src-status ss-applied';}
+  const ar=document.querySelector('#c-med .action-row');if(ar)ar.innerHTML='<div class="applied-banner show">✓ Medication profile updated</div>';
+  document.getElementById('medLog').textContent='Medication change — confirmed & applied';
+  bump(1);saveProfile();
+}
+function dismissMed(btn){btn.closest('.action-row').style.opacity='0.3';}
+
+const famCtx={
+  members:()=>S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'Claire (mom), Marcus (dad, away Mar 11-13), Nora (age 11, peanut allergy), Ben (age 7, asthma)',
+  updates:'Friday pickup 1pm, Spring Concert Mar 14, travel conflict flagged, oat milk recurring, Montelukast 5mg pending'
+};
+
+function addMsg(role,text){const chat=document.getElementById('chatMessages');const d=document.createElement('div');d.className=`chat-bubble ${role}`;d.innerHTML=`<div class="bubble-inner">${text}</div>`;chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});}
+function addTyping(){const chat=document.getElementById('chatMessages');const d=document.createElement('div');d.id='typing';d.className='chat-bubble agent-b';d.innerHTML=`<div class="bubble-inner"><div class="t-dots"><span></span><span></span><span></span></div></div>`;chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});}
+function rmTyping(){document.getElementById('typing')?.remove();}
+
+async function askQ(el,q){el.style.display='none';switchTab('ask');await runChat(q);}
+async function sendChat(){const i=document.getElementById('chatIn');const q=i.value.trim();if(!q)return;i.value='';await runChat(q);}
+
+async function runChat(q){
+  addMsg('user',q);addTyping();
+  const sys=`You are the Folia agent for ${S.familyName||'this family'}. Members: ${famCtx.members()}. Recent updates: ${famCtx.updates}. Answer in 2-4 sentences, warm and practical, use real names.`;
+  try{
+    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
+    const data=await res.json();
+    rmTyping();addMsg('agent-b',data.content?.map(b=>b.text||'').join('')||"I'm having trouble connecting.");
+  }catch(e){
+    rmTyping();
+    const ql=q.toLowerCase();
+    let r="I'm having trouble connecting right now.";
+    if(ql.includes('sitter')||ql.includes('ben'))r="Ben needs his Albuterol inhaler (blue backpack, side pocket) and just started Montelukast 5mg at bedtime. Reading tutor Fridays at 4pm. Sara Chen has a key and knows the routine.";
+    else if(ql.includes('conflict')||ql.includes('week'))r="Travel away Mon–Wed Mar 11–13, departing 6:45am. Solo school pickups all week including Tue/Thu carpool. Friday also has early release at 1:00 PM.";
+    else if(ql.includes('nora')||ql.includes('safe'))r="Nora has a severe peanut allergy — Epi-pen in the red pouch, backpack front pocket, second in kitchen drawer. Always check for peanut facility cross-contamination.";
+    else if(ql.includes('today')||ql.includes('summary'))r="Today: Friday early release 1pm applied, Spring Concert Mar 14 added, travel conflict flagged, oat milk on weekly list, gluten-free pattern confirmed, Ben's Montelukast awaiting your confirmation.";
+    addMsg('agent-b',r);
+  }
+}
 </script>
 </body>
 </html>
