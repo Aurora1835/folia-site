@@ -121,25 +121,6 @@ nav {
 .band-sep { color:var(--accent-lt); padding:0 4px; }
 @keyframes band-scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-/* ── PRECISION ── */
-.precision { padding:120px 0; background:linear-gradient(180deg, var(--stone-50) 0%, var(--sage-lt) 100%); }
-.precision-grid { display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:start; }
-.precision-text .lbl { margin-bottom:18px; }
-.precision-text h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,4vw,54px); font-weight:300; line-height:1.15; letter-spacing:-0.5px; margin-bottom:26px; }
-.precision-text h2 em { font-style:italic; font-weight:400; }
-.precision-text p { font-size:16px; font-weight:300; line-height:1.85; color:var(--stone-500); margin-bottom:18px; }
-.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--stone-200); border:1px solid var(--stone-200); margin-top:48px; }
-.stat { background:var(--parchment); padding:28px 20px; text-align:center; }
-.stat-n { font-family:'Cormorant Garamond',serif; font-size:44px; font-weight:600; color:var(--accent); line-height:1; margin-bottom:6px; }
-.stat-l { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-500); }
-.precision-right { padding-top:20px; }
-.prec-block { border-left:2px solid var(--stone-200); padding:0 0 40px 28px; position:relative; transition:border-color 0.3s; }
-.prec-block:last-child { padding-bottom:0; }
-.prec-block:hover { border-color:var(--accent); }
-.prec-block::before { content:''; position:absolute; left:-5px; top:4px; width:8px; height:8px; border-radius:50%; background:var(--stone-200); border:2px solid var(--stone-50); transition:background 0.3s; }
-.prec-block:hover::before { background:var(--accent); }
-.prec-block h3 { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; margin-bottom:8px; color:var(--stone-900); }
-.prec-block p { font-size:15px; font-weight:300; color:var(--stone-500); line-height:1.75; }
 
 /* ── FEATURES ── */
 .features { padding:120px 0; background:var(--sage-lt); border-top:1px solid var(--sage-mid); border-bottom:1px solid var(--sage-mid); }
@@ -657,7 +638,6 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     <a href="#features" class="nav-link">Features</a>
     <a href="#how" class="nav-link">How It Works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
-    <a href="#pricing" class="nav-link">Pricing</a>
     <button class="btn btn-dark" onclick="openWaitlist()">Request Early Access</button>
   </div>
 </nav>
@@ -670,7 +650,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <span class="lbl" style="color:var(--accent)">Your family. A living record.</span>
       </div>
       <h1 class="hero-h1 reveal d1">No two families<br>are the same.<br><strong>Your app shouldn't be.</strong></h1>
-      <p class="hero-body reveal d2">Folia is built around the specific details, systems, and ever-changing information of your household — and only yours. Think of it as precision medicine, but for the people you love most.</p>
+      <p class="hero-body reveal d2">Folia is built around the specific details, systems, and ever-changing information of your household — and only yours. One app, built entirely around your family.</p>
       <div class="hero-actions reveal d3">
         <button class="btn btn-accent-land" onclick="openApp()">Build My Family's App</button>
         <a href="#how" class="btn btn-outline">See How It Works</a>
@@ -711,29 +691,6 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   </div>
 </div>
 
-<section class="precision">
-  <div class="container">
-    <div class="precision-grid">
-      <div class="precision-text">
-        <div class="lbl reveal" style="margin-bottom:18px;">The Idea</div>
-        <h2 class="reveal d1">Like precision medicine — but for the people you <em>love most.</em></h2>
-        <p class="reveal d2">Precision medicine transformed healthcare by abandoning one-size-fits-all treatments in favor of what's true for one specific person. Folia applies that same idea to family life.</p>
-        <p class="reveal d2">Your household has a unique composition, unique rhythms, unique needs. Generic apps weren't built for you. We are.</p>
-        <div class="stats reveal d3">
-          <div class="stat"><div class="stat-n">1</div><div class="stat-l">App per family</div></div>
-          <div class="stat"><div class="stat-n">∞</div><div class="stat-l">Details it holds</div></div>
-          <div class="stat"><div class="stat-n">0</div><div class="stat-l">Generic templates</div></div>
-        </div>
-      </div>
-      <div class="precision-right">
-        <div class="prec-block reveal d1"><h3>Your details, not anyone else's</h3><p>Specific medications, pickup times, allergies, house rules. The nitty-gritty that only your family knows — finally with a proper home.</p></div>
-        <div class="prec-block reveal d2"><h3>Living information, not snapshots</h3><p>Life changes constantly. Doses change, schools change, schedules change. Folia updates with you — always current, always accurate.</p></div>
-        <div class="prec-block reveal d3"><h3>One place, every person</h3><p>Stop managing seven apps, a shared note, and a text thread. Everything your household runs on, held in one place.</p></div>
-        <div class="prec-block reveal d4"><h3>Private by design</h3><p>Your family's information belongs to your family. Never sold, never shared, never used to train anything beyond what you've asked.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="features" id="features">
   <div class="container">
@@ -1364,8 +1321,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 // SUPABASE CONFIG
 // Replace with your actual values from supabase.com → your project → Settings → API
 // ════════════════════════════
-const SUPABASE_URL = 'https://fbjkeivlabzwpgghxkjh.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_T75PiM4gBZRNJPV1seQ-yA_Sq4ZQDxr';
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ════════════════════════════
@@ -1416,6 +1373,7 @@ async function handleSignup(){
   document.getElementById('signupLoading').classList.remove('show');
   if(error){document.getElementById('signupError').textContent=error.message;return;}
   S.parentName=name;
+  if(document.getElementById('signupLoading'))document.getElementById('signupLoading').classList.remove('show');
   closeAuth();
   document.getElementById('appOverlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -1578,7 +1536,7 @@ function runBuildSeq(){
     setTimeout(()=>{document.getElementById(`bs${s.i}`).classList.add('active');document.getElementById(`bs${s.i}d`).style.display='flex';},s.d);
     setTimeout(()=>{document.getElementById(`bs${s.i}d`).style.display='none';document.getElementById(`bs${s.i}c`).style.display='inline';document.getElementById(`bs${s.i}`).classList.remove('active');document.getElementById(`bs${s.i}`).classList.add('done');},s.d+s.dur);
   });
-  setTimeout(async()=>{await saveProfile();pGoTo(8);},6300);
+  setTimeout(async()=>{ try{ await saveProfile(); }catch(e){ console.log("Save skipped:",e); } pGoTo(8); },6300);
 }
 
 function renderPreview(){
