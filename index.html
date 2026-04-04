@@ -638,7 +638,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     <a href="#features" class="nav-link">Features</a>
     <a href="#how" class="nav-link">How It Works</a>
     <a href="#pricing" class="nav-link">Pricing</a>
-    <button class="btn btn-dark" onclick="openWaitlist()">Request Early Access</button>
+    <button class="btn btn-dark" onclick="openWaitlist()">Get My Free Sitter Brief</button>
   </div>
 </nav>
 
@@ -652,8 +652,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <h1 class="hero-h1 reveal d1">No two families<br>are the same.<br><strong>Your app shouldn't be.</strong></h1>
       <p class="hero-body reveal d2">Folia is built around the specific details, systems, and ever-changing information of your household — and only yours. One app, built entirely around your family.</p>
       <div class="hero-actions reveal d3">
-        <button class="btn btn-accent-land" onclick="openApp()">Build My Family's App</button>
-        <a href="#how" class="btn btn-outline">See How It Works</a>
+        <button class="btn btn-accent-land" onclick="openWaitlist()">Get My Free Sitter Brief</button>
+        <button class="btn btn-outline" onclick="openApp()">Build My Family's App</button>
       </div>
     </div>
     <div class="hero-card reveal d4">
@@ -763,12 +763,12 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 
 <section class="final-cta">
   <div class="container">
-    <div class="lbl reveal" style="margin-bottom:20px;">Begin</div>
-    <h2 class="reveal d1">Your family deserves<br>an app that is <em>entirely its own.</em></h2>
-    <p class="reveal d2">Be among the first families to have an app built around the specific, beautiful, complicated reality of how your household actually works.</p>
+    <div class="lbl reveal" style="margin-bottom:20px;">Free Resource</div>
+    <h2 class="reveal d1">Get your family's<br><em>sitter brief — free.</em></h2>
+    <p class="reveal d2">A ready-to-share document with everything a sitter, grandparent, or caregiver needs to know about your family. Generated for you, instantly, no signup required.</p>
     <div class="reveal d3">
-      <button class="btn btn-accent-land" onclick="openApp()">Build My Family's App</button>
-      <p class="cta-note">No payment required · Limited early access</p>
+      <button class="btn btn-accent-land" onclick="openWaitlist()">Get My Free Sitter Brief</button>
+      <p class="cta-note">Free · Instant · No credit card</p>
     </div>
   </div>
 </section>
@@ -801,7 +801,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <li><span class="pf-dash">–</span> Connected integrations</li>
           <li><span class="pf-dash">–</span> Ask Agent chat</li>
         </ul>
-        <button class="pricing-btn pricing-btn-outline" onclick="openApp()">Get Started Free</button>
+        <button class="pricing-btn pricing-btn-outline" onclick="openWaitlist()">Get Free Sitter Brief</button>
       </div>
 
       <!-- $9/mo — FEATURED -->
@@ -877,7 +877,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <li><span class="pf-dash">–</span> Connected integrations</li>
           <li><span class="pf-dash">–</span> Ask Agent chat</li>
         </ul>
-        <button class="pricing-btn pricing-btn-outline" onclick="openApp()">Get Started Free</button>
+        <button class="pricing-btn pricing-btn-outline" onclick="openWaitlist()">Get Free Sitter Brief</button>
       </div>
       <div class="pricing-card featured reveal d1">
         <div class="featured-badge">Most Popular</div>
@@ -950,26 +950,52 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   <p>© 2025 Folia &nbsp;·&nbsp; Built for families, by people who have them.</p>
 </footer>
 
-<!-- Waitlist modal -->
+<!-- Sitter Brief Modal -->
 <div class="land-overlay" id="landOverlay" onclick="handleLandClick(event)">
-  <div class="land-modal">
+  <div class="land-modal" style="max-width:480px;">
     <button class="land-modal-close" onclick="closeWaitlist()">×</button>
-    <div class="modal-form-land" id="landForm">
-      <div class="modal-eyebrow">Early Access</div>
-      <h3>Reserve your family's spot.</h3>
-      <p>We're onboarding families carefully and personally. Leave your name and email — we'll reach out when your app is ready.</p>
-      <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleNetlifySubmit(event)" style="margin:0;">
-        <input type="hidden" name="form-name" value="waitlist" />
+
+    <!-- STEP 1: Enter details -->
+    <div id="briefStep1">
+      <div class="modal-eyebrow">Free · Instant · No credit card</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:10px;line-height:1.2;">Get your family's<br>free sitter brief.</h3>
+      <p style="font-size:14px;color:var(--stone-500);line-height:1.65;margin-bottom:20px;font-weight:300;">Everything a sitter, grandparent, or caregiver needs to know — generated for your family in seconds. We'll also send it to your email.</p>
+      <form name="sitter-brief" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleBriefSubmit(event)" style="margin:0;">
+        <input type="hidden" name="form-name" value="sitter-brief" />
         <p style="display:none;"><input name="bot-field" /></p>
-        <input type="text" name="name" id="wlName" placeholder="Your name" required />
-        <input type="email" name="email" id="wlEmail" placeholder="Email address" required style="margin-bottom:20px;" />
-        <button type="submit" class="btn btn-accent-land" style="width:100%;border-radius:0;">Reserve My Spot</button>
+        <input type="text" name="name" id="briefName" placeholder="Your family name (e.g. The Ashfords)" required style="margin-bottom:10px;" />
+        <input type="email" name="email" id="briefEmail" placeholder="Your email address" required style="margin-bottom:10px;" />
+        <input type="text" name="children" id="briefChildren" placeholder="Kids' names & ages (e.g. Nora 11, Ben 7)" style="margin-bottom:10px;" />
+        <input type="text" name="allergies" id="briefAllergies" placeholder="Allergies or medical needs (or 'none')" style="margin-bottom:10px;" />
+        <input type="text" name="emergency" id="briefEmergency" placeholder="Emergency contact name & number" style="margin-bottom:20px;" />
+        <button type="submit" class="btn btn-accent-land" style="width:100%;border-radius:0;" id="briefSubmitBtn">Generate My Sitter Brief →</button>
       </form>
+      <p style="font-size:11px;color:var(--stone-300);text-align:center;margin-top:12px;letter-spacing:0.5px;">We'll quietly keep you updated on Folia — unsubscribe anytime.</p>
     </div>
-    <div class="modal-success-land" id="landSuccess">
-      <span class="big-serif">Thank you.</span>
-      <p>You're on the list. We'll be in touch personally when it's your family's turn.</p>
+
+    <!-- STEP 2: Generating -->
+    <div id="briefStep2" style="display:none;text-align:center;padding:20px 0;">
+      <div style="font-size:36px;margin-bottom:16px;">📋</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:10px;">Writing your brief…</div>
+      <div style="font-size:14px;color:var(--stone-500);font-weight:300;line-height:1.6;">Our agent is putting together<br>everything your sitter needs to know.</div>
+      <div style="margin-top:20px;display:flex;justify-content:center;gap:5px;" id="genDots">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.2s ease-in-out infinite;"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.2s ease-in-out infinite;animation-delay:0.2s;"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.2s ease-in-out infinite;animation-delay:0.4s;"></div>
+      </div>
     </div>
+
+    <!-- STEP 3: The brief -->
+    <div id="briefStep3" style="display:none;">
+      <div class="modal-eyebrow">Your Sitter Brief</div>
+      <div id="briefOutput" style="background:var(--stone-50);border:1px solid var(--stone-200);border-radius:4px;padding:20px;font-size:13.5px;color:var(--stone-700);line-height:1.75;font-weight:300;max-height:320px;overflow-y:auto;margin-bottom:16px;white-space:pre-wrap;"></div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="copyBrief()" class="btn btn-accent-land" style="flex:1;border-radius:0;font-size:12px;">Copy to Clipboard</button>
+        <button onclick="closeWaitlist()" class="btn btn-outline" style="flex:1;border-radius:0;font-size:12px;padding:15px;">Done</button>
+      </div>
+      <p style="font-size:12px;color:var(--stone-400);text-align:center;margin-top:12px;line-height:1.5;">We've also emailed this to you. Want more? <a onclick="closeWaitlist();openApp();" style="color:var(--accent);cursor:pointer;text-decoration:underline;">Build your full family profile →</a></p>
+    </div>
+
   </div>
 </div>
 
@@ -1447,21 +1473,116 @@ const revObs=new IntersectionObserver(entries=>{
 },{threshold:0.1});
 revEls.forEach(el=>revObs.observe(el));
 
-function openWaitlist(){document.getElementById('landOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function openWaitlist(){
+  document.getElementById('landOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  // Reset to step 1
+  document.getElementById('briefStep1').style.display='block';
+  document.getElementById('briefStep2').style.display='none';
+  document.getElementById('briefStep3').style.display='none';
+}
 function closeWaitlist(){document.getElementById('landOverlay').classList.remove('open');document.body.style.overflow='';}
 function handleLandClick(e){if(e.target===document.getElementById('landOverlay'))closeWaitlist();}
-function submitWaitlist(){
-  if(!document.getElementById('wlName').value.trim()||!document.getElementById('wlEmail').value.trim())return;
-  document.getElementById('landForm').classList.add('hide');
-  document.getElementById('landSuccess').classList.add('show');
+
+// Copy brief to clipboard
+function copyBrief(){
+  const text=document.getElementById('briefOutput').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=event.target;
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy to Clipboard',2000);
+  });
 }
-async function handleNetlifySubmit(e){
+
+async function handleBriefSubmit(e){
   e.preventDefault();
+  const name=document.getElementById('briefName').value.trim();
+  const email=document.getElementById('briefEmail').value.trim();
+  const children=document.getElementById('briefChildren').value.trim();
+  const allergies=document.getElementById('briefAllergies').value.trim();
+  const emergency=document.getElementById('briefEmergency').value.trim();
+
+  if(!name||!email)return;
+
+  // Submit to Netlify Forms quietly
   const form=e.target;
-  const data=new FormData(form);
-  try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()});}catch(err){}
-  document.getElementById('landForm').classList.add('hide');
-  document.getElementById('landSuccess').classList.add('show');
+  const formData=new FormData(form);
+  try{
+    await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(formData).toString()});
+  }catch(err){}
+
+  // Show generating state
+  document.getElementById('briefStep1').style.display='none';
+  document.getElementById('briefStep2').style.display='block';
+
+  // Build the prompt
+  const prompt=`Create a warm, practical sitter brief for ${name}. Here are the details:
+- Children: ${children||'not specified'}
+- Allergies/medical needs: ${allergies||'none mentioned'}
+- Emergency contact: ${emergency||'not provided'}
+
+Write a clear, friendly sitter brief they can hand to any caregiver. Include sections for: household overview, the children (with any specific needs), meal & snack guidance (mention any allergies prominently), bedtime routine (use reasonable defaults if not specified), emergency contacts & important numbers, and a warm closing note. Make it feel personal and specific to this family. Use the family name throughout. Format with clear section headers. Keep it to one page — practical and scannable, not overwhelming.`;
+
+  try{
+    const res=await fetch('/api/claude',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system:'You are a warm, practical assistant helping families create sitter briefs. Write clearly and personally. Use markdown-style headers (ALL CAPS with a line of dashes beneath) rather than # symbols. Make it feel like it was written by the family, not a robot.',
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data=await res.json();
+    const brief=data.content?.map(b=>b.text||'').join('')||fallbackBrief(name,children,allergies,emergency);
+    document.getElementById('briefStep2').style.display='none';
+    document.getElementById('briefStep3').style.display='block';
+    document.getElementById('briefOutput').textContent=brief;
+  }catch(err){
+    // Fallback brief if API fails
+    document.getElementById('briefStep2').style.display='none';
+    document.getElementById('briefStep3').style.display='block';
+    document.getElementById('briefOutput').textContent=fallbackBrief(name,children,allergies,emergency);
+  }
+}
+
+function fallbackBrief(name,children,allergies,emergency){
+  return `SITTER BRIEF — ${name.toUpperCase()}
+${'─'.repeat(40)}
+
+Welcome, and thank you for taking care of our family! Here is everything you need to know.
+
+OUR CHILDREN
+${'─'.repeat(40)}
+${children||'Details to be added — please ask us before you arrive.'}
+
+ALLERGIES & MEDICAL NEEDS
+${'─'.repeat(40)}
+${allergies&&allergies.toLowerCase()!=='none'?`⚠️ IMPORTANT: ${allergies}
+
+Please read all food labels carefully. When in doubt, ask us first.`:'No known allergies. Always check food labels to be safe.'}
+
+MEALS & SNACKS
+${'─'.repeat(40)}
+Snacks are in the kitchen — feel free to offer fruit, crackers, or yogurt.
+Dinner instructions will be left on the counter.
+Please no sweets after 7pm.
+
+BEDTIME ROUTINE
+${'─'.repeat(40)}
+Bath or shower first, then pyjamas and teeth brushing.
+Each child gets one book before lights out.
+Nightlight stays on. Door slightly open.
+
+EMERGENCY CONTACTS
+${'─'.repeat(40)}
+${emergency||'Our numbers are on the fridge. Call anytime — we always pick up.'}
+Nearest hospital: check Google Maps for the closest emergency room.
+Poison Control: 1-800-222-1222
+
+We are so grateful you are here. Don't hesitate to text or call with any questions — we mean it!
+
+With thanks,
+${name}`;
 }
 
 // ════════════════════════════
