@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folia — New Reels</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stone-50:#F7F5F2;--stone-100:#EDE9E3;--stone-200:#DDD7CE;
+  --stone-400:#B5A898;--stone-500:#9A8E81;--stone-700:#5C5147;--stone-900:#2E2820;
+  --parchment:#F0EBE1;--sage-lt:#EEF2EB;
+  --accent:#7C6A52;--accent-lt:#C4B49E;--white:#FDFCFA;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Jost',sans-serif;background:#1A1612;padding:32px 20px;}
+h1{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;font-style:italic;color:var(--accent-lt);text-align:center;margin-bottom:6px;}
+.subtitle{text-align:center;font-size:11px;color:var(--stone-500);letter-spacing:2px;text-transform:uppercase;margin-bottom:40px;}
+.section-head{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--stone-500);margin:48px 0 20px;text-align:center;}
+.assets-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.asset-frame{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.asset-label{font-size:10px;color:var(--stone-500);letter-spacing:1px;text-transform:uppercase;text-align:center;}
+.asset-hint{font-size:10px;color:var(--stone-700);}
+
+/* Phone frame */
+.reel-wrap{width:270px;height:480px;border-radius:16px;overflow:hidden;position:relative;box-shadow:0 8px 40px rgba(0,0,0,0.5);cursor:pointer;}
+.play-hint{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:44px;z-index:50;border-radius:16px;transition:opacity 0.4s ease;opacity:1;}
+.play-hint span{font-family:'Jost',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.play-hint.hidden{opacity:0;pointer-events:none;}
+
+/* ═══════════════════════════
+   REEL 4 — POINT OF FAILURE
+   White / light background
+═══════════════════════════ */
+#reel4{
+  width:100%;height:100%;
+  background:var(--parchment);
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:flex-start;
+  padding:44px 28px;position:relative;overflow:hidden;
+}
+#reel4::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,transparent,var(--accent-lt),var(--accent),var(--accent-lt),transparent);
+}
+.r4-ghost{
+  position:absolute;right:-10px;top:20px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:200px;font-weight:600;color:rgba(124,106,82,0.05);
+  line-height:1;pointer-events:none;
+}
+.r4-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;opacity:0;position:relative;z-index:1;}
+.r4-line{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  color:var(--stone-900);line-height:1.2;
+  position:relative;z-index:1;opacity:0;transform:translateY(10px);
+}
+.r4-line em{font-style:italic;font-weight:600;color:var(--accent);}
+.r4-sub{
+  font-size:14px;font-weight:300;color:var(--stone-500);
+  line-height:1.65;margin-top:20px;
+  position:relative;z-index:1;opacity:0;
+}
+.r4-rule{width:36px;height:2px;background:var(--accent);margin:22px 0;opacity:0;position:relative;z-index:1;}
+.r4-cta{
+  font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  color:var(--stone-900);position:relative;z-index:1;opacity:0;
+}
+.r4-logo{
+  position:absolute;bottom:24px;right:26px;
+  font-family:'Cormorant Garamond',serif;font-size:19px;
+  font-weight:600;font-style:italic;color:var(--accent);
+  z-index:1;opacity:0;
+}
+
+.reel4-on .r4-tag{animation:fup 0.5s ease forwards 0.3s;}
+.reel4-on .r4-line:nth-child(3){animation:fup 0.7s ease forwards 0.7s;}
+.reel4-on .r4-line:nth-child(4){animation:fup 0.7s ease forwards 1.4s;}
+.reel4-on .r4-rule{animation:fup 0.4s ease forwards 2.2s;}
+.reel4-on .r4-sub{animation:fup 0.7s ease forwards 2.5s;}
+.reel4-on .r4-cta{animation:fup 0.5s ease forwards 3.6s;}
+.reel4-on .r4-logo{animation:fup 0.5s ease forwards 4.0s;}
+
+/* ═══════════════════════════
+   REEL 5 — MENTAL LOAD OF MOTHERHOOD
+   Dark background
+═══════════════════════════ */
+#reel5{
+  width:100%;height:100%;
+  background:#1A1612;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:44px 26px;position:relative;overflow:hidden;
+  text-align:center;
+}
+#reel5::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,#3D3228 0%,#2E2820 50%,#1A1612 100%);
+}
+.r5-eyebrow{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;
+  position:relative;z-index:1;opacity:0;
+}
+.r5-word{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--parchment);text-align:center;
+  position:relative;z-index:1;opacity:0;
+  line-height:1.2;
+}
+.r5-word em{font-style:italic;color:var(--accent-lt);}
+.r5-divider{
+  width:32px;height:1px;background:var(--accent);
+  margin:20px auto;opacity:0;position:relative;z-index:1;
+}
+.r5-answer{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  color:var(--white);text-align:center;
+  position:relative;z-index:1;opacity:0;
+  line-height:1.3;
+}
+.r5-sub{
+  font-size:13px;font-weight:300;color:rgba(245,240,232,0.5);
+  line-height:1.65;margin-top:14px;
+  position:relative;z-index:1;opacity:0;
+}
+.r5-logo{
+  position:absolute;bottom:24px;left:0;right:0;text-align:center;
+  font-family:'Cormorant Garamond',serif;font-size:18px;
+  font-weight:600;font-style:italic;color:var(--accent);
+  z-index:1;opacity:0;
+}
+.r5-url{
+  position:absolute;bottom:12px;left:0;right:0;text-align:center;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--stone-500);z-index:1;opacity:0;
+}
+
+.reel5-on .r5-eyebrow{animation:fup 0.5s ease forwards 0.3s;}
+.reel5-on .r5-word:nth-of-type(1){animation:fup 0.7s ease forwards 0.7s;}
+.reel5-on .r5-word:nth-of-type(2){animation:fup 0.7s ease forwards 1.5s;}
+.reel5-on .r5-divider{animation:fup 0.4s ease forwards 2.3s;}
+.reel5-on .r5-answer{animation:fup 0.7s ease forwards 2.7s;}
+.reel5-on .r5-sub{animation:fup 0.6s ease forwards 3.5s;}
+.reel5-on .r5-logo{animation:fup 0.5s ease forwards 4.3s;}
+.reel5-on .r5-url{animation:fup 0.5s ease forwards 4.5s;}
+
+/* ═══════════════════════════
+   REEL 6 — SAME INFO EVERY TIME
+   Dark background
+═══════════════════════════ */
+#reel6{
+  width:100%;height:100%;
+  background:#2E2820;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:flex-start;
+  padding:40px 24px;position:relative;overflow:hidden;
+}
+#reel6::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,#3D3228 0%,#2E2820 100%);
+}
+.r6-tag{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+  position:relative;z-index:1;opacity:0;
+}
+.r6-intro{
+  font-family:'Cormorant Garamond',serif;
+  font-size:19px;font-weight:300;font-style:italic;
+  color:rgba(245,240,232,0.6);line-height:1.4;
+  margin-bottom:18px;position:relative;z-index:1;opacity:0;
+}
+.r6-item{
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:11px;position:relative;z-index:1;
+  opacity:0;transform:translateX(14px);
+}
+.r6-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;margin-top:7px;
+}
+.r6-text{
+  font-size:14px;color:var(--parchment);font-weight:300;
+  line-height:1.45;
+}
+.r6-text strong{font-weight:500;color:var(--white);}
+.r6-punchline{
+  font-family:'Cormorant Garamond',serif;
+  font-size:21px;font-weight:600;font-style:italic;
+  color:var(--accent-lt);line-height:1.3;
+  margin-top:18px;position:relative;z-index:1;opacity:0;
+}
+.r6-logo{
+  position:absolute;bottom:22px;right:24px;
+  font-family:'Cormorant Garamond',serif;font-size:18px;
+  font-weight:600;font-style:italic;color:var(--accent);
+  z-index:1;opacity:0;
+}
+
+.reel6-on .r6-tag{animation:fup 0.5s ease forwards 0.3s;}
+.reel6-on .r6-intro{animation:fup 0.6s ease forwards 0.7s;}
+.reel6-on .r6-item:nth-child(3){animation:sir 0.5s ease forwards 1.3s;}
+.reel6-on .r6-item:nth-child(4){animation:sir 0.5s ease forwards 1.9s;}
+.reel6-on .r6-item:nth-child(5){animation:sir 0.5s ease forwards 2.5s;}
+.reel6-on .r6-item:nth-child(6){animation:sir 0.5s ease forwards 3.1s;}
+.reel6-on .r6-punchline{animation:fup 0.7s ease forwards 3.8s;}
+.reel6-on .r6-logo{animation:fup 0.5s ease forwards 4.5s;}
+
+/* Keyframes */
+@keyframes fup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sir{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+
+/* Scripts section */
+.scripts{max-width:700px;margin:56px auto 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:28px 30px;}
+.scripts h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;font-style:italic;color:var(--accent-lt);margin-bottom:18px;}
+.sl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-500);margin-bottom:4px;margin-top:14px;}
+.sp{font-size:13px;color:var(--stone-300);line-height:1.75;font-style:italic;}
+</style>
+</head>
+<body>
+
+<h1>Folia</h1>
+<div class="subtitle">New Reels · Three concepts</div>
+
+<div class="section-head">Tap each to preview</div>
+<div class="assets-row">
+
+  <!-- REEL 4 — POINT OF FAILURE (LIGHT) -->
+  <div class="asset-frame">
+    <div class="asset-label">Reel 4 — Point of Failure<br>Light background</div>
+    <div class="reel-wrap" id="wrap4" onclick="play('reel4','reel4-on','wrap4')">
+      <div class="play-hint">▶<span>Tap to play</span></div>
+      <div id="reel4">
+        <div class="r4-ghost">!</div>
+        <div class="r4-tag">A sobering thought</div>
+        <div class="r4-line" style="font-size:32px;margin-bottom:8px;">You are your family's<br><em>single point<br>of failure.</em></div>
+        <div class="r4-line" style="font-size:17px;color:var(--stone-500);font-weight:300;margin-top:8px;">All the critical information lives<br>in one place — your head.</div>
+        <div class="r4-rule"></div>
+        <div class="r4-sub">Folia moves it somewhere safer.<br>One app. Built entirely around your family.</div>
+        <div class="r4-cta">withfolia.com →</div>
+        <div class="r4-logo">Folia</div>
+      </div>
+    </div>
+    <div class="asset-hint">Tap → screen-record → add voiceover</div>
+  </div>
+
+  <!-- REEL 5 — MENTAL LOAD OF MOTHERHOOD (DARK) -->
+  <div class="asset-frame">
+    <div class="asset-label">Reel 5 — Mental Load<br>Dark background</div>
+    <div class="reel-wrap" id="wrap5" onclick="play('reel5','reel5-on','wrap5')">
+      <div class="play-hint">▶<span>Tap to play</span></div>
+      <div id="reel5">
+        <div class="r5-eyebrow">The mental load of motherhood</div>
+        <div class="r5-word" style="font-size:28px;font-weight:300;margin-bottom:6px;">What if someone else<br>could hold it all?</div>
+        <div class="r5-word" style="font-size:17px;font-weight:300;color:rgba(245,240,232,0.5);margin-top:4px;">Not a person. Not a spreadsheet.<br>Something that actually <em>learns.</em></div>
+        <div class="r5-divider"></div>
+        <div class="r5-answer">An agent that watches,<br>remembers, and keeps<br>everything current —<br>so you don't have to.</div>
+        <div class="r5-sub">Folia · Your family. A living record.</div>
+        <div class="r5-logo">Folia</div>
+        <div class="r5-url">withfolia.com</div>
+      </div>
+    </div>
+    <div class="asset-hint">Tap → screen-record → add voiceover</div>
+  </div>
+
+  <!-- REEL 6 — CAREGIVER REPETITION (DARK) -->
+  <div class="asset-frame">
+    <div class="asset-label">Reel 6 — Same Info Every Time<br>Dark background</div>
+    <div class="reel-wrap" id="wrap6" onclick="play('reel6','reel6-on','wrap6')">
+      <div class="play-hint">▶<span>Tap to play</span></div>
+      <div id="reel6">
+        <div class="r6-tag">Every. Single. Time.</div>
+        <div class="r6-intro">Every new teacher. Every new sitter.<br>Every new camp. Every new doctor.</div>
+        <div class="r6-item"><div class="r6-dot"></div><div class="r6-text"><strong>The allergy.</strong> Which one. How serious. Where the Epi-pen is.</div></div>
+        <div class="r6-item"><div class="r6-dot"></div><div class="r6-text"><strong>The medication.</strong> The dose. The timing. The side effects.</div></div>
+        <div class="r6-item"><div class="r6-dot"></div><div class="r6-text"><strong>The routine.</strong> The quirks. The things that matter to your kid.</div></div>
+        <div class="r6-item"><div class="r6-dot"></div><div class="r6-text"><strong>The emergency contacts.</strong> Again. From memory. Again.</div></div>
+        <div class="r6-punchline">You should only have to<br>say it once. Ever.</div>
+        <div class="r6-logo">Folia</div>
+      </div>
+    </div>
+    <div class="asset-hint">Tap → screen-record → add voiceover</div>
+  </div>
+
+</div>
+
+<!-- VOICEOVER SCRIPTS -->
+<div class="scripts">
+  <h3>30-second voiceover scripts</h3>
+
+  <div class="sl">Reel 4 — Point of Failure (light background)</div>
+  <div class="sp">"Here's something nobody talks about. You are your family's single point of failure.
+Every critical piece of information — the allergy, the medication, the emergency contact, the bus stop, the pediatrician — lives in one place. Your head.
+What happens if you're unreachable? What happens if you can't answer?
+Folia moves all of it somewhere safer. One app. Built entirely around your specific family. Withfolia.com."</div>
+
+  <div class="sl">Reel 5 — Mental Load of Motherhood (dark)</div>
+  <div class="sp">"The mental load of motherhood is real. And the worst part isn't the work — it's the invisible carrying. The constant remembering. The being the only one who knows.
+What if something else could hold it? Not a person. Not a spreadsheet. Something that actually learns your family and keeps it all current automatically.
+That's what I built. It's called Folia. Withfolia.com."</div>
+
+  <div class="sl">Reel 6 — Same Info Every Time (dark)</div>
+  <div class="sp">"New teacher. New sitter. New camp. New doctor.
+And every single time — the same conversation. The allergy. The medication. The routine. The emergency contacts. From memory. Again.
+I got so tired of saying the same things over and over to every new person who entered my children's lives that I built something about it.
+Folia gives every caregiver exactly what they need — instantly — and keeps it current so you never have to repeat yourself again. Withfolia.com."</div>
+</div>
+
+<script>
+function play(id, cls, wrapId) {
+  const hint = document.getElementById(wrapId).querySelector('.play-hint');
+  hint.classList.add('hidden');
+  const el = document.getElementById(id);
+  el.classList.remove(cls);
+  void el.offsetWidth;
+  el.classList.add(cls);
+  setTimeout(() => hint.classList.remove('hidden'), 6000);
+}
+</script>
+</body>
+</html>
