@@ -3,952 +3,595 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Folia — Free Sitter Brief Generator</title>
+<title>Free Sitter Brief — Folia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 :root {
-  --stone-50:#F7F5F2;--stone-100:#EDE9E3;--stone-200:#DDD7CE;
-  --stone-300:#C9C0B4;--stone-400:#B5A898;--stone-500:#9A8E81;
-  --stone-700:#5C5147;--stone-900:#2E2820;
-  --parchment:#F0EBE1;--sage-lt:#EEF2EB;--sand:#E8E0D0;
-  --accent:#7C6A52;--accent-lt:#C4B49E;--white:#FDFCFA;
-  --green:#4A7C59;--green-lt:#EAF2EC;
-  --red:#8B3A3A;--red-lt:#FDEAEA;
+  --stone-50:  #F7F5F2;
+  --stone-100: #EDE9E3;
+  --stone-200: #DDD7CE;
+  --stone-300: #C9C0B4;
+  --stone-400: #B5A898;
+  --stone-500: #9A8E81;
+  --stone-700: #5C5147;
+  --stone-900: #2E2820;
+  --sand:      #E8E0D0;
+  --parchment: #F0EBE1;
+  --sage-lt:   #EEF2EB;
+  --taupe:     #A89880;
+  --accent:    #7C6A52;
+  --accent-lt: #C4B49E;
+  --white:     #FDFCFA;
+  --green:     #4A7C59;
+  --green-lt:  #EAF2EC;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:'Jost',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--stone-50);color:var(--stone-900);min-height:100vh;}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--parchment);
+  color: var(--stone-900);
+  min-height: 100vh;
+}
+
+/* ── TEXTURE ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9000;
+}
 
 /* ── NAV ── */
-nav{background:var(--stone-900);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
-.nav-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:600;font-style:italic;color:var(--white);text-decoration:none;}
-.nav-back{font-size:12px;color:var(--stone-400);letter-spacing:1px;text-decoration:none;transition:color 0.2s;}
-.nav-back:hover{color:var(--accent-lt);}
-
-/* ── HERO STRIP ── */
-.hero-strip{background:linear-gradient(135deg,#3D3228,#2E2820);padding:52px 32px 48px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06);}
-.hs-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-lt);margin-bottom:14px;}
-.hs-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(32px,5vw,52px);font-weight:300;color:var(--white);line-height:1.15;margin-bottom:14px;}
-.hs-title em{font-style:italic;font-weight:600;}
-.hs-sub{font-size:15px;font-weight:300;color:rgba(247,245,242,0.55);line-height:1.7;max-width:520px;margin:0 auto 24px;}
-.hs-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
-.hs-badge{font-size:11px;padding:5px 14px;border-radius:100px;border:1px solid rgba(196,180,158,0.3);color:var(--accent-lt);letter-spacing:0.5px;}
-
-/* ── PROGRESS ── */
-.progress-wrap{background:var(--stone-900);padding:0 32px 16px;}
-.progress-bar{height:2px;background:rgba(255,255,255,0.08);border-radius:2px;max-width:680px;margin:0 auto;}
-.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.5s ease;}
-.step-labels{display:flex;justify-content:space-between;max-width:680px;margin:8px auto 0;}
-.step-lbl{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-500);transition:color 0.3s;}
-.step-lbl.active{color:var(--accent-lt);}
-
-/* ── MAIN ── */
-.main{max-width:680px;margin:0 auto;padding:40px 24px 80px;}
-
-/* ── FORM SECTIONS ── */
-.form-section{display:none;}
-.form-section.active{display:block;}
-
-.section-header{margin-bottom:28px;}
-.section-icon{font-size:28px;margin-bottom:10px;}
-.section-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:var(--stone-900);margin-bottom:6px;line-height:1.2;}
-.section-desc{font-size:14px;font-weight:300;color:var(--stone-500);line-height:1.65;}
-
-.field-group{margin-bottom:18px;}
-.field-label{display:block;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--stone-500);margin-bottom:7px;}
-.field-label span{color:var(--red);margin-left:2px;}
-
-input[type=text],input[type=email],input[type=tel],textarea,select{
-  width:100%;padding:12px 15px;
-  border:1px solid var(--stone-200);
-  background:var(--white);
-  font-family:'Jost',-apple-system,sans-serif;
-  font-size:14px;color:var(--stone-900);
-  outline:none;border-radius:8px;
-  transition:border-color 0.2s,box-shadow 0.2s;
-  -webkit-appearance:none;
+nav {
+  padding: 20px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--stone-200);
+  background: rgba(240,235,225,0.95);
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
 }
-input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,106,82,0.1);}
-input::placeholder,textarea::placeholder{color:var(--stone-300);}
-textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; font-style: italic; color: var(--accent); text-decoration: none; }
+.back-link { font-size: 13px; color: var(--stone-500); text-decoration: none; letter-spacing: 0.5px; transition: color 0.2s; }
+.back-link:hover { color: var(--stone-900); }
 
-.row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-@media(max-width:500px){.row-2{grid-template-columns:1fr;}}
+/* ── LAYOUT ── */
+.page-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 40px 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
 
-/* child rows */
-.child-card{background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:16px;margin-bottom:12px;position:relative;}
-.child-card-title{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
-.remove-child{position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:var(--stone-100);border:none;color:var(--stone-400);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s;}
-.remove-child:hover{background:var(--red-lt);color:var(--red);}
+/* ── LEFT: FORM ── */
+.form-side { position: sticky; top: 90px; }
 
-.add-child-btn{width:100%;padding:12px;border:1.5px dashed var(--stone-200);border-radius:10px;background:transparent;font-family:'Jost',sans-serif;font-size:13px;color:var(--stone-400);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:20px;}
-.add-child-btn:hover{border-color:var(--accent);color:var(--accent);}
+.eyebrow {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px;
+}
 
-/* contact rows */
-.contact-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;}
-@media(max-width:500px){.contact-row{grid-template-columns:1fr;}}
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 300; line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+.page-title em { font-style: italic; font-weight: 400; }
 
-/* navigation buttons */
-.btn-row{display:flex;gap:12px;margin-top:32px;}
-.btn-primary{flex:2;padding:14px;background:var(--stone-900);color:var(--white);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.8px;cursor:pointer;transition:background 0.2s;}
-.btn-primary:hover{background:var(--accent);}
-.btn-secondary{flex:1;padding:14px;background:transparent;color:var(--stone-500);border:1px solid var(--stone-200);border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;}
-.btn-secondary:hover{border-color:var(--stone-400);color:var(--stone-700);}
+.page-sub {
+  font-size: 16px; font-weight: 300;
+  color: var(--stone-500); line-height: 1.75;
+  margin-bottom: 36px;
+}
 
-/* ── EMAIL GATE ── */
-#step-gate{text-align:center;}
-#step-gate .section-title{font-size:32px;margin-bottom:8px;}
-.gate-preview{background:var(--stone-900);border-radius:16px;padding:24px;margin:24px 0;text-align:left;position:relative;overflow:hidden;}
-.gate-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,transparent,var(--stone-900));}
-.gate-preview-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--stone-500);margin-bottom:14px;}
-.gp-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
-.gp-row:last-child{border-bottom:none;}
-.gp-icon{font-size:16px;flex-shrink:0;}
-.gp-text{font-size:12px;color:rgba(247,245,242,0.7);line-height:1.4;font-weight:300;}
-.gp-text strong{color:var(--white);font-weight:500;}
+/* form */
+.field-group { margin-bottom: 16px; }
+.field-label {
+  display: block; font-size: 10.5px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--stone-500); margin-bottom: 7px;
+}
+.field-label .opt { color: var(--stone-300); font-size: 10px; letter-spacing: 1px; text-transform: none; }
 
-.gate-form{background:var(--white);border:1px solid var(--stone-200);border-radius:14px;padding:24px;margin-top:4px;text-align:left;}
-.gate-form-title{font-size:14px;font-weight:500;color:var(--stone-900);margin-bottom:4px;}
-.gate-form-sub{font-size:12px;color:var(--stone-500);margin-bottom:18px;font-weight:300;line-height:1.5;}
-.gate-submit{width:100%;padding:15px;background:var(--accent);color:var(--white);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:4px;}
-.gate-submit:hover{background:var(--stone-700);}
+input[type=text], input[type=email], textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--stone-200);
+  background: var(--white);
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
+  color: var(--stone-900);
+  outline: none;
+  border-radius: 2px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+input:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,106,82,0.08);
+}
+input::placeholder, textarea::placeholder { color: var(--stone-300); }
+textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 
-/* ── BRIEF OUTPUT ── */
-#step-brief{display:none;}
-#step-brief.active{display:block;}
+.submit-btn {
+  width: 100%; padding: 16px;
+  background: var(--stone-900); color: var(--white);
+  border: none; border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s;
+  margin-top: 8px;
+}
+.submit-btn:hover { background: var(--accent); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.brief-actions{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
-.action-btn{flex:1;min-width:120px;padding:13px 16px;border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px;}
-.action-btn.dark{background:var(--stone-900);color:var(--white);}
-.action-btn.dark:hover{background:var(--accent);}
-.action-btn.outline{background:transparent;color:var(--stone-700);border:1px solid var(--stone-200);}
-.action-btn.outline:hover{border-color:var(--stone-700);}
-.action-btn.green{background:var(--green-lt);color:var(--green);border:1px solid rgba(74,124,89,0.2);}
-.action-btn.green:hover{background:#D4EAD8;}
+.consent-note {
+  font-size: 11.5px; color: var(--stone-400);
+  margin-top: 14px; line-height: 1.6; text-align: center;
+}
+.consent-note a { color: var(--accent); }
 
-.share-link-box{background:var(--parchment);border:1px solid var(--stone-200);border-radius:10px;padding:14px 16px;margin-bottom:20px;display:none;}
-.share-link-box.show{display:block;}
-.share-link-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
-.share-link-url{display:flex;gap:8px;align-items:center;}
-.share-link-url input{flex:1;padding:10px 12px;border:1px solid var(--stone-200);border-radius:8px;font-size:13px;background:var(--white);color:var(--stone-700);outline:none;}
-.copy-btn{padding:10px 16px;background:var(--stone-900);color:var(--white);border:none;border-radius:8px;font-size:12px;cursor:pointer;white-space:nowrap;transition:background 0.2s;}
-.copy-btn:hover{background:var(--accent);}
-.copy-btn.copied{background:var(--green);}
+/* generating state */
+.generating {
+  display: none;
+  flex-direction: column; align-items: center;
+  justify-content: center; text-align: center;
+  padding: 40px 0;
+}
+.generating.show { display: flex; }
+.gen-icon { font-size: 40px; margin-bottom: 20px; animation: gentle-float 3s ease-in-out infinite; }
+@keyframes gentle-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.gen-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 400;
+  color: var(--stone-900); margin-bottom: 8px;
+}
+.gen-sub { font-size: 14px; font-weight: 300; color: var(--stone-500); line-height: 1.6; margin-bottom: 24px; }
+.dots { display: flex; gap: 5px; justify-content: center; }
+.dots span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent-lt);
+  animation: blink 1.2s ease-in-out infinite;
+}
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,80%,100%{opacity:0.2;transform:scale(0.8)} 40%{opacity:1;transform:scale(1)} }
 
-.folia-nudge{background:linear-gradient(135deg,#3D3228,#2E2820);border-radius:14px;padding:20px 22px;margin-bottom:24px;display:flex;align-items:center;gap:16px;}
-.fn-text{flex:1;}
-.fn-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:600;font-style:italic;color:var(--white);margin-bottom:4px;}
-.fn-sub{font-size:12px;color:var(--stone-400);font-weight:300;line-height:1.5;}
-.fn-btn{padding:10px 18px;background:var(--accent);color:var(--white);border:none;border-radius:8px;font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background 0.2s;}
-.fn-btn:hover{background:var(--stone-700);}
+/* ── RIGHT: OUTPUT ── */
+.output-side { }
 
-/* ── PRINTABLE BRIEF ── */
-#printable-brief{background:var(--white);border:1px solid var(--stone-200);border-radius:14px;overflow:hidden;}
+.output-placeholder {
+  background: var(--white);
+  border: 1px solid var(--stone-200);
+  border-radius: 4px;
+  padding: 48px 36px;
+  text-align: center;
+  min-height: 500px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
 
-.brief-header{background:var(--stone-900);padding:28px 28px 24px;}
-.bh-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
-.bh-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:600;font-style:italic;color:var(--accent-lt);}
-.bh-date{font-size:11px;color:var(--stone-500);letter-spacing:1px;}
-.bh-family{font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:600;color:var(--white);margin-bottom:4px;}
-.bh-sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-500);}
+.placeholder-icon { font-size: 48px; margin-bottom: 20px; opacity: 0.4; }
+.placeholder-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 300; font-style: italic;
+  color: var(--stone-400); margin-bottom: 10px;
+}
+.placeholder-sub { font-size: 14px; color: var(--stone-300); font-weight: 300; line-height: 1.6; }
 
-.brief-body{padding:24px 28px;}
+/* The actual brief */
+.brief-output {
+  display: none;
+  background: var(--white);
+  border: 1px solid var(--stone-200);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 24px rgba(90,70,50,0.06);
+}
+.brief-output.show { display: block; }
 
-.brief-section{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--stone-100);}
-.brief-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.brief-header {
+  background: var(--stone-900);
+  padding: 28px 32px 24px;
+}
+.brief-header-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-weight: 600; font-style: italic;
+  color: var(--accent-lt); margin-bottom: 4px;
+}
+.brief-header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 600;
+  color: var(--white); line-height: 1.2;
+}
+.brief-header-date {
+  font-size: 11px; color: var(--stone-500);
+  letter-spacing: 1px; margin-top: 6px;
+}
 
-.bs-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.bs-icon{font-size:18px;}
-.bs-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:600;color:var(--stone-900);}
+.brief-body {
+  padding: 28px 32px;
+  font-size: 14px;
+  color: var(--stone-700);
+  line-height: 1.85;
+  font-weight: 300;
+  white-space: pre-wrap;
+  max-height: 520px;
+  overflow-y: auto;
+}
 
-.child-brief{background:var(--parchment);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
-.child-brief:last-child{margin-bottom:0;}
-.cb-name{font-size:14px;font-weight:600;color:var(--stone-900);margin-bottom:6px;}
-.cb-item{display:flex;gap:8px;font-size:13px;color:var(--stone-700);line-height:1.5;margin-bottom:3px;font-weight:300;}
-.cb-label{font-weight:500;color:var(--stone-900);flex-shrink:0;}
-.allergy-pill{display:inline-block;background:var(--red-lt);color:var(--red);font-size:11px;font-weight:500;padding:2px 9px;border-radius:100px;margin-right:5px;margin-bottom:4px;}
+.brief-actions {
+  padding: 20px 32px;
+  border-top: 1px solid var(--stone-100);
+  display: flex; gap: 10px;
+  background: var(--stone-50);
+}
 
-.contact-brief{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
-.cb-contact{background:var(--parchment);border-radius:8px;padding:12px 14px;}
-.cbc-role{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:3px;}
-.cbc-name{font-size:14px;font-weight:500;color:var(--stone-900);margin-bottom:2px;}
-.cbc-phone{font-size:13px;color:var(--stone-500);font-weight:300;}
+.btn-copy {
+  flex: 1; padding: 12px;
+  background: var(--stone-900); color: var(--white);
+  border: none; border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s;
+}
+.btn-copy:hover { background: var(--accent); }
 
-.schedule-row{display:flex;gap:10px;font-size:13px;color:var(--stone-700);padding:6px 0;border-bottom:1px solid var(--stone-100);line-height:1.5;font-weight:300;}
-.schedule-row:last-child{border-bottom:none;}
-.sr-label{font-weight:500;color:var(--stone-900);min-width:100px;flex-shrink:0;}
+.btn-print {
+  flex: 1; padding: 12px;
+  background: transparent; color: var(--stone-500);
+  border: 1px solid var(--stone-200); border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-print:hover { border-color: var(--stone-500); color: var(--stone-700); }
 
-.rules-list{display:flex;flex-direction:column;gap:6px;}
-.rule-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--stone-700);line-height:1.5;font-weight:300;}
-.rule-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;}
+.brief-upsell {
+  padding: 20px 32px;
+  border-top: 1px solid var(--stone-100);
+  background: var(--sage-lt);
+  display: flex; align-items: center; gap: 16px;
+}
+.upsell-text { flex: 1; }
+.upsell-title { font-size: 14px; font-weight: 500; color: var(--stone-900); margin-bottom: 3px; }
+.upsell-sub { font-size: 12.5px; color: var(--stone-500); font-weight: 300; line-height: 1.5; }
+.upsell-btn {
+  padding: 10px 18px;
+  background: var(--accent); color: var(--white);
+  border: none; border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 11.5px; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; white-space: nowrap;
+  text-decoration: none; display: inline-block;
+  transition: background 0.2s;
+}
+.upsell-btn:hover { background: var(--stone-700); }
 
-.brief-footer{background:var(--stone-100);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;}
-.bf-text{font-size:11px;color:var(--stone-400);letter-spacing:0.5px;}
-.bf-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;font-style:italic;color:var(--accent);}
+/* ── SOCIAL PROOF ── */
+.proof-strip {
+  background: var(--stone-900);
+  padding: 40px;
+  text-align: center;
+}
+.proof-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 300; font-style: italic;
+  color: var(--stone-300); margin-bottom: 20px;
+}
+.proof-chips { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.proof-chip {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-size: 13px; color: var(--stone-400);
+  font-weight: 300;
+}
 
-/* ── PRINT STYLES ── */
-@media print {
-  nav,.hero-strip,.progress-wrap,.brief-actions,.share-link-box,.folia-nudge,.btn-row{display:none!important;}
-  body{background:white;}
-  #printable-brief{border:none;border-radius:0;}
-  .main{padding:0;}
-  #step-brief{display:block!important;}
-  .brief-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+/* ── FOOTER ── */
+footer {
+  padding: 28px 40px;
+  border-top: 1px solid var(--stone-200);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--parchment);
+  font-size: 12px; color: var(--stone-300);
+}
+footer .logo { font-size: 17px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 780px) {
+  .page-wrap { grid-template-columns: 1fr; gap: 40px; padding: 40px 24px 80px; }
+  .form-side { position: static; }
+  nav { padding: 16px 24px; }
+  footer { flex-direction: column; gap: 10px; text-align: center; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <a class="nav-logo" href="https://withfolia.com">Folia</a>
-  <a class="nav-back" href="https://withfolia.com">← Back to Folia</a>
+  <a href="/" class="logo">Folia</a>
+  <a href="/" class="back-link">← Back to withfolia.com</a>
 </nav>
 
-<!-- HERO -->
-<div class="hero-strip">
-  <div class="hs-eyebrow">Free Tool from Folia</div>
-  <h1 class="hs-title">Your family's sitter brief,<br><em>ready in 3 minutes.</em></h1>
-  <p class="hs-sub">Fill in your family's details once. Get a beautiful, printable brief you can text or print for any sitter, at any time.</p>
-  <div class="hs-badges">
-    <div class="hs-badge">Free forever</div>
-    <div class="hs-badge">Printable PDF</div>
-    <div class="hs-badge">Shareable link</div>
-    <div class="hs-badge">No account needed</div>
-  </div>
-</div>
+<div class="page-wrap">
 
-<!-- PROGRESS -->
-<div class="progress-wrap">
-  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:20%"></div></div>
-  <div class="step-labels">
-    <span class="step-lbl active" id="lbl0">Children</span>
-    <span class="step-lbl" id="lbl1">Health</span>
-    <span class="step-lbl" id="lbl2">Contacts</span>
-    <span class="step-lbl" id="lbl3">Schedule</span>
-    <span class="step-lbl" id="lbl4">House Rules</span>
-    <span class="step-lbl" id="lbl5">Get Brief</span>
-  </div>
-</div>
+  <!-- LEFT: FORM -->
+  <div class="form-side">
 
-<!-- MAIN FORM -->
-<div class="main">
+    <!-- Form state -->
+    <div id="formState">
+      <div class="eyebrow">Free · Instant · No credit card</div>
+      <h1 class="page-title">Your family's<br><em>sitter brief,</em><br>in seconds.</h1>
+      <p class="page-sub">Everything a sitter, grandparent, or caregiver needs to know — generated for your specific family and ready to share.</p>
 
-  <!-- STEP 0: CHILDREN -->
-  <div class="form-section active" id="step-0">
-    <div class="section-header">
-      <div class="section-icon">👧👦</div>
-      <div class="section-title">Who are we caring for?</div>
-      <div class="section-desc">Add each child the sitter will be looking after.</div>
+      <form name="sitter-brief" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
+        <input type="hidden" name="form-name" value="sitter-brief" />
+        <p style="display:none;"><input name="bot-field" /></p>
+
+        <div class="field-group">
+          <label class="field-label">Family name</label>
+          <input type="text" name="name" id="familyName" placeholder="e.g. The Ashfords" required />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Your email <span class="opt">(we'll send you a copy)</span></label>
+          <input type="email" name="email" id="familyEmail" placeholder="your@email.com" required />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Children — names &amp; ages</label>
+          <input type="text" name="children" id="children" placeholder="e.g. Nora 11, Ben 7, Sam 4" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Allergies or medical needs <span class="opt">(or 'none')</span></label>
+          <input type="text" name="allergies" id="allergies" placeholder="e.g. Nora: peanut allergy — Epi-pen in red pouch" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Emergency contact</label>
+          <input type="text" name="emergency" id="emergency" placeholder="Name and phone number" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Anything else the sitter should know <span class="opt">(optional)</span></label>
+          <textarea name="notes" id="notes" placeholder="Bedtime routines, pet info, house rules, wifi password…"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Generate My Sitter Brief →</button>
+      </form>
+
+      <p class="consent-note">We'll quietly keep you in the loop about Folia — unsubscribe anytime. <a href="/">Learn more</a></p>
     </div>
 
-    <div id="childrenContainer"></div>
-    <button class="add-child-btn" onclick="addChild()"><span style="font-size:16px">+</span> Add a child</button>
-
-    <div class="btn-row">
-      <button class="btn-primary" onclick="nextStep(0)">Continue →</button>
-    </div>
-  </div>
-
-  <!-- STEP 1: HEALTH & ALLERGIES -->
-  <div class="form-section" id="step-1">
-    <div class="section-header">
-      <div class="section-icon">⚕️</div>
-      <div class="section-title">Health &amp; allergies</div>
-      <div class="section-desc">The most critical information for any caregiver.</div>
+    <!-- Generating state -->
+    <div class="generating" id="generatingState">
+      <div class="gen-icon">📋</div>
+      <div class="gen-title">Writing your brief…</div>
+      <div class="gen-sub">Our agent is putting together everything<br>your sitter needs to know.</div>
+      <div class="dots"><span></span><span></span><span></span></div>
     </div>
 
-    <div id="healthContainer"></div>
-
-    <div class="btn-row">
-      <button class="btn-secondary" onclick="prevStep(1)">← Back</button>
-      <button class="btn-primary" onclick="nextStep(1)">Continue →</button>
-    </div>
-  </div>
-
-  <!-- STEP 2: EMERGENCY CONTACTS -->
-  <div class="form-section" id="step-2">
-    <div class="section-header">
-      <div class="section-icon">📞</div>
-      <div class="section-title">Emergency contacts</div>
-      <div class="section-desc">Who should the sitter call if they can't reach you?</div>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Parent / Guardian 1</div>
-      <div class="contact-row">
-        <input type="text" id="p1name" placeholder="Name" />
-        <input type="tel" id="p1phone" placeholder="Phone number" />
-        <input type="text" id="p1location" placeholder="Where you'll be" />
-      </div>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Parent / Guardian 2</div>
-      <div class="contact-row">
-        <input type="text" id="p2name" placeholder="Name" />
-        <input type="tel" id="p2phone" placeholder="Phone number" />
-        <input type="text" id="p2location" placeholder="Where you'll be" />
-      </div>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Backup contact (neighbor, grandparent, etc.)</div>
-      <div class="contact-row">
-        <input type="text" id="b1name" placeholder="Name" />
-        <input type="tel" id="b1phone" placeholder="Phone number" />
-        <input type="text" id="b1relation" placeholder="Relationship" />
-      </div>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Doctor / Pediatrician</div>
-      <div class="contact-row">
-        <input type="text" id="drname" placeholder="Dr. name & practice" />
-        <input type="tel" id="drphone" placeholder="Phone number" />
-        <input type="text" id="drnotes" placeholder="After-hours instructions" />
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
-      <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
-    </div>
   </div>
 
-  <!-- STEP 3: SCHEDULE & PICKUP -->
-  <div class="form-section" id="step-3">
-    <div class="section-header">
-      <div class="section-icon">📅</div>
-      <div class="section-title">Schedule &amp; pickup</div>
-      <div class="section-desc">What the sitter needs to know about timings and routines.</div>
+  <!-- RIGHT: OUTPUT -->
+  <div class="output-side">
+
+    <!-- Placeholder -->
+    <div class="output-placeholder" id="outputPlaceholder">
+      <div class="placeholder-icon">📄</div>
+      <div class="placeholder-title">Your sitter brief will appear here</div>
+      <div class="placeholder-sub">Fill in the details on the left<br>and we'll generate it instantly.</div>
     </div>
 
-    <div class="field-group">
-      <div class="field-label">Arrival time / when sitter starts</div>
-      <input type="text" id="sched-arrival" placeholder="e.g. 5:30 PM" />
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Expected return time</div>
-      <input type="text" id="sched-return" placeholder="e.g. 10:00 PM — we'll text if later" />
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">School / activity pickups needed?</div>
-      <textarea id="sched-pickup" placeholder="e.g. Pick up Nora from soccer at Oak Park at 6pm. Bus drops Ben at Oak & 4th at 3:15pm."></textarea>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Dinner instructions</div>
-      <textarea id="sched-dinner" placeholder="e.g. Pasta is in the fridge, heat at 350 for 15 mins. Kids eat at 6:30."></textarea>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Bedtime routine</div>
-      <textarea id="sched-bedtime" placeholder="e.g. Bath at 7:30, books at 8:00, lights out 8:30. Nora needs white noise. Ben takes inhaler before bed."></textarea>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn-secondary" onclick="prevStep(3)">← Back</button>
-      <button class="btn-primary" onclick="nextStep(3)">Continue →</button>
-    </div>
-  </div>
-
-  <!-- STEP 4: HOUSE RULES & CODES -->
-  <div class="form-section" id="step-4">
-    <div class="section-header">
-      <div class="section-icon">🏠</div>
-      <div class="section-title">House rules &amp; codes</div>
-      <div class="section-desc">Everything the sitter needs to navigate your home.</div>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">House rules for kids</div>
-      <textarea id="house-rules" placeholder="e.g. No screens after 7pm. No food in bedrooms. Shoes off at the door."></textarea>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Screen time rules</div>
-      <input type="text" id="house-screens" placeholder="e.g. 1 hour total, no YouTube, Netflix is fine" />
-    </div>
-
-    <div class="row-2">
-      <div class="field-group">
-        <div class="field-label">Wifi name</div>
-        <input type="text" id="house-wifi-name" placeholder="Network name" />
-      </div>
-      <div class="field-group">
-        <div class="field-label">Wifi password</div>
-        <input type="text" id="house-wifi-pass" placeholder="Password" />
-      </div>
-    </div>
-
-    <div class="row-2">
-      <div class="field-group">
-        <div class="field-label">Door code / key info</div>
-        <input type="text" id="house-door" placeholder="e.g. Key under mat, code is 1234" />
-      </div>
-      <div class="field-group">
-        <div class="field-label">Alarm code (if any)</div>
-        <input type="text" id="house-alarm" placeholder="e.g. 5678, disarm within 30 sec" />
-      </div>
-    </div>
-
-    <div class="field-group">
-      <div class="field-label">Anything else the sitter should know</div>
-      <textarea id="house-notes" placeholder="e.g. Dog needs to go out at 8pm. Don't open the door for strangers. Call us before calling 911 unless it's a real emergency."></textarea>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn-secondary" onclick="prevStep(4)">← Back</button>
-      <button class="btn-primary" onclick="nextStep(4)">Almost done →</button>
-    </div>
-  </div>
-
-  <!-- STEP 5: EMAIL GATE -->
-  <div class="form-section" id="step-gate">
-    <div class="section-header">
-      <div class="section-icon">✨</div>
-      <div class="section-title">Your brief is ready.</div>
-      <div class="section-desc">Enter your name and email to get your printable brief and shareable link. Free, always.</div>
-    </div>
-
-    <!-- Preview -->
-    <div class="gate-preview">
-      <div class="gate-preview-label">Preview of your brief</div>
-      <div id="gatePreviewContent"></div>
-    </div>
-
-    <!-- Email form -->
-    <div class="gate-form">
-      <div class="gate-form-title">Where should we send your brief?</div>
-      <div class="gate-form-sub">We'll also keep you posted as Folia grows. No spam, ever — just updates about the full app.</div>
-      <div class="field-group">
-        <div class="field-label">Your name</div>
-        <input type="text" id="gate-name" placeholder="e.g. Claire" />
-      </div>
-      <div class="field-group">
-        <div class="field-label">Email address</div>
-        <input type="email" id="gate-email" placeholder="your@email.com" />
-      </div>
-      <button class="gate-submit" onclick="submitGate()">Get My Free Sitter Brief →</button>
-    </div>
-  </div>
-
-  <!-- BRIEF OUTPUT -->
-  <div id="step-brief">
-
-    <div class="brief-actions">
-      <button class="action-btn dark" onclick="window.print()">🖨 Print Brief</button>
-      <button class="action-btn outline" onclick="toggleShareLink()">🔗 Get Shareable Link</button>
-      <button class="action-btn green" onclick="editBrief()">✏️ Edit</button>
-    </div>
-
-    <div class="share-link-box" id="shareLinkBox">
-      <div class="share-link-label">✓ Your brief is ready — bookmark this link or share it with your sitter</div>
-      <div class="share-link-url">
-        <input type="text" id="shareLinkInput" readonly />
-        <button class="copy-btn" id="copyBtn" onclick="copyLink()">Copy</button>
-      </div>
-    </div>
-
-    <div style="background:var(--sage-lt);border:1px solid rgba(107,127,94,0.2);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--stone-700);line-height:1.6;">
-  <strong style="display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Save as PDF</strong>
-  On your phone or computer, tap <strong>Print</strong> below → choose <strong>"Save as PDF"</strong> as the printer. That's your shareable PDF — send it to any sitter any time.
-</div>
-<div class="folia-nudge">
-      <div class="fn-text">
-        <div class="fn-title">Want this to update itself automatically?</div>
-        <div class="fn-sub">Folia's agent watches your email, calendar, and more — so your sitter brief is always current without you touching it.</div>
-      </div>
-      <button class="fn-btn" onclick="window.location.href='https://withfolia.com'">Learn More</button>
-    </div>
-
-    <!-- THE BRIEF -->
-    <div id="printable-brief">
-
+    <!-- Brief output -->
+    <div class="brief-output" id="briefOutput">
       <div class="brief-header">
-        <div class="bh-top">
-          <div class="bh-logo">Folia</div>
-          <div class="bh-date" id="briefDate"></div>
-        </div>
-        <div class="bh-family" id="briefFamilyName">The Family Sitter Brief</div>
-        <div class="bh-sub">Prepared for your caregiver · withfolia.com</div>
+        <div class="brief-header-logo">Folia</div>
+        <div class="brief-header-title" id="briefTitle">Sitter Brief</div>
+        <div class="brief-header-date" id="briefDate"></div>
       </div>
-
-      <div class="brief-body">
-
-        <!-- Children & Health -->
-        <div class="brief-section" id="brief-children-section">
-          <div class="bs-header"><span class="bs-icon">👧</span><span class="bs-title">Children &amp; Health</span></div>
-          <div id="brief-children-content"></div>
-        </div>
-
-        <!-- Emergency Contacts -->
-        <div class="brief-section" id="brief-contacts-section">
-          <div class="bs-header"><span class="bs-icon">📞</span><span class="bs-title">Emergency Contacts</span></div>
-          <div class="contact-brief" id="brief-contacts-content"></div>
-        </div>
-
-        <!-- Schedule -->
-        <div class="brief-section" id="brief-schedule-section">
-          <div class="bs-header"><span class="bs-icon">📅</span><span class="bs-title">Schedule &amp; Routine</span></div>
-          <div id="brief-schedule-content"></div>
-        </div>
-
-        <!-- House Rules -->
-        <div class="brief-section" id="brief-house-section">
-          <div class="bs-header"><span class="bs-icon">🏠</span><span class="bs-title">House Rules &amp; Codes</span></div>
-          <div id="brief-house-content"></div>
-        </div>
-
+      <div class="brief-body" id="briefBody"></div>
+      <div class="brief-actions">
+        <button class="btn-copy" onclick="copyBrief()">Copy to Clipboard</button>
+        <button class="btn-print" onclick="window.print()">Print / Save PDF</button>
       </div>
-
-      <div class="brief-footer">
-        <div class="bf-text">Generated with Folia · withfolia.com · <span id="briefFooterDate"></span></div>
-        <div class="bf-logo">Folia</div>
+      <div class="brief-upsell">
+        <div class="upsell-text">
+          <div class="upsell-title">Want this to update itself automatically?</div>
+          <div class="upsell-sub">Folia keeps your family's brief current — so you never have to rewrite it when things change.</div>
+        </div>
+        <a href="/" class="upsell-btn">Try Folia →</a>
       </div>
-
     </div>
-  </div>
 
-</div><!-- /main -->
+  </div>
+</div>
+
+<!-- SOCIAL PROOF -->
+<div class="proof-strip">
+  <div class="proof-title">What your sitter brief will include</div>
+  <div class="proof-chips">
+    <div class="proof-chip">👶 Children's profiles</div>
+    <div class="proof-chip">⚠️ Allergies & medical needs</div>
+    <div class="proof-chip">🍽️ Meal & snack guidance</div>
+    <div class="proof-chip">🌙 Bedtime routine</div>
+    <div class="proof-chip">📞 Emergency contacts</div>
+    <div class="proof-chip">🐾 Pet care</div>
+    <div class="proof-chip">🏠 House rules</div>
+    <div class="proof-chip">📶 Wifi & essentials</div>
+  </div>
+</div>
+
+<footer>
+  <a href="/" class="logo">Folia</a>
+  <p>© 2025 Folia · withfolia.com · Built for families, by people who have them.</p>
+</footer>
 
 <script>
-// ── STATE ──
-let currentStep = 0;
-let children = [];
-let childCount = 0;
+const TODAY = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
 
-const steps = ['step-0','step-1','step-2','step-3','step-4','step-gate'];
-const progressPcts = [20, 35, 50, 65, 82, 100];
+async function handleSubmit(e) {
+  e.preventDefault();
 
-// ── INIT ──
-window.addEventListener('load', () => {
-  document.getElementById('briefDate').textContent = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-  document.getElementById('briefFooterDate').textContent = new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const name     = document.getElementById('familyName').value.trim();
+  const email    = document.getElementById('familyEmail').value.trim();
+  const children = document.getElementById('children').value.trim();
+  const allergies= document.getElementById('allergies').value.trim();
+  const emergency= document.getElementById('emergency').value.trim();
+  const notes    = document.getElementById('notes').value.trim();
 
-  // If URL has a brief hash, load from it (sitter viewing shared link)
-  if (!loadFromHash()) {
-    addChild(); // Normal flow — start with one child
-  }
-});
+  if (!name || !email) return;
 
-// ── NAVIGATION ──
-function nextStep(from) {
-  if (from === 0 && children.length === 0) { addChild(); }
-  goTo(from + 1);
-}
-function prevStep(from) { goTo(from - 1); }
-
-function goTo(n) {
-  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-  document.getElementById(steps[n]).classList.add('active');
-
-  // Update progress
-  document.getElementById('progressFill').style.width = progressPcts[n] + '%';
-  document.querySelectorAll('.step-lbl').forEach((l,i) => l.classList.toggle('active', i === n));
-
-  // If going to gate, build preview
-  if (n === 5) buildGatePreview();
-
-  currentStep = n;
-  window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-// ── CHILDREN ──
-function addChild() {
-  childCount++;
-  const id = childCount;
-  children.push(id);
-
-  // Add to step 0
-  const container = document.getElementById('childrenContainer');
-  const div = document.createElement('div');
-  div.className = 'child-card';
-  div.id = `child-card-${id}`;
-  div.innerHTML = `
-    <div class="child-card-title">Child ${id}</div>
-    ${id > 1 ? `<button class="remove-child" onclick="removeChild(${id})">×</button>` : ''}
-    <div class="row-2">
-      <div class="field-group"><div class="field-label">Name</div><input type="text" id="c${id}-name" placeholder="e.g. Nora" /></div>
-      <div class="field-group"><div class="field-label">Age</div><input type="text" id="c${id}-age" placeholder="e.g. 11" /></div>
-    </div>
-    <div class="field-group"><div class="field-label">Anything sitter should know</div><input type="text" id="c${id}-notes" placeholder="e.g. Shy at first, loves Lego, needs reading glasses" /></div>
-  `;
-  container.appendChild(div);
-
-  // Add health section for this child
-  const hContainer = document.getElementById('healthContainer');
-  const hDiv = document.createElement('div');
-  hDiv.className = 'child-card';
-  hDiv.id = `health-card-${id}`;
-  hDiv.innerHTML = `
-    <div class="child-card-title" id="health-title-${id}">Child ${id}</div>
-    <div class="field-group">
-      <div class="field-label">Allergies <span style="color:var(--red);font-size:11px;">(list all — this is critical)</span></div>
-      <input type="text" id="c${id}-allergies" placeholder="e.g. Peanuts, tree nuts — or 'None'" />
-    </div>
-    <div class="field-group">
-      <div class="field-label">Medications</div>
-      <input type="text" id="c${id}-meds" placeholder="e.g. Albuterol inhaler in blue backpack — or 'None'" />
-    </div>
-    <div class="field-group">
-      <div class="field-label">Where is the Epi-pen / emergency meds?</div>
-      <input type="text" id="c${id}-epipen" placeholder="e.g. Red pouch, front pocket of backpack" />
-    </div>
-    <div class="field-group">
-      <div class="field-label">Medical conditions sitter should know</div>
-      <input type="text" id="c${id}-conditions" placeholder="e.g. Asthma — inhaler before exercise if wheezing" />
-    </div>
-  `;
-  hContainer.appendChild(hDiv);
-}
-
-function removeChild(id) {
-  children = children.filter(c => c !== id);
-  document.getElementById(`child-card-${id}`)?.remove();
-  document.getElementById(`health-card-${id}`)?.remove();
-}
-
-// Sync child name to health section title
-document.addEventListener('input', (e) => {
-  const match = e.target?.id?.match(/^c(\d+)-name$/);
-  if (match) {
-    const id = match[1];
-    const title = document.getElementById(`health-title-${id}`);
-    if (title) title.textContent = e.target.value || `Child ${id}`;
-  }
-});
-
-// ── GATE PREVIEW ──
-function buildGatePreview() {
-  const c = document.getElementById('gatePreviewContent');
-  c.innerHTML = '';
-  children.forEach(id => {
-    const name = document.getElementById(`c${id}-name`)?.value || `Child ${id}`;
-    const allergy = document.getElementById(`c${id}-allergies`)?.value;
-    const meds = document.getElementById(`c${id}-meds`)?.value;
-    if (name || allergy) {
-      const row = document.createElement('div');
-      row.className = 'gp-row';
-      row.innerHTML = `<span class="gp-icon">👧</span><span class="gp-text"><strong>${name}</strong>${allergy ? ' · Allergy: ' + allergy : ''}${meds ? ' · Meds: ' + meds : ''}</span>`;
-      c.appendChild(row);
-    }
-  });
-  const p1 = document.getElementById('p1name')?.value;
-  const p1ph = document.getElementById('p1phone')?.value;
-  if (p1) {
-    const row = document.createElement('div');
-    row.className = 'gp-row';
-    row.innerHTML = `<span class="gp-icon">📞</span><span class="gp-text"><strong>${p1}</strong>${p1ph ? ' · ' + p1ph : ''}</span>`;
-    c.appendChild(row);
-  }
-  const bedtime = document.getElementById('sched-bedtime')?.value;
-  if (bedtime) {
-    const row = document.createElement('div');
-    row.className = 'gp-row';
-    row.innerHTML = `<span class="gp-icon">🌙</span><span class="gp-text">${bedtime.substring(0,80)}${bedtime.length > 80 ? '…' : ''}</span>`;
-    c.appendChild(row);
-  }
-}
-
-// ── GATE SUBMIT ──
-async function submitGate() {
-  const name = document.getElementById('gate-name').value.trim();
-  const email = document.getElementById('gate-email').value.trim();
-  if (!name) { document.getElementById('gate-name').focus(); return; }
-  if (!email || !email.includes('@')) { document.getElementById('gate-email').focus(); return; }
-
-  // Build brief and share link first so we can include link in form submission
-  buildBrief(name);
-  const shareUrl = buildShareLink();
-
-  // Update URL hash so page is bookmarkable
-  try { window.history.replaceState(null, '', shareUrl); } catch(e) {}
-
-  // Submit to Netlify Forms — include share link so Zapier can pass it to Mailchimp
+  // Quietly submit to Netlify Forms
+  const form = e.target;
+  const formData = new FormData(form);
   try {
     await fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        'form-name': 'sitter-brief',
-        name,
-        email,
-        share_link: shareUrl,
-        source: 'sitter-brief-generator'
-      }).toString()
+      body: new URLSearchParams(formData).toString()
     });
-  } catch(e) { /* fail silently */ }
+  } catch(err) { /* silent */ }
 
-  // Show brief
-  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('step-brief').style.display = 'block';
-  document.getElementById('progressFill').style.width = '100%';
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  // Show generating state
+  document.getElementById('formState').style.display = 'none';
+  document.getElementById('generatingState').classList.add('show');
+  document.getElementById('outputPlaceholder').style.display = 'none';
 
-  // Auto-show share link box
-  document.getElementById('shareLinkBox').classList.add('show');
-}
+  // Set brief header
+  document.getElementById('briefTitle').textContent = `${name} — Sitter Brief`;
+  document.getElementById('briefDate').textContent = `Generated ${TODAY}`;
 
-// ── BUILD BRIEF ──
-function buildBrief(parentName) {
-  // Family name from first parent
-  const p1name = document.getElementById('p1name')?.value;
-  const lastName = p1name ? p1name.split(' ').slice(-1)[0] : '';
-  const familyLabel = lastName ? `The ${lastName} Family` : 'Your Family';
-  document.getElementById('briefFamilyName').textContent = familyLabel + ' · Sitter Brief';
+  // Build prompt
+  const prompt = `Create a warm, practical, well-formatted sitter brief for ${name}.
 
-  // Children & Health
-  const cc = document.getElementById('brief-children-content');
-  cc.innerHTML = '';
-  children.forEach(id => {
-    const name = document.getElementById(`c${id}-name`)?.value;
-    const age = document.getElementById(`c${id}-age`)?.value;
-    const notes = document.getElementById(`c${id}-notes`)?.value;
-    const allergies = document.getElementById(`c${id}-allergies`)?.value;
-    const meds = document.getElementById(`c${id}-meds`)?.value;
-    const epipen = document.getElementById(`c${id}-epipen`)?.value;
-    const conditions = document.getElementById(`c${id}-conditions`)?.value;
-    if (!name && !age) return;
-    const div = document.createElement('div');
-    div.className = 'child-brief';
-    div.innerHTML = `
-      <div class="cb-name">${name || 'Child'}${age ? ' · Age ' + age : ''}</div>
-      ${notes ? `<div class="cb-item"><span class="cb-label">Notes:</span>${notes}</div>` : ''}
-      ${allergies ? `<div class="cb-item"><span class="cb-label">Allergies:</span><span class="allergy-pill">⚠ ${allergies}</span></div>` : ''}
-      ${meds ? `<div class="cb-item"><span class="cb-label">Medications:</span>${meds}</div>` : ''}
-      ${epipen ? `<div class="cb-item"><span class="cb-label">Emergency meds:</span>${epipen}</div>` : ''}
-      ${conditions ? `<div class="cb-item"><span class="cb-label">Medical:</span>${conditions}</div>` : ''}
-    `;
-    cc.appendChild(div);
-  });
+Details provided:
+- Children: ${children || 'not specified — use friendly placeholders'}
+- Allergies/medical needs: ${allergies || 'none mentioned'}
+- Emergency contact: ${emergency || 'not provided'}
+- Additional notes: ${notes || 'none'}
 
-  // Contacts
-  const contacts = [
-    { role: 'Parent / Guardian', name: document.getElementById('p1name')?.value, phone: document.getElementById('p1phone')?.value, extra: document.getElementById('p1location')?.value },
-    { role: 'Parent / Guardian', name: document.getElementById('p2name')?.value, phone: document.getElementById('p2phone')?.value, extra: document.getElementById('p2location')?.value },
-    { role: 'Backup Contact', name: document.getElementById('b1name')?.value, phone: document.getElementById('b1phone')?.value, extra: document.getElementById('b1relation')?.value },
-    { role: 'Doctor / Pediatrician', name: document.getElementById('drname')?.value, phone: document.getElementById('drphone')?.value, extra: document.getElementById('drnotes')?.value },
-  ].filter(c => c.name || c.phone);
+Write a complete sitter brief with these sections:
+1. WELCOME & OVERVIEW — a warm intro paragraph from the family
+2. THE CHILDREN — each child with name, age, personality note, and any specific needs
+3. ALLERGIES & MEDICAL — if any allergies, make this prominent with clear action steps. If none, keep brief.
+4. MEALS & SNACKS — practical guidance, mention any dietary needs
+5. BEDTIME ROUTINE — step by step, use sensible defaults if not provided
+6. EMERGENCY CONTACTS — formatted clearly
+7. THE HOUSE — wifi, any pet notes, key house rules, where things are
+8. A NOTE FROM US — warm closing paragraph
 
-  const ctc = document.getElementById('brief-contacts-content');
-  ctc.innerHTML = '';
-  contacts.forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'cb-contact';
-    div.innerHTML = `
-      <div class="cbc-role">${c.role}</div>
-      <div class="cbc-name">${c.name || '—'}</div>
-      <div class="cbc-phone">${c.phone || ''}${c.extra ? ' · ' + c.extra : ''}</div>
-    `;
-    ctc.appendChild(div);
-  });
+Format each section with the section name in ALL CAPS followed by a line of dashes.
+Be specific, warm, and practical. Write as if the family wrote it themselves.
+If details are missing, use sensible friendly defaults rather than leaving blanks.
+Keep it to one readable page — scannable, not overwhelming.`;
 
-  // Schedule
-  const sc = document.getElementById('brief-schedule-content');
-  const schedRows = [
-    { label: 'Sitter arrives', val: document.getElementById('sched-arrival')?.value },
-    { label: 'We return', val: document.getElementById('sched-return')?.value },
-    { label: 'Pickups', val: document.getElementById('sched-pickup')?.value },
-    { label: 'Dinner', val: document.getElementById('sched-dinner')?.value },
-    { label: 'Bedtime', val: document.getElementById('sched-bedtime')?.value },
-  ].filter(r => r.val);
-  sc.innerHTML = schedRows.map(r => `<div class="schedule-row"><span class="sr-label">${r.label}</span><span>${r.val}</span></div>`).join('');
-
-  // House
-  const hc = document.getElementById('brief-house-content');
-  const houseItems = [];
-  const rules = document.getElementById('house-rules')?.value;
-  const screens = document.getElementById('house-screens')?.value;
-  const wifiName = document.getElementById('house-wifi-name')?.value;
-  const wifiPass = document.getElementById('house-wifi-pass')?.value;
-  const door = document.getElementById('house-door')?.value;
-  const alarm = document.getElementById('house-alarm')?.value;
-  const notes = document.getElementById('house-notes')?.value;
-  if (wifiName || wifiPass) houseItems.push(`Wifi: ${wifiName || ''}${wifiPass ? ' · Password: ' + wifiPass : ''}`);
-  if (door) houseItems.push(`Entry: ${door}`);
-  if (alarm) houseItems.push(`Alarm: ${alarm}`);
-  if (screens) houseItems.push(`Screens: ${screens}`);
-  const ruleLines = rules ? rules.split('\n').filter(Boolean) : [];
-  const allItems = [...houseItems, ...ruleLines, ...(notes ? [notes] : [])];
-  hc.innerHTML = `<div class="rules-list">${allItems.map(r => `<div class="rule-item"><div class="rule-dot"></div><span>${r}</span></div>`).join('')}</div>`;
-}
-
-// ── SHARE LINK ──
-function buildShareLink() {
-  // Encode ALL form data into URL hash
-  const data = {
-    // Parents
-    p1n: document.getElementById('p1name')?.value || '',
-    p1p: document.getElementById('p1phone')?.value || '',
-    p1l: document.getElementById('p1location')?.value || '',
-    p2n: document.getElementById('p2name')?.value || '',
-    p2p: document.getElementById('p2phone')?.value || '',
-    p2l: document.getElementById('p2location')?.value || '',
-    b1n: document.getElementById('b1name')?.value || '',
-    b1p: document.getElementById('b1phone')?.value || '',
-    b1r: document.getElementById('b1relation')?.value || '',
-    drn: document.getElementById('drname')?.value || '',
-    drp: document.getElementById('drphone')?.value || '',
-    drt: document.getElementById('drnotes')?.value || '',
-    // Schedule
-    sa:  document.getElementById('sched-arrival')?.value || '',
-    sr:  document.getElementById('sched-return')?.value || '',
-    sp:  document.getElementById('sched-pickup')?.value || '',
-    sd:  document.getElementById('sched-dinner')?.value || '',
-    sb:  document.getElementById('sched-bedtime')?.value || '',
-    // House
-    hr:  document.getElementById('house-rules')?.value || '',
-    hs:  document.getElementById('house-screens')?.value || '',
-    hwn: document.getElementById('house-wifi-name')?.value || '',
-    hwp: document.getElementById('house-wifi-pass')?.value || '',
-    hd:  document.getElementById('house-door')?.value || '',
-    ha:  document.getElementById('house-alarm')?.value || '',
-    hn:  document.getElementById('house-notes')?.value || '',
-    // Children — full details
-    children: children.map(id => ({
-      name: document.getElementById(`c${id}-name`)?.value || '',
-      age:  document.getElementById(`c${id}-age`)?.value || '',
-      notes: document.getElementById(`c${id}-notes`)?.value || '',
-      allergies: document.getElementById(`c${id}-allergies`)?.value || '',
-      meds: document.getElementById(`c${id}-meds`)?.value || '',
-      epipen: document.getElementById(`c${id}-epipen`)?.value || '',
-      conditions: document.getElementById(`c${id}-conditions`)?.value || '',
-    }))
-  };
   try {
-    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-    const url = `${window.location.origin}${window.location.pathname}#brief=${encoded}`;
-    document.getElementById('shareLinkInput').value = url;
-    return url;
-  } catch(e) {
-    console.error('Share link error:', e);
-    return window.location.href;
+    const res = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: 'You are a warm, practical assistant helping families create sitter briefs. Write clearly, personally, and in the voice of the family. Never use markdown # symbols — use ALL CAPS section headers with dashes beneath instead.',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const brief = data.content?.map(b => b.text || '').join('') || fallbackBrief(name, children, allergies, emergency, notes);
+    showBrief(brief);
+  } catch(err) {
+    showBrief(fallbackBrief(name, children, allergies, emergency, notes));
   }
 }
 
-// ── LOAD FROM SHARE LINK ──
-// If page loads with #brief= in URL, decode and render the brief directly
-function loadFromHash() {
-  const hash = window.location.hash;
-  if (!hash.startsWith('#brief=')) return false;
-  try {
-    const encoded = hash.replace('#brief=', '');
-    const data = JSON.parse(decodeURIComponent(escape(atob(encoded))));
-
-    // Show brief directly — skip the form
-    buildBriefFromData(data);
-    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-    document.getElementById('step-brief').style.display = 'block';
-    document.getElementById('progressFill').style.width = '100%';
-
-    // Set share link to current URL
-    document.getElementById('shareLinkInput').value = window.location.href;
-
-    // Auto-show share link box
-    document.getElementById('shareLinkBox').classList.add('show');
-    return true;
-  } catch(e) {
-    return false;
+function showBrief(text) {
+  document.getElementById('generatingState').classList.remove('show');
+  document.getElementById('briefBody').textContent = text;
+  document.getElementById('briefOutput').classList.add('show');
+  // Scroll to output on mobile
+  if (window.innerWidth < 780) {
+    document.getElementById('briefOutput').scrollIntoView({ behavior: 'smooth' });
   }
 }
 
-// Build brief from decoded data object (for share link loads)
-function buildBriefFromData(d) {
-  const lastName = d.p1n ? d.p1n.split(' ').slice(-1)[0] : '';
-  const familyLabel = lastName ? `The ${lastName} Family` : 'Your Family';
-  document.getElementById('briefFamilyName').textContent = familyLabel + ' · Sitter Brief';
-
-  // Children
-  const cc = document.getElementById('brief-children-content');
-  cc.innerHTML = '';
-  (d.children || []).forEach(c => {
-    if (!c.name && !c.age) return;
-    const div = document.createElement('div');
-    div.className = 'child-brief';
-    div.innerHTML = `
-      <div class="cb-name">${c.name || 'Child'}${c.age ? ' · Age ' + c.age : ''}</div>
-      ${c.notes ? `<div class="cb-item"><span class="cb-label">Notes:</span>${c.notes}</div>` : ''}
-      ${c.allergies ? `<div class="cb-item"><span class="cb-label">Allergies:</span><span class="allergy-pill">⚠ ${c.allergies}</span></div>` : ''}
-      ${c.meds ? `<div class="cb-item"><span class="cb-label">Medications:</span>${c.meds}</div>` : ''}
-      ${c.epipen ? `<div class="cb-item"><span class="cb-label">Emergency meds:</span>${c.epipen}</div>` : ''}
-      ${c.conditions ? `<div class="cb-item"><span class="cb-label">Medical:</span>${c.conditions}</div>` : ''}
-    `;
-    cc.appendChild(div);
+function copyBrief() {
+  const title = document.getElementById('briefTitle').textContent;
+  const body  = document.getElementById('briefBody').textContent;
+  const full  = `${title}\nGenerated ${TODAY} via withfolia.com\n\n${body}`;
+  navigator.clipboard.writeText(full).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy to Clipboard', 2500);
   });
-
-  // Contacts
-  const contacts = [
-    { role:'Parent / Guardian', name:d.p1n, phone:d.p1p, extra:d.p1l },
-    { role:'Parent / Guardian', name:d.p2n, phone:d.p2p, extra:d.p2l },
-    { role:'Backup Contact',    name:d.b1n, phone:d.b1p, extra:d.b1r },
-    { role:'Doctor / Pediatrician', name:d.drn, phone:d.drp, extra:d.drt },
-  ].filter(c => c.name || c.phone);
-  const ctc = document.getElementById('brief-contacts-content');
-  ctc.innerHTML = '';
-  contacts.forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'cb-contact';
-    div.innerHTML = `<div class="cbc-role">${c.role}</div><div class="cbc-name">${c.name||'—'}</div><div class="cbc-phone">${c.phone||''}${c.extra?' · '+c.extra:''}</div>`;
-    ctc.appendChild(div);
-  });
-
-  // Schedule
-  const sc = document.getElementById('brief-schedule-content');
-  const rows = [
-    {label:'Sitter arrives', val:d.sa},
-    {label:'We return',      val:d.sr},
-    {label:'Pickups',        val:d.sp},
-    {label:'Dinner',         val:d.sd},
-    {label:'Bedtime',        val:d.sb},
-  ].filter(r => r.val);
-  sc.innerHTML = rows.map(r => `<div class="schedule-row"><span class="sr-label">${r.label}</span><span>${r.val}</span></div>`).join('');
-
-  // House
-  const hc = document.getElementById('brief-house-content');
-  const items = [];
-  if (d.hwn || d.hwp) items.push(`Wifi: ${d.hwn||''}${d.hwp?' · Password: '+d.hwp:''}`);
-  if (d.hd)  items.push(`Entry: ${d.hd}`);
-  if (d.ha)  items.push(`Alarm: ${d.ha}`);
-  if (d.hs)  items.push(`Screens: ${d.hs}`);
-  const ruleLines = d.hr ? d.hr.split('\n').filter(Boolean) : [];
-  const allItems = [...items, ...ruleLines, ...(d.hn ? [d.hn] : [])];
-  hc.innerHTML = `<div class="rules-list">${allItems.map(r=>`<div class="rule-item"><div class="rule-dot"></div><span>${r}</span></div>`).join('')}</div>`;
 }
 
-function toggleShareLink() {
-  const box = document.getElementById('shareLinkBox');
-  box.classList.toggle('show');
-}
+function fallbackBrief(name, children, allergies, emergency, notes) {
+  const dash = '─'.repeat(42);
+  return `WELCOME & OVERVIEW
+${dash}
+Welcome, and thank you so much for taking care of our family! We've put together everything you need below. Please don't hesitate to call or text if anything comes up — we always pick up.
 
-function copyLink() {
-  const input = document.getElementById('shareLinkInput');
-  input.select();
-  document.execCommand('copy');
-  const btn = document.getElementById('copyBtn');
-  btn.textContent = 'Copied!';
-  btn.classList.add('copied');
-  setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-}
+THE CHILDREN
+${dash}
+${children || 'Details to be added — please ask us before you arrive.'}
 
-function editBrief() {
-  document.getElementById('step-brief').style.display = 'none';
-  goTo(0);
+ALLERGIES & MEDICAL NEEDS
+${dash}
+${allergies && allergies.toLowerCase() !== 'none'
+  ? `⚠️  IMPORTANT — PLEASE READ:\n${allergies}\n\nAlways check food labels carefully. When in doubt, don't serve it and call us.`
+  : 'No known allergies. Always check food labels to be safe and call us if unsure.'}
+
+MEALS & SNACKS
+${dash}
+Snacks: fruit, crackers, yogurt, or cheese are always fine.
+Dinner instructions will be left on the counter or texted to you.
+No sweets after 7pm please. Water is always the best drink option.
+
+BEDTIME ROUTINE
+${dash}
+1. Bath or shower
+2. Pyjamas and teeth brushing
+3. One book per child — they'll each have a favourite ready
+4. Lights out at the time we've agreed
+5. Nightlight stays on, bedroom door slightly open
+6. They may ask for more stories — one is enough!
+
+EMERGENCY CONTACTS
+${dash}
+${emergency || 'Our numbers are on the fridge. Please call anytime — we always pick up.'}
+Poison Control (US): 1-800-222-1222
+Nearest ER: check Google Maps for the closest emergency room
+
+THE HOUSE
+${dash}
+${notes || 'Make yourself at home. Help yourself to anything in the kitchen.\nPlease keep the front door locked.\nWifi password is on the fridge.'}
+
+A NOTE FROM US
+${dash}
+We are so grateful you are here. Our children are in wonderful hands. Please don't hesitate to reach out for any reason at all — no question is too small. Thank you for taking such good care of our family.
+
+With warmest thanks,
+${name}
+
+─────────────────────────────────────────
+Generated by Folia · withfolia.com
+The family app that keeps itself current.`;
 }
 </script>
-
-<!-- Netlify Forms detection -->
-<form name="sitter-brief" netlify netlify-honeypot="bot-field" hidden>
-  <input name="name" />
-  <input name="email" />
-  <input name="share_link" />
-  <input name="source" />
-</form>
-
 </body>
 </html>
