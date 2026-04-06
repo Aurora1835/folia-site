@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy — Folia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stone-50:#F7F5F2;--stone-100:#EDE9E3;--stone-200:#DDD7CE;
+  --stone-300:#C9C0B4;--stone-400:#B5A898;--stone-500:#9A8E81;
+  --stone-700:#5C5147;--stone-900:#2E2820;
+  --parchment:#F0EBE1;--sage-lt:#EEF2EB;--sage-mid:#D6E0D0;
+  --taupe:#A89880;--accent:#7C6A52;--accent-lt:#C4B49E;--white:#FDFCFA;
+  --green:#4A7C59;--green-lt:#EAF2EC;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;background:var(--parchment);color:var(--stone-900);min-height:100vh;}
+
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;}
+
+/* NAV */
+nav{padding:20px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--stone-200);background:rgba(240,235,225,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;font-style:italic;color:var(--accent);text-decoration:none;}
+.back-link{font-size:13px;color:var(--stone-500);text-decoration:none;letter-spacing:0.5px;transition:color 0.2s;}
+.back-link:hover{color:var(--stone-900);}
+
+/* HERO */
+.hero{padding:80px 40px 60px;text-align:center;background:linear-gradient(160deg,var(--parchment) 0%,var(--sage-lt) 100%);border-bottom:1px solid var(--sage-mid);}
+.eyebrow{font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,64px);font-weight:300;line-height:1.1;letter-spacing:-1px;margin-bottom:18px;}
+.hero h1 em{font-style:italic;}
+.hero p{font-size:17px;font-weight:300;color:var(--stone-500);line-height:1.75;max-width:560px;margin:0 auto;}
+
+/* TRUST STRIP */
+.trust-strip{background:var(--stone-900);padding:36px 40px;display:flex;gap:0;justify-content:center;}
+.trust-item{flex:1;max-width:220px;text-align:center;padding:0 20px;border-right:1px solid rgba(255,255,255,0.08);}
+.trust-item:last-child{border-right:none;}
+.trust-icon{font-size:24px;margin-bottom:8px;}
+.trust-title{font-size:13px;font-weight:500;color:var(--white);margin-bottom:4px;}
+.trust-sub{font-size:12px;color:var(--stone-500);font-weight:300;line-height:1.5;}
+
+/* MAIN */
+.main{max-width:760px;margin:0 auto;padding:72px 40px 100px;}
+
+/* FAQ */
+.faq-section{margin-bottom:64px;}
+.section-label{font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;}
+.faq-item{border-bottom:1px solid var(--stone-200);padding:28px 0;}
+.faq-item:first-of-type{border-top:1px solid var(--stone-200);}
+.faq-q{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--stone-900);margin-bottom:12px;line-height:1.25;}
+.faq-a{font-size:15px;font-weight:300;color:var(--stone-500);line-height:1.8;}
+.faq-a strong{color:var(--stone-700);font-weight:500;}
+
+/* HOW WE PROTECT */
+.protect-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--stone-200);border:1px solid var(--stone-200);margin-bottom:64px;}
+.protect-cell{background:var(--white);padding:32px 28px;transition:background 0.2s;}
+.protect-cell:hover{background:var(--stone-50);}
+.protect-icon{font-size:28px;margin-bottom:14px;}
+.protect-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--stone-900);margin-bottom:8px;}
+.protect-desc{font-size:14px;font-weight:300;color:var(--stone-500);line-height:1.7;}
+
+/* PROMISE BLOCK */
+.promise{background:var(--stone-900);padding:52px 48px;text-align:center;margin-bottom:64px;}
+.promise-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;font-style:italic;color:var(--white);margin-bottom:20px;line-height:1.3;}
+.promise-list{list-style:none;display:flex;flex-direction:column;gap:12px;max-width:480px;margin:0 auto 28px;}
+.promise-list li{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:rgba(245,240,232,0.7);line-height:1.55;font-weight:300;text-align:left;}
+.promise-check{color:var(--accent-lt);flex-shrink:0;margin-top:1px;}
+.promise-note{font-size:12px;color:var(--stone-500);letter-spacing:0.5px;}
+
+/* COPPA */
+.coppa-block{background:var(--sage-lt);border:1px solid var(--sage-mid);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:28px 32px;margin-bottom:48px;}
+.coppa-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;font-weight:500;}
+.coppa-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--stone-900);margin-bottom:12px;}
+.coppa-body{font-size:14.5px;font-weight:300;color:var(--stone-700);line-height:1.8;}
+
+/* CONTACT */
+.contact-block{text-align:center;padding:40px;background:var(--white);border:1px solid var(--stone-200);}
+.contact-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;font-style:italic;color:var(--stone-900);margin-bottom:10px;}
+.contact-sub{font-size:14px;font-weight:300;color:var(--stone-500);margin-bottom:20px;line-height:1.65;}
+.contact-email{font-size:15px;font-weight:500;color:var(--accent);text-decoration:none;letter-spacing:0.5px;}
+.contact-email:hover{text-decoration:underline;}
+
+/* FOOTER */
+footer{padding:28px 40px;border-top:1px solid var(--stone-200);display:flex;justify-content:space-between;align-items:center;background:var(--parchment);font-size:12px;color:var(--stone-300);}
+footer .logo{font-size:17px;}
+
+@media(max-width:700px){
+  nav{padding:16px 24px;}
+  .hero{padding:52px 24px 44px;}
+  .trust-strip{flex-direction:column;gap:20px;align-items:center;}
+  .trust-item{border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:20px;max-width:100%;}
+  .trust-item:last-child{border-bottom:none;}
+  .main{padding:48px 24px 80px;}
+  .protect-grid{grid-template-columns:1fr;}
+  .promise{padding:36px 28px;}
+  footer{flex-direction:column;gap:10px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Folia</a>
+  <a href="/" class="back-link">← Back to withfolia.com</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">Privacy at Folia</div>
+  <h1>Your family's data<br>belongs to your <em>family.</em></h1>
+  <p>We built Folia to hold the most personal information in your life. That comes with a responsibility we take seriously — and a set of commitments we keep simply.</p>
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-item">
+    <div class="trust-icon">🔒</div>
+    <div class="trust-title">Never sold</div>
+    <div class="trust-sub">Your data is never sold to advertisers or third parties. Ever.</div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">👁</div>
+    <div class="trust-title">Only you</div>
+    <div class="trust-sub">Only your account can access your family's information.</div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">🗑</div>
+    <div class="trust-title">Delete anytime</div>
+    <div class="trust-sub">Your data is yours. Delete your account and it's gone within 30 days.</div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">🧒</div>
+    <div class="trust-title">COPPA compliant</div>
+    <div class="trust-sub">Children's data is controlled entirely by adult account holders.</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="section-label">Plain-English Answers</div>
+
+    <div class="faq-item">
+      <div class="faq-q">Who can see my family's information?</div>
+      <div class="faq-a">Only you. Every family's data is protected by row-level security — a technical safeguard that means even Folia employees cannot access your family's profile. Your household's information is yours and yours alone.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do you sell our data?</div>
+      <div class="faq-a"><strong>Never.</strong> Folia does not sell personal data. We don't share it with advertisers. We don't use it to train AI models without your explicit consent. The only parties who ever see your data are you and the infrastructure services that store it (like our secure database provider), who are contractually prohibited from using it for any other purpose.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is my children's health information secure?</div>
+      <div class="faq-a">Yes. Health information — including allergies, medications, and medical conditions — is treated with the highest level of care. It is encrypted in transit and at rest, access-controlled so only your account can read it, and never used for advertising or shared with any third party. Health changes in Folia always require your explicit confirmation before being applied.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What does the AI agent see?</div>
+      <div class="faq-a">When the agent processes information — like parsing a school email or learning from grocery history — it uses your data only to provide the service to you. We send anonymised prompts to our AI provider (Anthropic) to generate responses. We do not send personally identifiable health data to any AI system without your explicit consent, and we never use your family's information to train AI models.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I delete my data?</div>
+      <div class="faq-a">Yes, anytime. Delete your account and all associated family data is permanently removed within 30 days. You can also request deletion of specific information at any time by emailing <a href="mailto:privacy@withfolia.com" style="color:var(--accent);">privacy@withfolia.com</a>. Payment records are retained as required by financial regulations — everything else goes.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What happens if I connect Gmail or Google Calendar?</div>
+      <div class="faq-a">Folia only reads messages and events you explicitly authorise. We never read your full inbox — only what's needed to detect relevant family updates. You can disconnect any integration at any time from your account settings, and we immediately stop collecting new data from that source.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is Folia COPPA compliant?</div>
+      <div class="faq-a">Yes. Folia does not allow children under 13 to create accounts. All information about minor household members is entered and controlled by adult account holders — parents or legal guardians — who have full authority over that data. We do not knowingly market to children and we do not collect data directly from minors.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What if there's a data breach?</div>
+      <div class="faq-a">We implement industry-standard security — encryption in transit and at rest, access controls, regular security reviews. In the event of a breach affecting your personal information, we will notify you as required by applicable law, promptly and directly.</div>
+    </div>
+
+  </div>
+
+  <!-- HOW WE PROTECT -->
+  <div class="section-label">How We Protect Your Data</div>
+  <div class="protect-grid" style="margin-top:20px;">
+    <div class="protect-cell">
+      <div class="protect-icon">🔐</div>
+      <div class="protect-title">Encryption everywhere</div>
+      <div class="protect-desc">All data is encrypted in transit (TLS/HTTPS) and at rest (AES-256). Your family's information is unreadable to anyone who doesn't have your credentials.</div>
+    </div>
+    <div class="protect-cell">
+      <div class="protect-icon">🛡</div>
+      <div class="protect-title">Row-level security</div>
+      <div class="protect-desc">A database-level rule ensures that only your account can ever query your family's data. Not other users. Not Folia staff. Only you.</div>
+    </div>
+    <div class="protect-cell">
+      <div class="protect-icon">⚕️</div>
+      <div class="protect-title">Health changes need your approval</div>
+      <div class="protect-desc">The agent never automatically updates medications, allergies, or medical information. Every health change requires your explicit confirmation before it's applied.</div>
+    </div>
+    <div class="protect-cell">
+      <div class="protect-icon">💳</div>
+      <div class="protect-title">We never touch your card</div>
+      <div class="protect-desc">Payment processing is handled entirely by Stripe. Your card details are never stored on Folia's servers — we never even see them.</div>
+    </div>
+  </div>
+
+  <!-- PROMISE -->
+  <div class="promise">
+    <div class="promise-title">Our commitments to you</div>
+    <ul class="promise-list">
+      <li><span class="promise-check">✓</span> We will never sell your personal data or your family's data</li>
+      <li><span class="promise-check">✓</span> We will never show you ads or share your data with advertisers</li>
+      <li><span class="promise-check">✓</span> We will never use your children's information for any purpose beyond providing the service to you</li>
+      <li><span class="promise-check">✓</span> We will never update health or medical information without your explicit approval</li>
+      <li><span class="promise-check">✓</span> We will notify you promptly if your data is ever at risk</li>
+      <li><span class="promise-check">✓</span> We will always give you a clear way to delete everything</li>
+    </ul>
+    <div class="promise-note">These commitments are backed by our full Privacy Policy at withfolia.com/privacy-policy</div>
+  </div>
+
+  <!-- COPPA -->
+  <div class="coppa-block">
+    <div class="coppa-label">Children's Privacy</div>
+    <div class="coppa-title">We take children's data seriously.</div>
+    <div class="coppa-body">Folia stores health information, schedules, and personal details about children. We comply with the Children's Online Privacy Protection Act (COPPA). Children under 13 cannot create accounts. All minor data is entered and controlled exclusively by adult account holders. We never collect data directly from children, never market to children, and never share children's information with any third party for any purpose.</div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact-block">
+    <div class="contact-title">Privacy questions?</div>
+    <div class="contact-sub">We respond to every privacy question personally — not with an auto-reply.<br>Usually within one business day.</div>
+    <a href="mailto:privacy@withfolia.com" class="contact-email">privacy@withfolia.com</a>
+  </div>
+
+</div>
+
+<footer>
+  <a href="/" class="logo">Folia</a>
+  <p>© 2025 Folia · <a href="/privacy-policy" style="color:var(--stone-400);">Full Privacy Policy</a> · <a href="/terms" style="color:var(--stone-400);">Terms of Service</a></p>
+</footer>
+
+</body>
+</html>
