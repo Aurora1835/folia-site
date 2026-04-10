@@ -1377,7 +1377,20 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
             <div class="fam-block-lbl" id="famBlockLbl">Your Household</div>
             <div id="famChips"></div>
           </div>
-          <div class="sec-lbl" style="margin-top:8px;">RECENT AGENT UPDATES</div>
+
+          <!-- Invite section -->
+          <div style="margin:12px 0 0;background:var(--stone-50);border:1px solid var(--stone-200);border-radius:12px;padding:14px 16px;">
+            <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-500);margin-bottom:8px;">Share With Family</div>
+            <div style="font-size:12.5px;color:var(--stone-700);font-weight:300;margin-bottom:10px;line-height:1.5;">Invite your partner or caregiver to see your family's Folia.</div>
+            <div style="display:flex;gap:7px;">
+              <input type="email" id="inviteEmail" placeholder="their@email.com" style="flex:1;font-size:12px;padding:9px 12px;border-radius:8px;border:1px solid var(--stone-200);font-family:'Jost',sans-serif;" />
+              <button onclick="handleInvite()" style="background:var(--stone-900);color:var(--white);border:none;border-radius:8px;padding:9px 14px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;white-space:nowrap;">Invite →</button>
+            </div>
+            <div id="inviteMsg" style="font-size:11.5px;margin-top:8px;color:var(--green);display:none;"></div>
+            <div id="inviteList" style="margin-top:10px;"></div>
+          </div>
+
+          <div class="sec-lbl" style="margin-top:12px;">RECENT UPDATES</div>
           <div class="acard">
             <div class="acard-body" style="padding:13px 14px;">
               <div class="finding-row"><span class="fi">✅</span><div class="ft"><strong>Friday pickup → 1:00 PM</strong><small>From school email · Applied</small></div></div>
@@ -1510,8 +1523,13 @@ window.addEventListener('load',async()=>{
 async function saveProfile(){
   const {data:{user}}=await sb.auth.getUser();
   if(!user)return;
+
+  // Ensure this user has a household — create one if not
+  const householdId = await ensureHousehold(user.id);
+
   const profile={
     user_id:user.id,
+    household_id:householdId,
     family_name:S.familyName||'Your Family',
     parent_name:S.parentName,
     members:S.members,
@@ -1528,16 +1546,91 @@ async function saveProfile(){
   if(!error)showSaved();
 }
 
+// Create a household for this user if one doesn't exist yet
+async function ensureHousehold(userId){
+  // Check if household already exists
+  const {data:existing}=await sb.from('households').select('id').eq('owner_id',userId).single();
+  if(existing)return existing.id;
+  // Create new household
+  const {data:created,error}=await sb.from('households').insert({owner_id:userId}).select('id').single();
+  if(error){console.error('Error creating household:',error);return null;}
+  return created.id;
+}
+
+// Invite a family member by email
+async function inviteMember(email){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return {error:'Not logged in'};
+  const householdId=await ensureHousehold(user.id);
+  if(!householdId)return {error:'No household found'};
+  const {error}=await sb.from('household_members').upsert({
+    household_id:householdId,
+    user_id:null,
+    email:email.trim().toLowerCase(),
+    role:'member',
+    status:'pending'
+  },{onConflict:'household_id,email'});
+  return {error};
+}
+
+// Check if current user has a pending invite and accept it
+async function checkAndAcceptInvite(userEmail, userId){
+  try {
+    // Find any pending invite for this email
+    const {data:invite}=await sb.from('household_members')
+      .select('*')
+      .eq('email', userEmail.toLowerCase())
+      .eq('status','pending')
+      .single();
+    if(!invite)return null;
+    // Accept the invite — link this user to the household
+    await sb.from('household_members').update({
+      user_id:userId,
+      status:'accepted'
+    }).eq('id',invite.id);
+    return invite.household_id;
+  } catch(e){ return null; }
+}
+
+// Load profile for a household member (reads owner's profile)
+async function loadHouseholdProfile(householdId){
+  const {data,error}=await sb.from('family_profiles')
+    .select('*')
+    .eq('household_id',householdId)
+    .single();
+  if(error||!data)return false;
+  S.familyName=data.family_name||'';
+  S.parentName=data.parent_name||'';
+  S.members=data.members||[];
+  S.connections=data.connections||[];
+  if(document.getElementById('allergies'))document.getElementById('allergies').value=data.allergies||'';
+  if(document.getElementById('medications'))document.getElementById('medications').value=data.medications||'';
+  if(document.getElementById('school'))document.getElementById('school').value=data.school||'';
+  if(document.getElementById('pickup'))document.getElementById('pickup').value=data.pickup||'';
+  if(document.getElementById('activities'))document.getElementById('activities').value=data.activities||'';
+  if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
+  openDashboard();
+  return true;
+}
+
 async function loadProfile(userId){
   try {
     const {data,error}=await sb.from('family_profiles').select('*').eq('user_id',userId).single();
     
-    // No profile yet — new user, send to onboarding welcome screen
+    // No profile yet — check if this user has a pending household invite
     if(error||!data){
-      // Make sure app shell is visible and at welcome screen
+      const {data:{user}}=await sb.auth.getUser();
+      if(user?.email){
+        const householdId=await checkAndAcceptInvite(user.email, userId);
+        if(householdId){
+          // They were invited — load the household owner's profile
+          const loaded=await loadHouseholdProfile(householdId);
+          if(loaded)return;
+        }
+      }
+      // No invite either — new user, send to onboarding
       document.getElementById('appOverlay').classList.add('open');
       document.body.style.overflow='hidden';
-      // Reset to welcome screen
       cur=0;
       document.querySelectorAll('.pscreen').forEach(s=>s.classList.remove('active','exit'));
       const welcome=document.getElementById('p0');
@@ -1819,6 +1912,45 @@ function fallbackInsight(){
 }
 
 let dashReady=false;
+async function handleInvite(){
+  const email=document.getElementById('inviteEmail').value.trim();
+  const msg=document.getElementById('inviteMsg');
+  if(!email||!email.includes('@')){
+    msg.style.display='block';
+    msg.style.color='var(--red)';
+    msg.textContent='Please enter a valid email address.';
+    return;
+  }
+  msg.style.display='block';
+  msg.style.color='var(--stone-500)';
+  msg.textContent='Sending invite…';
+  const {error}=await inviteMember(email);
+  if(error){
+    msg.style.color='var(--red)';
+    msg.textContent='Something went wrong. Please try again.';
+  } else {
+    msg.style.color='var(--green)';
+    msg.textContent=`✓ Invite sent to ${email}. When they sign up at withfolia.com, they'll see your family's Folia automatically.`;
+    document.getElementById('inviteEmail').value='';
+    loadInviteList();
+  }
+}
+
+async function loadInviteList(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return;
+  const householdId=await ensureHousehold(user.id);
+  if(!householdId)return;
+  const {data:members}=await sb.from('household_members').select('*').eq('household_id',householdId);
+  const list=document.getElementById('inviteList');
+  if(!list||!members?.length)return;
+  list.innerHTML=members.map(m=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--stone-100);">
+      <div style="font-size:12px;flex:1;color:var(--stone-700);">${m.email}</div>
+      <div style="font-size:10px;padding:2px 8px;border-radius:100px;background:${m.status==='accepted'?'var(--green-lt)':'var(--amber-lt)'};color:${m.status==='accepted'?'var(--green)':'var(--amber)'};">${m.status==='accepted'?'Joined':'Pending'}</div>
+    </div>`).join('');
+}
+
 function openDashboard(){
   const fname=S.familyName||'Your Family';
   document.getElementById('dashFamilyName').textContent=fname;
@@ -1828,6 +1960,7 @@ function openDashboard(){
   disp.forEach(m=>{const d=document.createElement('div');d.className='fam-chip';d.innerHTML=`<div class="chip-av">${m.emoji}</div><div class="chip-nm">${m.name}</div><div class="chip-tg">${m.role}</div>`;fc.appendChild(d);});
   pGoTo(10);
   if(!dashReady){dashReady=true;setTimeout(()=>animateAgentCards(),600);}
+  setTimeout(()=>loadInviteList(),800);
 }
 
 function switchTab(name){
