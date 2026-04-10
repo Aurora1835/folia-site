@@ -1557,30 +1557,23 @@ async function saveProfile(){
   if(!error)showSaved();
 }
 
-// Create a household for this user if one doesn't exist yet
+// Create a household for this user using secure DB function
 async function ensureHousehold(userId){
-  // Check if household already exists
-  const {data:existing}=await sb.from('households').select('id').eq('owner_id',userId).single();
-  if(existing)return existing.id;
-  // Create new household
-  const {data:created,error}=await sb.from('households').insert({owner_id:userId}).select('id').single();
-  if(error){console.error('Error creating household:',error);return null;}
-  return created.id;
+  try {
+    const {data,error}=await sb.rpc('create_household_for_user',{p_user_id:userId});
+    if(error){console.error('Error creating household:',error);return null;}
+    return data;
+  } catch(e){console.error('ensureHousehold error:',e);return null;}
 }
 
-// Invite a family member by email
+// Invite a family member by email using secure DB function
 async function inviteMember(email){
   const {data:{user}}=await sb.auth.getUser();
   if(!user)return {error:'Not logged in'};
-  const householdId=await ensureHousehold(user.id);
-  if(!householdId)return {error:'No household found'};
-  const {error}=await sb.from('household_members').upsert({
-    household_id:householdId,
-    user_id:null,
-    email:email.trim().toLowerCase(),
-    role:'member',
-    status:'pending'
-  },{onConflict:'household_id,email'});
+  const {error}=await sb.rpc('invite_household_member',{
+    p_owner_id:user.id,
+    p_email:email.trim().toLowerCase()
+  });
   return {error};
 }
 
@@ -1949,16 +1942,19 @@ async function handleInvite(){
 async function loadInviteList(){
   const {data:{user}}=await sb.auth.getUser();
   if(!user)return;
-  const householdId=await ensureHousehold(user.id);
-  if(!householdId)return;
-  const {data:members}=await sb.from('household_members').select('*').eq('household_id',householdId);
-  const list=document.getElementById('inviteList');
-  if(!list||!members?.length)return;
-  list.innerHTML=members.map(m=>`
-    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--stone-100);">
-      <div style="font-size:12px;flex:1;color:var(--stone-700);">${m.email}</div>
-      <div style="font-size:10px;padding:2px 8px;border-radius:100px;background:${m.status==='accepted'?'var(--green-lt)':'var(--amber-lt)'};color:${m.status==='accepted'?'var(--green)':'var(--amber)'};">${m.status==='accepted'?'Joined':'Pending'}</div>
-    </div>`).join('');
+  try {
+    const householdId=await ensureHousehold(user.id);
+    if(!householdId)return;
+    const {data:members,error}=await sb.from('household_members').select('*').eq('household_id',householdId);
+    if(error||!members?.length)return;
+    const list=document.getElementById('inviteList');
+    if(!list)return;
+    list.innerHTML=members.map(m=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--stone-100);">
+        <div style="font-size:12px;flex:1;color:var(--stone-700);">${m.email}</div>
+        <div style="font-size:10px;padding:2px 8px;border-radius:100px;background:${m.status==='accepted'?'var(--green-lt)':'var(--amber-lt)'};color:${m.status==='accepted'?'var(--green)':'var(--amber)'};">${m.status==='accepted'?'Joined':'Pending'}</div>
+      </div>`).join('');
+  } catch(e){console.error('loadInviteList error:',e);}
 }
 
 function openDashboard(){
