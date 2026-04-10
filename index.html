@@ -354,8 +354,11 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
   align-items: center;
   justify-content: center;
   padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 .app-overlay.open { display: flex; }
+.app-overlay.open.ready { opacity: 1; }
 
 /* ── PHONE SHELL ── */
 .phone {
@@ -1044,7 +1047,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <div class="willus">🏡</div>
           <div class="wdesc">An app built around the <strong>exact details</strong> of your household — updated automatically, so you never have to.</div>
           <button class="pbtn accent" style="width:100%;max-width:280px;" onclick="pGoTo(1)">Build My Family's App →</button>
-          <button class="pbtn ghost" style="width:100%;max-width:280px;border:none;font-size:12.5px;color:var(--stone-400);">I already have an account</button>
+          <button class="pbtn ghost" style="width:100%;max-width:280px;border:none;font-size:12.5px;color:var(--stone-400);" onclick="showLogin()">I already have an account</button>
         </div>
       </div>
 
@@ -1079,15 +1082,42 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <div class="member-list" id="memberList"></div>
           <div class="add-form" id="addForm">
             <div class="f-label">Choose an icon</div>
-            <div class="emoji-picker" id="emojiPicker">
+            <div class="emoji-picker" id="emojiPicker" style="gap:5px;">
+              <div style="width:100%;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin-bottom:2px;">Adults</div>
               <div class="emoji-opt sel" data-e="👩" onclick="selEmoji(this)">👩</div>
+              <div class="emoji-opt" data-e="👩🏻" onclick="selEmoji(this)">👩🏻</div>
+              <div class="emoji-opt" data-e="👩🏼" onclick="selEmoji(this)">👩🏼</div>
+              <div class="emoji-opt" data-e="👩🏽" onclick="selEmoji(this)">👩🏽</div>
+              <div class="emoji-opt" data-e="👩🏾" onclick="selEmoji(this)">👩🏾</div>
+              <div class="emoji-opt" data-e="👩🏿" onclick="selEmoji(this)">👩🏿</div>
               <div class="emoji-opt" data-e="👨" onclick="selEmoji(this)">👨</div>
-              <div class="emoji-opt" data-e="👧" onclick="selEmoji(this)">👧</div>
-              <div class="emoji-opt" data-e="👦" onclick="selEmoji(this)">👦</div>
-              <div class="emoji-opt" data-e="👶" onclick="selEmoji(this)">👶</div>
+              <div class="emoji-opt" data-e="👨🏻" onclick="selEmoji(this)">👨🏻</div>
+              <div class="emoji-opt" data-e="👨🏼" onclick="selEmoji(this)">👨🏼</div>
+              <div class="emoji-opt" data-e="👨🏽" onclick="selEmoji(this)">👨🏽</div>
+              <div class="emoji-opt" data-e="👨🏾" onclick="selEmoji(this)">👨🏾</div>
+              <div class="emoji-opt" data-e="👨🏿" onclick="selEmoji(this)">👨🏿</div>
               <div class="emoji-opt" data-e="🧓" onclick="selEmoji(this)">🧓</div>
+              <div class="emoji-opt" data-e="🧓🏽" onclick="selEmoji(this)">🧓🏽</div>
+              <div style="width:100%;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin:4px 0 2px;">Kids</div>
+              <div class="emoji-opt" data-e="👧" onclick="selEmoji(this)">👧</div>
+              <div class="emoji-opt" data-e="👧🏻" onclick="selEmoji(this)">👧🏻</div>
+              <div class="emoji-opt" data-e="👧🏼" onclick="selEmoji(this)">👧🏼</div>
+              <div class="emoji-opt" data-e="👧🏽" onclick="selEmoji(this)">👧🏽</div>
+              <div class="emoji-opt" data-e="👧🏾" onclick="selEmoji(this)">👧🏾</div>
+              <div class="emoji-opt" data-e="👧🏿" onclick="selEmoji(this)">👧🏿</div>
+              <div class="emoji-opt" data-e="👦" onclick="selEmoji(this)">👦</div>
+              <div class="emoji-opt" data-e="👦🏻" onclick="selEmoji(this)">👦🏻</div>
+              <div class="emoji-opt" data-e="👦🏼" onclick="selEmoji(this)">👦🏼</div>
+              <div class="emoji-opt" data-e="👦🏽" onclick="selEmoji(this)">👦🏽</div>
+              <div class="emoji-opt" data-e="👦🏾" onclick="selEmoji(this)">👦🏾</div>
+              <div class="emoji-opt" data-e="👦🏿" onclick="selEmoji(this)">👦🏿</div>
+              <div class="emoji-opt" data-e="👶" onclick="selEmoji(this)">👶</div>
+              <div class="emoji-opt" data-e="👶🏽" onclick="selEmoji(this)">👶🏽</div>
+              <div class="emoji-opt" data-e="👶🏿" onclick="selEmoji(this)">👶🏿</div>
+              <div style="width:100%;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin:4px 0 2px;">Pets &amp; others</div>
               <div class="emoji-opt" data-e="🐕" onclick="selEmoji(this)">🐕</div>
               <div class="emoji-opt" data-e="🐈" onclick="selEmoji(this)">🐈</div>
+              <div class="emoji-opt" data-e="🐾" onclick="selEmoji(this)">🐾</div>
             </div>
             <div class="row-2" style="margin-top:4px;">
               <div><div class="f-label">Name</div><input type="text" id="newName" placeholder="e.g. Nora" /></div>
@@ -1141,16 +1171,20 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <div class="pscreen" id="p4">
         <div class="prog-bar"><div class="prog-fill" style="width:55%"></div></div>
         <div class="pscroll">
-          <div style="margin-bottom:18px;">
+          <div style="margin-bottom:14px;">
             <div class="p-eyebrow">Step 4 of 7</div>
             <div class="p-title">Schedules &amp;<br><em>routines</em></div>
-            <div class="p-sub">The agent will watch for changes to these automatically. Just tell us what's fixed today.</div>
+            <div class="p-sub">Tap each person to add their specific schedule.</div>
           </div>
-          <div class="f-group"><div class="f-label">School / Daycare</div><input type="text" id="school" placeholder="e.g. Jefferson Elementary" /></div>
-          <div class="f-group"><div class="f-label">Typical pickup time</div><input type="text" id="pickup" placeholder="e.g. 3:15 PM Mon–Fri, bus Tues" /></div>
-          <div class="f-group"><div class="f-label">Regular activities</div><input type="text" id="activities" placeholder="e.g. Soccer Sat 9am, piano Wed 4pm" /></div>
-          <div class="f-group">
-            <div class="f-label">Work / travel pattern</div>
+          <div id="scheduleTabs" style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;"></div>
+          <div id="scheduleFields">
+            <div class="f-group"><div class="f-label">School / Daycare</div><input type="text" id="school" placeholder="e.g. Jefferson Elementary" /></div>
+            <div class="f-group"><div class="f-label">Pickup time</div><input type="text" id="pickup" placeholder="e.g. 3:15 PM Mon–Fri, bus Tues" /></div>
+            <div class="f-group"><div class="f-label">Activities</div><input type="text" id="activities" placeholder="e.g. Soccer Sat 9am, piano Wed 4pm" /></div>
+            <div class="f-group"><div class="f-label">Notes</div><input type="text" id="schedulenotes" placeholder="e.g. Has key, walks home Fridays" /></div>
+          </div>
+          <div class="f-group" style="margin-top:8px;">
+            <div class="f-label">Work / travel pattern (adults)</div>
             <div class="chip-grid">
               <div class="chip" onclick="toggleChip(this)">Regular travel</div>
               <div class="chip" onclick="toggleChip(this)">Remote work</div>
@@ -1160,7 +1194,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
             </div>
           </div>
           <div style="margin-top:auto;padding-top:14px;">
-            <button class="pbtn accent" onclick="pGoTo(5)">Continue →</button>
+            <button class="pbtn accent" onclick="saveScheduleAndContinue()">Continue →</button>
             <button class="pbtn ghost" onclick="pGoTo(3)">← Back</button>
           </div>
         </div>
@@ -1172,8 +1206,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="pscroll">
           <div style="margin-bottom:18px;">
             <div class="p-eyebrow">Step 5 of 7</div>
-            <div class="p-title">Connect your<br><em>agent's eyes</em></div>
-            <div class="p-sub">The more you connect, the less you'll ever update manually. Each source teaches your agent something new.</div>
+            <div class="p-title">Connect your<br><em>apps</em></div>
+            <div class="p-sub">The more you connect, the less you'll ever update manually. Folia watches for changes so you don't have to.</div>
           </div>
           <div class="int-list">
             <div class="int-row" id="ir-gmail" onclick="connectInt('gmail')"><div class="int-icon-p" style="background:#FEF2F2;">📧</div><div class="int-info"><div class="int-name">Gmail</div><div class="int-desc">Parses school emails, newsletters, appointment confirmations</div></div><div class="int-status idle" id="is-gmail">Connect</div></div>
@@ -1217,7 +1251,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <div class="pscreen" id="p7">
         <div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div>
         <div class="ai-building">
-          <div class="ai-orb">🤖</div>
+          <div class="ai-orb" style="font-size:42px;">🏡</div>
           <div class="building-title">Building your app…</div>
           <div class="building-sub">Your agent is reading what you shared<br>and setting everything up.</div>
           <div class="build-steps">
@@ -1257,7 +1291,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <div class="success-title">Your app is<br><em>alive.</em></div>
           <div class="success-sub" id="successSub">Your agent is now watching, learning, and keeping everything current — so you don't have to.</div>
           <div class="summary-chips-p">
-            <div class="summary-chip-p">🤖 Agent active</div>
+            <div class="summary-chip-p">✦ Always current</div>
             <div class="summary-chip-p" id="chipMembers">👨‍👩‍👧‍👦 Family ready</div>
             <div class="summary-chip-p">⚕️ Health protected</div>
             <div class="summary-chip-p">📅 Schedules mapped</div>
@@ -1278,7 +1312,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         </div>
         <div class="pscroll" id="agentFeed" style="gap:0;padding-bottom:8px;">
           <div class="agent-strip">
-            <div class="strip-icon">🤖</div>
+            <div class="strip-icon" style="font-size:20px;">✦</div>
             <div class="strip-text"><div class="strip-title">Agent is watching for you</div><div class="strip-sub">Email · Calendar · Groceries · Health</div></div>
             <div class="strip-count" id="updCount">0</div>
           </div>
@@ -1288,7 +1322,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="tab-bar">
           <div class="tab active" id="t-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
           <div class="tab" id="t-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab" id="t-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
+          <div class="tab" id="t-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
         </div>
         <!-- confirm sheet -->
         <div class="confirm-modal" id="confirmModal">
@@ -1326,7 +1360,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="tab-bar">
           <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
           <div class="tab active" id="t2-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab" id="t2-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
+          <div class="tab" id="t2-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
         </div>
       </div>
 
@@ -1335,8 +1369,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Ask the Agent</div></div><div class="agent-badge"><div class="agent-dot"></div>Ready</div></div></div>
         <div class="pscroll" id="chatMessages" style="gap:6px;padding-bottom:80px;">
           <div style="text-align:center;padding:16px 0 10px;">
-            <div style="font-size:32px;margin-bottom:8px;">🤖</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--stone-900);margin-bottom:5px;">Ask me anything about your family</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;font-style:italic;color:var(--accent);margin-bottom:8px;">Folia</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--stone-900);margin-bottom:5px;">Ask anything about your family</div>
             <div style="font-size:12.5px;color:var(--stone-500);font-weight:300;line-height:1.6;">I know your schedules, health needs,<br>allergies, routines, and more.</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:7px;margin-top:6px;">
@@ -1353,7 +1387,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="tab-bar">
           <div class="tab" id="t3-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Agent Feed</div></div>
           <div class="tab" id="t3-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab active" id="t3-ask" onclick="switchTab('ask')"><div class="tab-icon">🤖</div><div class="tab-label">Ask Agent</div></div>
+          <div class="tab active" id="t3-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
         </div>
       </div>
 
@@ -1401,8 +1435,7 @@ async function handleLogin(){
   document.getElementById('loginLoading').classList.remove('show');
   if(error){document.getElementById('loginError').textContent=error.message;return;}
   closeAuth();
-  document.getElementById('appOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
+  openAppShell();
   await loadProfile(data.user.id);
 }
 
@@ -1421,8 +1454,7 @@ async function handleSignup(){
   S.parentName=name;
   if(document.getElementById('signupLoading'))document.getElementById('signupLoading').classList.remove('show');
   closeAuth();
-  document.getElementById('appOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
+  openAppShell();
   pGoTo(0);
 }
 
@@ -1431,9 +1463,11 @@ window.addEventListener('load',async()=>{
   try {
     const {data:{session}}=await sb.auth.getSession();
     if(session){
-      document.getElementById('appOverlay').classList.add('open');
+      const overlay=document.getElementById('appOverlay');
+      overlay.classList.add('open');
       document.body.style.overflow='hidden';
       await loadProfile(session.user.id);
+      requestAnimationFrame(()=>overlay.classList.add('ready'));
     }
   } catch(e) {
     console.error('Session check error:',e);
@@ -1640,6 +1674,19 @@ function openApp(){
   document.body.style.overflow='hidden';
   switchAuthTab('signup');
 }
+function showLogin(){
+  // Close app shell, open auth overlay on login tab
+  document.getElementById('appOverlay').classList.remove('open','ready');
+  document.body.style.overflow='';
+  document.getElementById('authOverlay').classList.add('open');
+  switchAuthTab('login');
+}
+function openAppShell(){
+  const overlay=document.getElementById('appOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>overlay.classList.add('ready'));
+}
 function closeApp(){document.getElementById('appOverlay').classList.remove('open');document.body.style.overflow='';}
 
 function updateClock(){const n=new Date(),h=n.getHours()%12||12,m=String(n.getMinutes()).padStart(2,'0');document.getElementById('clockTime').textContent=`${h}:${m}`;}
@@ -1658,6 +1705,7 @@ function pGoTo(n){
   cur=n;
   if(n===2)renderMembers();
   if(n===3)renderHealthTabs();
+  if(n===4)renderScheduleTabs();
   if(n===8)renderPreview();
 }
 
