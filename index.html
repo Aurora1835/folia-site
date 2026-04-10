@@ -1477,8 +1477,19 @@ async function handleLogin(){
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   document.getElementById('loginLoading').classList.remove('show');
   if(error){document.getElementById('loginError').textContent=error.message;return;}
+  // Close auth overlay
   closeAuth();
-  openAppShell();
+  // Make sure app shell is open and ready
+  const overlay=document.getElementById('appOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>overlay.classList.add('ready'));
+  // Reset screen state so pGoTo works correctly from any position
+  cur=0;
+  document.querySelectorAll('.pscreen').forEach(s=>s.classList.remove('active','exit'));
+  const welcome=document.getElementById('p0');
+  if(welcome)welcome.classList.add('active');
+  // Now load profile — will call openDashboard which does pGoTo(10)
   await loadProfile(data.user.id);
 }
 
@@ -1798,10 +1809,9 @@ function openApp(){
   switchAuthTab('signup');
 }
 function showLogin(){
-  // Close app shell, open auth overlay on login tab
-  document.getElementById('appOverlay').classList.remove('open','ready');
-  document.body.style.overflow='';
+  // Layer auth overlay on top — keep app shell intact underneath
   document.getElementById('authOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
   switchAuthTab('login');
 }
 function openAppShell(){
