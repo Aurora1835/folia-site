@@ -485,8 +485,6 @@ footer .logo { font-size: 17px; }
   <div class="proof-chips">
     <div class="proof-chip">👶 Children's profiles</div>
     <div class="proof-chip">⚠️ Allergies & medical needs</div>
-    <div class="proof-chip">🍽️ Meal & snack guidance</div>
-    <div class="proof-chip">🌙 Bedtime routine</div>
     <div class="proof-chip">📞 Emergency contacts</div>
     <div class="proof-chip">🐾 Pet care</div>
     <div class="proof-chip">🏠 House rules</div>
@@ -544,34 +542,33 @@ Details provided:
 - Additional notes: ${notes || 'none'}
 
 CRITICAL RULES:
-- ONLY include sections where the family has provided real information
-- NEVER invent, assume, or use placeholder details for bedtime routines, meals, or schedules
-- If bedtime routine was not provided, DO NOT include a bedtime section
-- If meal info was not provided, DO NOT include a meals section — only mention dietary restrictions if allergies were noted
-- If a section has no real data, skip it entirely — do not fill it with generic advice
-- For the children section, only use names/ages/details actually provided — do not invent personality notes
+- ONLY use information explicitly provided below — never invent any details
+- Do NOT include a meals or snacks section — this information was not collected
+- Do NOT include a bedtime routine section — this information was not collected
+- Do NOT include a schedule section — this information was not collected
+- If the notes field mentions bedtime or meals, you may include it — otherwise skip entirely
+- For children, only use names and ages actually provided — no invented personality notes
+- If a section has no real data, skip it completely
 
-Always include:
-1. WELCOME & OVERVIEW — warm intro from the family
-2. THE CHILDREN — only with details actually provided
-3. ALLERGIES & MEDICAL — always include, even if just to say none known
-4. EMERGENCY CONTACTS — formatted clearly
-5. A NOTE FROM US — warm closing
+Always include these sections:
+1. WELCOME & OVERVIEW — warm intro paragraph from the family
+2. THE CHILDREN — names and ages provided, nothing invented
+3. ALLERGIES & MEDICAL — if allergies provided, make prominent with action steps. If none, one line saying no known allergies
+4. EMERGENCY CONTACTS — formatted clearly with what was provided
+5. A NOTE FROM US — warm closing from the family
 
-Only include if information was actually provided:
-- MEALS & SNACKS
-- BEDTIME ROUTINE
-- THE HOUSE
+Only include if explicitly mentioned in the notes field:
+- THE HOUSE (wifi, pets, house rules)
 
 Format each section with the section name in ALL CAPS followed by a line of dashes.
-Write as if the family wrote it themselves. Real details only — nothing invented.`;
+Write as if the family wrote it themselves. Only real details — nothing invented or assumed.`;
 
   try {
     const res = await fetch('/api/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system: 'You are a warm, practical assistant helping families create sitter briefs. Write clearly, personally, and in the voice of the family. Never use markdown # symbols — use ALL CAPS section headers with dashes beneath instead.',
+        system: 'You are a warm, practical assistant helping families create sitter briefs. Write clearly and personally in the voice of the family. Never use markdown # symbols — use ALL CAPS section headers with dashes beneath instead. NEVER invent bedtime routines, meal plans, schedules, or any detail not explicitly provided. If information was not given, skip that section entirely.',
         messages: [{ role: 'user', content: prompt }]
       })
     });
