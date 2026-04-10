@@ -1428,11 +1428,15 @@ async function handleSignup(){
 
 // Check for existing session on load
 window.addEventListener('load',async()=>{
-  const {data:{session}}=await sb.auth.getSession();
-  if(session){
-    document.getElementById('appOverlay').classList.add('open');
-    document.body.style.overflow='hidden';
-    await loadProfile(session.user.id);
+  try {
+    const {data:{session}}=await sb.auth.getSession();
+    if(session){
+      document.getElementById('appOverlay').classList.add('open');
+      document.body.style.overflow='hidden';
+      await loadProfile(session.user.id);
+    }
+  } catch(e) {
+    console.error('Session check error:',e);
   }
 });
 
@@ -1461,21 +1465,44 @@ async function saveProfile(){
 }
 
 async function loadProfile(userId){
-  const {data,error}=await sb.from('family_profiles').select('*').eq('user_id',userId).single();
-  if(error||!data){pGoTo(0);return;}
-  S.familyName=data.family_name||'';
-  S.parentName=data.parent_name||'';
-  S.members=data.members||[];
-  S.connections=data.connections||[];
-  if(document.getElementById('familyName'))document.getElementById('familyName').value=S.familyName;
-  if(document.getElementById('parentName'))document.getElementById('parentName').value=S.parentName;
-  if(document.getElementById('allergies'))document.getElementById('allergies').value=data.allergies||'';
-  if(document.getElementById('medications'))document.getElementById('medications').value=data.medications||'';
-  if(document.getElementById('school'))document.getElementById('school').value=data.school||'';
-  if(document.getElementById('pickup'))document.getElementById('pickup').value=data.pickup||'';
-  if(document.getElementById('activities'))document.getElementById('activities').value=data.activities||'';
-  if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
-  openDashboard();
+  try {
+    const {data,error}=await sb.from('family_profiles').select('*').eq('user_id',userId).single();
+    
+    // No profile yet — new user, send to onboarding welcome screen
+    if(error||!data){
+      // Make sure app shell is visible and at welcome screen
+      document.getElementById('appOverlay').classList.add('open');
+      document.body.style.overflow='hidden';
+      // Reset to welcome screen
+      cur=0;
+      document.querySelectorAll('.pscreen').forEach(s=>s.classList.remove('active','exit'));
+      const welcome=document.getElementById('p0');
+      if(welcome)welcome.classList.add('active');
+      return;
+    }
+
+    // Existing profile — restore state
+    S.familyName=data.family_name||'';
+    S.parentName=data.parent_name||'';
+    S.members=data.members||[];
+    S.connections=data.connections||[];
+    if(document.getElementById('familyName'))document.getElementById('familyName').value=S.familyName;
+    if(document.getElementById('parentName'))document.getElementById('parentName').value=S.parentName;
+    if(document.getElementById('allergies'))document.getElementById('allergies').value=data.allergies||'';
+    if(document.getElementById('medications'))document.getElementById('medications').value=data.medications||'';
+    if(document.getElementById('school'))document.getElementById('school').value=data.school||'';
+    if(document.getElementById('pickup'))document.getElementById('pickup').value=data.pickup||'';
+    if(document.getElementById('activities'))document.getElementById('activities').value=data.activities||'';
+    if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
+    openDashboard();
+  } catch(e) {
+    // Safety net — if anything fails, show welcome screen
+    console.error('loadProfile error:', e);
+    cur=0;
+    document.querySelectorAll('.pscreen').forEach(s=>s.classList.remove('active','exit'));
+    const welcome=document.getElementById('p0');
+    if(welcome)welcome.classList.add('active');
+  }
 }
 
 function showSaved(){
