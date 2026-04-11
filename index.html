@@ -1732,7 +1732,7 @@ async function handleBriefSubmit(e){
 Write a clear, friendly sitter brief they can hand to any caregiver. Include sections for: household overview, the children (with any specific needs), meal & snack guidance (mention any allergies prominently), bedtime routine (use reasonable defaults if not specified), emergency contacts & important numbers, and a warm closing note. Make it feel personal and specific to this family. Use the family name throughout. Format with clear section headers. Keep it to one page — practical and scannable, not overwhelming.`;
 
   try{
-    const res=await fetch('/api/claude',{
+    const res=await fetch('.netlify/functions/claude',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
@@ -1900,7 +1900,7 @@ async function generateInsight(){
   const conns=S.connections.map(c=>intNames[c]).join(', ')||'none yet';
   const prompt=`New Folia family: "${S.familyName||'unnamed'}". Members: ${mems}. Allergies: ${allerg}. Pickup: ${sched}. Connected: ${conns}. Write ONE warm specific observation, 2-3 sentences, emoji first, personal not generic.`;
   try{
-    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent welcoming a new family. Warm, specific, practical.',messages:[{role:'user',content:prompt}]})});
+    const res=await fetch('.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent welcoming a new family. Warm, specific, practical.',messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     document.getElementById('firstInsight').textContent=data.content?.map(b=>b.text||'').join('')||fallbackInsight();
   }catch(e){document.getElementById('firstInsight').textContent=fallbackInsight();}
@@ -2008,7 +2008,7 @@ async function generateDashInsight(){
   const fname=S.familyName||'this family';
   const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'Claire, Marcus, Nora (age 11, peanut allergy), Ben (age 7, asthma)';
   try{
-    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent. Warm, specific, practical. 2-3 sentences max.',messages:[{role:'user',content:`Family: ${fname}. Members: ${mems}. Agent found today: school early release Fri 1pm, travel conflict Mar 11-13, oat milk recurring, gluten-free pattern, new medication pending. ONE practical heads-up they might have missed.`}]})});
+    const res=await fetch('.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent. Warm, specific, practical. 2-3 sentences max.',messages:[{role:'user',content:`Family: ${fname}. Members: ${mems}. Agent found today: school early release Fri 1pm, travel conflict Mar 11-13, oat milk recurring, gluten-free pattern, new medication pending. ONE practical heads-up they might have missed.`}]})});
     const data=await res.json();
     const text=data.content?.map(b=>b.text||'').join('')||'';
     document.getElementById('ins-thinking').style.display='none';
@@ -2046,7 +2046,7 @@ async function runChat(q){
   addMsg('user',q);addTyping();
   const sys=`You are the Folia agent for ${S.familyName||'this family'}. Members: ${famCtx.members()}. Recent updates: ${famCtx.updates}. Answer in 2-4 sentences, warm and practical, use real names.`;
   try{
-    const res=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
+    const res=await fetch('.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
     const data=await res.json();
     rmTyping();addMsg('agent-b',data.content?.map(b=>b.text||'').join('')||"I'm having trouble connecting.");
   }catch(e){
