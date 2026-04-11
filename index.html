@@ -2046,7 +2046,7 @@ async function runChat(q){
   addMsg('user',q);addTyping();
   const sys=`You are the Folia agent for ${S.familyName||'this family'}. Members: ${famCtx.members()}. Recent updates: ${famCtx.updates}. Answer in 2-4 sentences, warm and practical, use real names.`;
   try{
-    const res=await fetch('.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
+    const res=await fetch('/.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
     const data=await res.json();
     rmTyping();addMsg('agent-b',data.content?.map(b=>b.text||'').join('')||"I'm having trouble connecting.");
   }catch(e){
