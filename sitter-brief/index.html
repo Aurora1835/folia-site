@@ -613,7 +613,6 @@ function emailBrief() {
   );
   window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + bodyEnc;
 }
-
 function showBrief(text) {
   document.getElementById('generatingState').classList.remove('show');
   document.getElementById('briefBody').textContent = text;
@@ -622,8 +621,19 @@ function showBrief(text) {
   if (window.innerWidth < 780) {
     document.getElementById('briefOutput').scrollIntoView({ behavior: 'smooth' });
   }
+  // Send to Klaviyo
+  const email = document.getElementById('familyEmail')?.value.trim();
+  const name  = document.getElementById('familyName')?.value.trim();
+  if (email) {
+    try {
+      fetch('/.netlify/functions/klaviyo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name, brief: text })
+      });
+    } catch(err) {}
+  }
 }
-
 function copyBrief() {
   const title = document.getElementById('briefTitle').textContent;
   const body  = document.getElementById('briefBody').textContent;
