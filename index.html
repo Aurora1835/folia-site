@@ -1731,8 +1731,10 @@ async function handleBriefSubmit(e){
 
 Write a clear, friendly sitter brief they can hand to any caregiver. Include sections for: household overview, the children (with any specific needs), meal & snack guidance (mention any allergies prominently), bedtime routine (use reasonable defaults if not specified), emergency contacts & important numbers, and a warm closing note. Make it feel personal and specific to this family. Use the family name throughout. Format with clear section headers. Keep it to one page — practical and scannable, not overwhelming.`;
 
+  let brief='';
+
   try{
-    const res=await fetch('.netlify/functions/claude',{
+    const res=await fetch('/.netlify/functions/claude',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
@@ -1741,18 +1743,25 @@ Write a clear, friendly sitter brief they can hand to any caregiver. Include sec
       })
     });
     const data=await res.json();
-    const brief=data.content?.map(b=>b.text||'').join('')||fallbackBrief(name,children,allergies,emergency);
-    document.getElementById('briefStep2').style.display='none';
-    document.getElementById('briefStep3').style.display='block';
-    document.getElementById('briefOutput').textContent=brief;
+    brief=data.content?.map(b=>b.text||'').join('')||fallbackBrief(name,children,allergies,emergency);
   }catch(err){
-    // Fallback brief if API fails
-    document.getElementById('briefStep2').style.display='none';
-    document.getElementById('briefStep3').style.display='block';
-    document.getElementById('briefOutput').textContent=fallbackBrief(name,children,allergies,emergency);
+    brief=fallbackBrief(name,children,allergies,emergency);
   }
-}
 
+  // Show the brief
+  document.getElementById('briefStep2').style.display='none';
+  document.getElementById('briefStep3').style.display='block';
+  document.getElementById('briefOutput').textContent=brief;
+
+  // Send to Klaviyo (fire and forget — don't block the UI)
+  try{
+    fetch('/.netlify/functions/klaviyo',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,name,brief})
+    });
+  }catch(err){}
+}
 function fallbackBrief(name,children,allergies,emergency){
   return `SITTER BRIEF — ${name.toUpperCase()}
 ${'─'.repeat(40)}
