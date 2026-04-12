@@ -586,7 +586,7 @@ Format each section with the section name in ALL CAPS followed by a line of dash
 Write as if the family wrote it themselves. Only real details — nothing invented or assumed.`;
 
   try {
-    const res = await fetch('/api/claude', {
+    const res = await fetch('/.netlify/functions/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
