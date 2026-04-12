@@ -52,7 +52,8 @@ exports.handler = async function(event) {
             }
           }
         }
-      })
+     })
+    });
     const responseText = await res.text();
     console.log('Klaviyo response status:', res.status);
     console.log('Klaviyo response body:', responseText);
