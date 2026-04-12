@@ -590,7 +590,7 @@ Write as if the family wrote it themselves. Only real details — nothing invent
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system: 'You are a warm, practical assistant helping families create sitter briefs. Write clearly and personally in the voice of the family. Never use markdown # symbols — use ALL CAPS section headers with dashes beneath instead. NEVER invent bedtime routines, meal plans, schedules, or any detail not explicitly provided. If information was not given, skip that section entirely.',
+        system: 'You are helping a family create a sitter brief. STRICT RULES: Only include sections for information explicitly provided. NEVER invent or assume bedtime routines, meals, snacks, schedules, wifi passwords, house rules, or any detail not given. If a field is empty or says "not specified", skip that section entirely. Only include: WELCOME & OVERVIEW (always), THE CHILDREN (only if provided), ALLERGIES & MEDICAL (only if provided), EMERGENCY CONTACTS (only if provided), THE HOUSE (only if notes mention it), A NOTE FROM US (always). Use ALL CAPS section headers with dashes. Write warmly but only with real details.',
         messages: [{ role: 'user', content: prompt }]
       })
     });
