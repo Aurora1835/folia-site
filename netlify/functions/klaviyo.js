@@ -37,8 +37,10 @@ exports.handler = async function(event) {
                 type: 'profile',
                 attributes: {
                   email,
-                  first_name: name,
-                  properties: { sitter_brief: brief }
+                  properties: {
+                    first_name: name,
+                    sitter_brief: brief
+                  }
                 }
               }]
             },
@@ -51,8 +53,6 @@ exports.handler = async function(event) {
           }
         }
       })
-    });
-
     const responseText = await res.text();
     console.log('Klaviyo response status:', res.status);
     console.log('Klaviyo response body:', responseText);
