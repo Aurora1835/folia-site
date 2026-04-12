@@ -4,15 +4,21 @@ exports.handler = async function(event) {
   const KLAVIYO_API_KEY = process.env.KLAVIYO_API_KEY;
   const KLAVIYO_LIST_ID = process.env.KLAVIYO_LIST_ID;
 
+  console.log('Klaviyo function called');
+  console.log('API key present:', !!KLAVIYO_API_KEY);
+  console.log('List ID present:', !!KLAVIYO_LIST_ID);
+
   if (!KLAVIYO_API_KEY || !KLAVIYO_LIST_ID) {
+    console.log('Missing env vars');
     return { statusCode: 500, body: JSON.stringify({ error: 'Klaviyo not configured' }) };
   }
 
   let body;
-  try { body = JSON.parse(event.body); } 
+  try { body = JSON.parse(event.body); }
   catch(e) { return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) }; }
 
   const { email, name, brief } = body;
+  console.log('Sending to Klaviyo for:', email);
 
   try {
     const res = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
@@ -47,12 +53,17 @@ exports.handler = async function(event) {
       })
     });
 
+    const responseText = await res.text();
+    console.log('Klaviyo response status:', res.status);
+    console.log('Klaviyo response body:', responseText);
+
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ ok: true })
     };
   } catch(e) {
+    console.log('Klaviyo fetch error:', e.message);
     return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
 };
