@@ -14,8 +14,11 @@ exports.handler = async function(event) {
   }
 
   let body;
-  try { body = JSON.parse(event.body); }
-  catch(e) { return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) }; }
+  try {
+    body = JSON.parse(event.body);
+  } catch(e) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
+  }
 
   const { email, name, brief } = body;
   console.log('Sending to Klaviyo for:', email);
@@ -36,7 +39,7 @@ exports.handler = async function(event) {
               data: [{
                 type: 'profile',
                 attributes: {
-                  email,
+                  email: email,
                   properties: {
                     first_name: name,
                     sitter_brief: brief
@@ -48,12 +51,16 @@ exports.handler = async function(event) {
           },
           relationships: {
             list: {
-              data: { type: 'list', id: KLAVIYO_LIST_ID }
+              data: {
+                type: 'list',
+                id: KLAVIYO_LIST_ID
+              }
             }
           }
         }
-     })
+      })
     });
+
     const responseText = await res.text();
     console.log('Klaviyo response status:', res.status);
     console.log('Klaviyo response body:', responseText);
@@ -63,6 +70,7 @@ exports.handler = async function(event) {
       headers: { 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ ok: true })
     };
+
   } catch(e) {
     console.log('Klaviyo fetch error:', e.message);
     return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
