@@ -43,7 +43,8 @@ exports.handler = async function(event) {
       })
     });
 
-   const profileData = JSON.parse(profileText);
+   const profileText = await profileRes.text();
+    const profileData = JSON.parse(profileText);
     // Handle both new profile (201) and duplicate (409)
     const profileId = profileData?.data?.id || profileData?.errors?.[0]?.meta?.duplicate_profile_id;
 
