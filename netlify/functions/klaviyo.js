@@ -5,11 +5,8 @@ exports.handler = async function(event) {
   const KLAVIYO_LIST_ID = process.env.KLAVIYO_LIST_ID;
 
   console.log('Klaviyo function called');
-  console.log('API key present:', !!KLAVIYO_API_KEY);
-  console.log('List ID present:', !!KLAVIYO_LIST_ID);
 
   if (!KLAVIYO_API_KEY || !KLAVIYO_LIST_ID) {
-    console.log('Missing env vars');
     return { statusCode: 500, body: JSON.stringify({ error: 'Klaviyo not configured' }) };
   }
 
@@ -24,7 +21,8 @@ exports.handler = async function(event) {
   console.log('Sending to Klaviyo for:', email);
 
   try {
-    const res = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
+    // Step 1: Create or update the profile
+    const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',
       headers: {
         'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
@@ -33,37 +31,43 @@ exports.handler = async function(event) {
       },
       body: JSON.stringify({
         data: {
-          type: 'profile-subscription-bulk-create-job',
+          type: 'profile',
           attributes: {
-            profiles: {
-              data: [{
-                type: 'profile',
-                attributes: {
-                  email: email,
-                  properties: {
-                    first_name: name,
-                    sitter_brief: brief
-                  }
-                }
-              }]
-            },
-            historical_import: false
-          },
-          relationships: {
-            list: {
-              data: {
-                type: 'list',
-                id: KLAVIYO_LIST_ID
-              }
+            email: email,
+            first_name: name,
+            properties: {
+              sitter_brief: brief
             }
           }
         }
       })
     });
 
-    const responseText = await res.text();
-    console.log('Klaviyo response status:', res.status);
-    console.log('Klaviyo response body:', responseText);
+    const profileText = await profileRes.text();
+    console.log('Profile response status:', profileRes.status);
+    console.log('Profile response body:', profileText);
+
+    const profileData = JSON.parse(profileText);
+    const profileId = profileData?.data?.id;
+
+    if (!profileId) {
+      return { statusCode: 500, body: JSON.stringify({ error: 'No profile ID returned' }) };
+    }
+
+    // Step 2: Add profile to list
+    const listRes = await fetch(`https://a.klaviyo.com/api/lists/${KLAVIYO_LIST_ID}/relationships/profiles/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+        'Content-Type': 'application/json',
+        'revision': '2024-02-15'
+      },
+      body: JSON.stringify({
+        data: [{ type: 'profile', id: profileId }]
+      })
+    });
+
+    console.log('List add response status:', listRes.status);
 
     return {
       statusCode: 200,
@@ -72,7 +76,7 @@ exports.handler = async function(event) {
     };
 
   } catch(e) {
-    console.log('Klaviyo fetch error:', e.message);
+    console.log('Error:', e.message);
     return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
 };
