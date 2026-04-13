@@ -43,12 +43,9 @@ exports.handler = async function(event) {
       })
     });
 
-    const profileText = await profileRes.text();
-    console.log('Profile response status:', profileRes.status);
-    console.log('Profile response body:', profileText);
-
-    const profileData = JSON.parse(profileText);
-    const profileId = profileData?.data?.id;
+   const profileData = JSON.parse(profileText);
+    // Handle both new profile (201) and duplicate (409)
+    const profileId = profileData?.data?.id || profileData?.errors?.[0]?.meta?.duplicate_profile_id;
 
     if (!profileId) {
       return { statusCode: 500, body: JSON.stringify({ error: 'No profile ID returned' }) };
