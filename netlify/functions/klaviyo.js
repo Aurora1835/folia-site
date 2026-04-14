@@ -52,8 +52,8 @@ exports.handler = async function(event) {
       return { statusCode: 500, body: JSON.stringify({ error: 'No profile ID returned' }) };
     }
 
-   // Step 2: Subscribe profile to list
-    const listRes = await fetch(`https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/`, {
+// Step 2: Track custom event
+    const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
       method: 'POST',
       headers: {
         'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
@@ -62,29 +62,36 @@ exports.handler = async function(event) {
       },
       body: JSON.stringify({
         data: {
-          type: 'profile-subscription-bulk-create-job',
+          type: 'event',
           attributes: {
-            profiles: {
-              data: [{
+            profile: {
+              data: {
                 type: 'profile',
-              attributes: {
-                  email: email
+                attributes: {
+                  email: email,
+                  first_name: name
                 }
-              }]
-            }
-          },
-          relationships: {
-            list: {
-              data: { type: 'list', id: KLAVIYO_LIST_ID }
+              }
+            },
+            metric: {
+              data: {
+                type: 'metric',
+                attributes: {
+                  name: 'Sitter Brief Generated'
+                }
+              }
+            },
+            properties: {
+              family_name: name
             }
           }
         }
       })
     });
 
-    const listText = await listRes.text();
-    console.log('List subscribe response status:', listRes.status);
-    console.log('List subscribe response body:', listText);
+    const eventText = await eventRes.text();
+    console.log('Event response status:', eventRes.status);
+    console.log('Event response body:', eventText);
 
     return {
       statusCode: 200,
