@@ -334,55 +334,62 @@ footer {
 }
 footer .logo { font-size: 17px; }
 
-/* ── RESPONSIVE ── */
 @media print {
-  /* Hide everything except the brief itself */
+  /* Hide everything except the brief */
   nav,
+  .form-side,
   .form-panel,
   .brief-actions,
+  .brief-upsell,
   .btn-row,
   .share-link-box,
   .folia-nudge,
   .hero-strip,
   .progress-wrap,
+  .proof-strip,
   header,
   footer {
     display: none !important;
   }
 
-  /* Remove fixed positioning from nav so it doesn't overlap */
+  /* Reset body */
   body {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
   }
 
-  /* Brief output takes full page */
-  .output-panel,
-  #briefOutput {
+  /* Make page-wrap single column, full width */
+  .page-wrap {
     display: block !important;
-    box-shadow: none !important;
-    border: none !important;
     padding: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
+  }
+
+  /* Brief output takes full page */
+  .output-side,
+  .brief-output {
+    display: block !important;
     width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* Brief header stays at top with no nav above it */
-  .brief-header {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+  /* Fix clipped content */
+  .brief-body {
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 24px 32px !important;
   }
 
-  /* Clean page breaks */
-  .brief-body-text {
-    page-break-inside: avoid;
-  }
-
-  /* Remove background colors for printing */
-  .brief-header {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  /* Preserve background colors */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   /* Page margins */
