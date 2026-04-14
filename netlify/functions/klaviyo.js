@@ -67,13 +67,8 @@ exports.handler = async function(event) {
             profiles: {
               data: [{
                 type: 'profile',
-                attributes: {
+              attributes: {
                   email: email
-                },
-                meta: {
-                  patch_properties: {
-                    append: {}
-                  }
                 }
               }]
             }
