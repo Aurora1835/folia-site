@@ -1400,6 +1400,20 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 
       <!-- Dashboard: Family -->
       <div class="pscreen" id="dash-family">
+         <!-- Member profile detail panel -->
+        <div class="profile-panel" id="profilePanel">
+          <div class="profile-top">
+            <div class="profile-avatar" id="profileAvatar"></div>
+            <div>
+              <div class="profile-name" id="profileName"></div>
+              <div class="profile-role" id="profileRole"></div>
+            </div>
+            <button class="profile-back" onclick="closeProfile()">✕</button>
+          </div>
+          <div class="profile-body" id="profileBody"></div>
+          <button class="profile-edit-btn" id="profileEditBtn" onclick="toggleEditMode()">Edit Profile</button>
+          <button class="profile-save-btn" id="profileSaveBtn" onclick="saveProfile()">Save Changes</button>
+        </div>
         <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your People</div></div></div></div>
         <div class="pscroll" style="gap:0;">
           <div class="fam-block">
