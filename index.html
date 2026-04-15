@@ -2015,7 +2015,7 @@ function openDashboard(){
   document.getElementById('famBlockLbl').textContent=fname;
   const fc=document.getElementById('famChips');fc.innerHTML='';
   const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent'},{emoji:'👨',name:'Marcus',role:'Parent'},{emoji:'👧',name:'Nora',role:'Age 11'},{emoji:'👦',name:'Ben',role:'Age 7'}];
-  disp.forEach(m=>{const d=document.createElement('div');d.className='fam-chip';d.innerHTML=`<div class="chip-av">${m.emoji}</div><div class="chip-nm">${m.name}</div><div class="chip-tg">${m.role}</div>`;fc.appendChild(d);});
+  disp.forEach((m,i)=>{const d=document.createElement('div');d.className='fam-chip';d.innerHTML=`<div class="chip-av">${m.emoji}</div><div class="chip-nm">${m.name}</div><div class="chip-tg">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;d.onclick=()=>openProfile(i);fc.appendChild(d);});
   pGoTo(10);
   if(!dashReady){dashReady=true;setTimeout(()=>animateAgentCards(),600);}
   setTimeout(()=>loadInviteList(),800);
