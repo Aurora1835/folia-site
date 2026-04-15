@@ -2090,7 +2090,60 @@ const famCtx={
 function addMsg(role,text){const chat=document.getElementById('chatMessages');const d=document.createElement('div');d.className=`chat-bubble ${role}`;d.innerHTML=`<div class="bubble-inner">${text}</div>`;chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});}
 function addTyping(){const chat=document.getElementById('chatMessages');const d=document.createElement('div');d.id='typing';d.className='chat-bubble agent-b';d.innerHTML=`<div class="bubble-inner"><div class="t-dots"><span></span><span></span><span></span></div></div>`;chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});}
 function rmTyping(){document.getElementById('typing')?.remove();}
+let editingProfile=false;
+let currentProfileIndex=-1;
 
+function openProfile(i){
+  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent',allergies:'',notes:''},{emoji:'👨',name:'Marcus',role:'Parent',allergies:'',notes:''},{emoji:'👧',name:'Nora',role:'Age 11',allergies:'Peanuts — Epi-pen in red pouch',notes:''},{emoji:'👦',name:'Ben',role:'Age 7',allergies:'',notes:'Albuterol inhaler, blue backpack'}];
+  const m=disp[i];
+  currentProfileIndex=i;
+  editingProfile=false;
+  document.getElementById('profileAvatar').textContent=m.emoji;
+  document.getElementById('profileName').textContent=m.name;
+  document.getElementById('profileRole').textContent=m.role||'Household member';
+  document.getElementById('profileEditBtn').style.display='block';
+  document.getElementById('profileSaveBtn').style.display='none';
+  const body=document.getElementById('profileBody');
+  body.innerHTML=`
+    <div class="profile-field"><div class="profile-field-label">Name</div><div class="profile-field-value" id="pf-name">${m.name}</div></div>
+    <div class="profile-field"><div class="profile-field-label">Role</div><div class="profile-field-value" id="pf-role">${m.role||'Household member'}</div></div>
+    <div class="profile-field"><div class="profile-field-label">Allergies & Medical</div><div class="profile-field-value" id="pf-allergies">${m.allergies||'None recorded'}</div></div>
+    <div class="profile-field"><div class="profile-field-label">Notes</div><div class="profile-field-value" id="pf-notes">${m.notes||'—'}</div></div>
+  `;
+  document.getElementById('profilePanel').classList.add('open');
+}
+
+function closeProfile(){
+  document.getElementById('profilePanel').classList.remove('open');
+  editingProfile=false;
+}
+
+function toggleEditMode(){
+  editingProfile=true;
+  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent',allergies:'',notes:''},{emoji:'👨',name:'Marcus',role:'Parent',allergies:'',notes:''},{emoji:'👧',name:'Nora',role:'Age 11',allergies:'Peanuts — Epi-pen in red pouch',notes:''},{emoji:'👦',name:'Ben',role:'Age 7',allergies:'',notes:'Albuterol inhaler, blue backpack'}];
+  const m=disp[currentProfileIndex];
+  const body=document.getElementById('profileBody');
+  body.innerHTML=`
+    <div class="profile-field"><div class="profile-field-label">Name</div><textarea class="profile-field-input" id="pf-name" rows="1">${m.name}</textarea></div>
+    <div class="profile-field"><div class="profile-field-label">Role</div><textarea class="profile-field-input" id="pf-role" rows="1">${m.role||''}</textarea></div>
+    <div class="profile-field"><div class="profile-field-label">Allergies & Medical</div><textarea class="profile-field-input" id="pf-allergies" rows="2">${m.allergies||''}</textarea></div>
+    <div class="profile-field"><div class="profile-field-label">Notes</div><textarea class="profile-field-input" id="pf-notes" rows="2">${m.notes||''}</textarea></div>
+  `;
+  document.getElementById('profileEditBtn').style.display='none';
+  document.getElementById('profileSaveBtn').style.display='block';
+}
+
+function saveProfile(){
+  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent',allergies:'',notes:''},{emoji:'👨',name:'Marcus',role:'Parent',allergies:'',notes:''},{emoji:'👧',name:'Nora',role:'Age 11',allergies:'Peanuts — Epi-pen in red pouch',notes:''},{emoji:'👦',name:'Ben',role:'Age 7',allergies:'',notes:'Albuterol inhaler, blue backpack'}];
+  if(currentProfileIndex>=0 && S.members.length>0){
+    S.members[currentProfileIndex].name=document.getElementById('pf-name').value;
+    S.members[currentProfileIndex].role=document.getElementById('pf-role').value;
+    S.members[currentProfileIndex].allergies=document.getElementById('pf-allergies').value;
+    S.members[currentProfileIndex].notes=document.getElementById('pf-notes').value;
+  }
+  closeProfile();
+  openDashboard();
+}
 async function askQ(el,q){el.style.display='none';switchTab('ask');await runChat(q);}
 async function sendChat(){const i=document.getElementById('chatIn');const q=i.value.trim();if(!q)return;i.value='';await runChat(q);}
 
