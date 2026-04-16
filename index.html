@@ -2076,7 +2076,7 @@ function addInsightCard(feed){
 
 async function generateDashInsight(){
   const fname=S.familyName||'this family';
-  const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'Claire, Marcus, Nora (age 11, peanut allergy), Ben (age 7, asthma)';
+  const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'No family members added yet';
   try{
     const res=await fetch('.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent. Warm, specific, practical. 2-3 sentences max.',messages:[{role:'user',content:`Family: ${fname}. Members: ${mems}. Agent found today: school early release Fri 1pm, travel conflict Mar 11-13, oat milk recurring, gluten-free pattern, new medication pending. ONE practical heads-up they might have missed.`}]})});
     const data=await res.json();
@@ -2138,7 +2138,8 @@ function closeProfile(){
 
 function toggleEditMode(){
   editingProfile=true;
-  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent',allergies:'',notes:''},{emoji:'👨',name:'Marcus',role:'Parent',allergies:'',notes:''},{emoji:'👧',name:'Nora',role:'Age 11',allergies:'Peanuts — Epi-pen in red pouch',notes:''},{emoji:'👦',name:'Ben',role:'Age 7',allergies:'',notes:'Albuterol inhaler, blue backpack'}];
+  const disp=S.members.length>0?S.members:[];
+  if(disp.length===0)return;
   const m=disp[currentProfileIndex];
   const body=document.getElementById('profileBody');
   body.innerHTML=`
@@ -2152,8 +2153,8 @@ function toggleEditMode(){
 }
 
 function saveProfile(){
-  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent',allergies:'',notes:''},{emoji:'👨',name:'Marcus',role:'Parent',allergies:'',notes:''},{emoji:'👧',name:'Nora',role:'Age 11',allergies:'Peanuts — Epi-pen in red pouch',notes:''},{emoji:'👦',name:'Ben',role:'Age 7',allergies:'',notes:'Albuterol inhaler, blue backpack'}];
-  if(currentProfileIndex>=0 && S.members.length>0){
+const disp=S.members.length>0?S.members:[];
+  if(disp.length===0)return;  if(currentProfileIndex>=0 && S.members.length>0){
     S.members[currentProfileIndex].name=document.getElementById('pf-name').value;
     S.members[currentProfileIndex].role=document.getElementById('pf-role').value;
     S.members[currentProfileIndex].allergies=document.getElementById('pf-allergies').value;
