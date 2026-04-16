@@ -1059,7 +1059,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     <div id="briefStep2" style="display:none;text-align:center;padding:20px 0;">
       <div style="font-size:36px;margin-bottom:16px;">📋</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:10px;">Writing your brief…</div>
-      <div style="font-size:14px;color:var(--stone-500);font-weight:300;line-height:1.6;">Our agent is putting together<br>everything your sitter needs to know.</div>
+      <div style="font-size:14px;color:var(--stone-500);font-weight:300;line-height:1.6;">Folia is putting together<br>everything your sitter needs to know.</div>
       <div style="margin-top:20px;display:flex;justify-content:center;gap:5px;" id="genDots">
         <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.2s ease-in-out infinite;"></div>
         <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.2s ease-in-out infinite;animation-delay:0.2s;"></div>
@@ -1348,7 +1348,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="success-p">
           <div class="success-ring">🏡</div>
           <div class="success-title">Your app is<br><em>alive.</em></div>
-          <div class="success-sub" id="successSub">Your agent is now watching, learning, and keeping everything current — so you don't have to.</div>
+          <div class="success-sub" id="successSub">Folia is now watching, learning, and keeping everything current — so you don't have to.</div>
           <div class="summary-chips-p">
             <div class="summary-chip-p">✦ Always current</div>
             <div class="summary-chip-p" id="chipMembers">👨‍👩‍👧‍👦 Family ready</div>
@@ -1366,7 +1366,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="ptop">
           <div class="ptop-row">
             <div><div class="ptitle">Folia</div><div class="psub" id="dashFamilyName">Your Family</div></div>
-            <div class="agent-badge"><div class="agent-dot"></div>Agent Active</div>
+            <div class="agent-badge"><div class="agent-dot"></div>Folia Active</div>
           </div>
         </div>
         <div class="pscroll" id="agentFeed" style="gap:0;padding-bottom:8px;">
@@ -1962,7 +1962,7 @@ async function generateInsight(){
 }
 function fallbackInsight(){
   if(S.members.length>2)return`🗂️ With ${S.members.length} household members, the biggest win is having one source of truth everyone can access.`;
-  if(document.getElementById('allergies')?.value)return`⚕️ Since you've noted allergies, your agent will flag any conflicts and never update health details without your confirmation.`;
+  if(document.getElementById('allergies')?.value)return`⚕️ Since you've noted allergies, Folia will flag any conflicts and never update health details without your confirmation.`;
   return`🧠 Connect Gmail and your calendar first — within a week Folia will have learned your family's rhythms well enough to start flagging things before you notice them.`;
 }
 
