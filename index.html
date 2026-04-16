@@ -2176,11 +2176,7 @@ async function runChat(q){
   }catch(e){
     rmTyping();
     const ql=q.toLowerCase();
-    let r="I'm having trouble connecting right now.";
-    if(ql.includes('sitter')||ql.includes('ben'))r="Ben needs his Albuterol inhaler (blue backpack, side pocket) and just started Montelukast 5mg at bedtime. Reading tutor Fridays at 4pm. Sara Chen has a key and knows the routine.";
-    else if(ql.includes('conflict')||ql.includes('week'))r="Travel away Mon–Wed Mar 11–13, departing 6:45am. Solo school pickups all week including Tue/Thu carpool. Friday also has early release at 1:00 PM.";
-    else if(ql.includes('nora')||ql.includes('safe'))r="Nora has a severe peanut allergy — Epi-pen in the red pouch, backpack front pocket, second in kitchen drawer. Always check for peanut facility cross-contamination.";
-    else if(ql.includes('today')||ql.includes('summary'))r="Today: Friday early release 1pm applied, Spring Concert Mar 14 added, travel conflict flagged, oat milk on weekly list, gluten-free pattern confirmed, Ben's Montelukast awaiting your confirmation.";
+    let r="I'm having trouble connecting right now. Please try again in a moment.";
     addMsg('agent-b',r);
   }
 }
