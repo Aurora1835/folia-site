@@ -2083,8 +2083,8 @@ function confirmMed(){
 function dismissMed(btn){btn.closest('.action-row').style.opacity='0.3';}
 
 const famCtx={
-  members:()=>S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'Claire (mom), Marcus (dad, away Mar 11-13), Nora (age 11, peanut allergy), Ben (age 7, asthma)',
-  updates:'Friday pickup 1pm, Spring Concert Mar 14, travel conflict flagged, oat milk recurring, Montelukast 5mg pending'
+  members:()=>S.members.length>0?S.members.map(m=>`${m.name} (${m.role}${m.allergies?' — '+m.allergies:''}${m.notes?' — '+m.notes:''})`).join(', '):'No family members added yet',
+  updates:'No recent updates'
 };
 
 function addMsg(role,text){const chat=document.getElementById('chatMessages');const d=document.createElement('div');d.className=`chat-bubble ${role}`;d.innerHTML=`<div class="bubble-inner">${text}</div>`;chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});}
