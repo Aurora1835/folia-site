@@ -1957,7 +1957,7 @@ async function generateInsight(){
     document.getElementById('firstInsight').textContent=data.content?.map(b=>b.text||'').join('')||fallbackInsight();
   }catch(e){document.getElementById('firstInsight').textContent=fallbackInsight();}
   const fd=S.familyName?`the ${S.familyName}`:'your family';
-  document.getElementById('successSub').textContent=`Your agent is now active for ${fd}. It's watching, learning, and keeping everything current.`;
+  document.getElementById('successSub').textContent=`Folia is now set up for ${fd}. It's keeping everything in one place and ready to share.`;
   if(S.members.length>0)document.getElementById('chipMembers').textContent=`👨‍👩‍👧‍👦 ${S.members.length} member${S.members.length!==1?'s':''} added`;
 }
 function fallbackInsight(){
