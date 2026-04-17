@@ -1,4 +1,4 @@
-const CACHE = 'folia-v2';
+const CACHE = 'folia-v2'; 
 
 self.addEventListener('install', e => {
   self.skipWaiting();
