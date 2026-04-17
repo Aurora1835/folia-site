@@ -1600,22 +1600,22 @@ async function handleSignup(){
 
 // Check for existing session on load
 window.addEventListener('load',async()=>{
-  try {
+  try{
     const {data:{session}}=await sb.auth.getSession();
     const navBtn=document.getElementById('navAuthBtn');
     if(session){
       isLoggedIn=true;
-      if(navBtn){ navBtn.textContent='Open Folia →'; navBtn.onclick=()=>{ const o=document.getElementById('appOverlay'); o.classList.add('open'); document.body.style.overflow='hidden'; requestAnimationFrame(()=>o.classList.add('ready')); }; }
+      if(navBtn){navBtn.textContent='Open Folia →';navBtn.onclick=()=>{const o=document.getElementById('appOverlay');o.classList.add('open');document.body.style.overflow='hidden';requestAnimationFrame(()=>o.classList.add('ready'));}}
       const overlay=document.getElementById('appOverlay');
       overlay.classList.add('open');
       document.body.style.overflow='hidden';
       await loadProfile(session.user.id);
       requestAnimationFrame(()=>overlay.classList.add('ready'));
-    } else {
+    }else{
       isLoggedIn=false;
-      if(navBtn){ navBtn.textContent='Sign In'; navBtn.onclick=()=>openAuthOverlay('login'); }
+      if(navBtn){navBtn.textContent='Sign In';navBtn.onclick=()=>openAuthOverlay('login');}
     }
-  } catch(e) {
+  }catch(e){
     console.error('Session check error:',e);
   }
 });
