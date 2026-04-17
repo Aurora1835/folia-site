@@ -1619,23 +1619,6 @@ window.addEventListener('load',async()=>{
     console.error('Session check error:',e);
   }
 });
-      // Open app immediately — skip landing page
-      const overlay=document.getElementById('appOverlay');
-      overlay.classList.add('open');
-      document.body.style.overflow='hidden';
-      await loadProfile(session.user.id);
-      requestAnimationFrame(()=>overlay.classList.add('ready'));
-    } else {
-      // Logged out — show sign in button
-      if(navBtn){
-        navBtn.textContent='Sign In';
-        navBtn.onclick=()=>openAuthOverlay('login');
-      }
-    }
-  } catch(e) {
-    console.error('Session check error:',e);
-  }
-});
 
 // ════════════════════════════
 // DATABASE
