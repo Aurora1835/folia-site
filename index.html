@@ -864,77 +864,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <h2>One app per family.<br><em>Choose your plan.</em></h2>
       <p>Start free. Upgrade when you're ready. No contracts, cancel anytime.</p>
     </div>
-    <div class="pricing-grid">
-
-      <!-- FREE -->
-      <div class="pricing-card reveal">
-        <div class="pricing-tag">Always free</div>
-        <div class="pricing-name">Essential</div>
-        <div class="pricing-price">
-          <div class="price-free">Free</div>
-        </div>
-        <div class="pricing-desc">Get started with the basics. One household, manual updates. A great way to see how Folia works before connecting your apps.</div>
-        <ul class="pricing-features">
-          <li><span class="pf-check">✓</span> Up to 5 household members</li>
-          <li><span class="pf-check">✓</span> Health &amp; allergy profiles</li>
-          <li><span class="pf-check">✓</span> Schedules &amp; routines</li>
-          <li><span class="pf-check">✓</span> Sitter-ready brief</li>
-          <li><span class="pf-dash">–</span> Auto-updates &amp; integrations</li>
-          <li><span class="pf-dash">–</span> Connected integrations</li>
-          <li><span class="pf-dash">–</span> Ask Folia chat</li>
-        </ul>
-        <button class="pricing-btn pricing-btn-outline" href="/sitter-brief" onclick="window.location='/sitter-brief'">Get Free Sitter Brief</button>
-      </div>
-
-      <!-- $9/mo — FEATURED -->
-      <div class="pricing-card featured reveal d1">
-        <div class="featured-badge">Most Popular</div>
-        <div class="pricing-tag">Full access</div>
-        <div class="pricing-name">Family</div>
-        <div class="pricing-price">
-          <div class="price-amt">$9</div>
-          <div class="price-per">/ month</div>
-        </div>
-        <div class="pricing-desc">The full Folia experience. Connect your email, calendar, and grocery orders — Folia watches for changes and keeps your family's information current, so you don't have to.</div>
-        <ul class="pricing-features">
-          <li><span class="pf-check">✓</span> Everything in Essential</li>
-          <li><span class="pf-check">✓</span> Folia — always current</li>
-          <li><span class="pf-check">✓</span> Gmail &amp; Calendar sync</li>
-          <li><span class="pf-check">✓</span> Grocery pattern learning</li>
-          <li><span class="pf-check">✓</span> Pharmacy &amp; health alerts</li>
-          <li><span class="pf-check">✓</span> Ask Folia chat</li>
-          <li><span class="pf-check">✓</span> Weekly family briefing</li>
-        </ul>
-        <!-- Replace href with your Stripe payment link -->
-        <a href="https://buy.stripe.com/00w9AM4KUgVrfuE7Ft53O00" class="pricing-btn pricing-btn-light">Start Free Trial →</a>
-      </div>
-
-      <!-- $15/mo -->
-      <div class="pricing-card reveal d2">
-        <div class="pricing-tag">Extended household</div>
-        <div class="pricing-name">Family+</div>
-        <div class="pricing-price">
-          <div class="price-amt">$15</div>
-          <div class="price-per">/ month</div>
-        </div>
-        <div class="pricing-desc">For families that span multiple homes — co-parents, grandparents, regular caregivers all in the loop.</div>
-        <ul class="pricing-features">
-          <li><span class="pf-check">✓</span> Everything in Family</li>
-          <li><span class="pf-check">✓</span> Multiple household views</li>
-          <li><span class="pf-check">✓</span> Caregiver shared access</li>
-          <li><span class="pf-check">✓</span> Co-parent coordination</li>
-          <li><span class="pf-check">✓</span> Grandparent profiles</li>
-          <li><span class="pf-check">✓</span> Priority support</li>
-          <li><span class="pf-check">✓</span> Early access to new features</li>
-        </ul>
-        <!-- Replace href with your Stripe payment link -->
-        <a href="https://buy.stripe.com/bJedR23GQ0Wtcis9NB53O01" class="pricing-btn pricing-btn-dark">Start Free Trial →</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
+    
 
 
 <!-- FOUNDING FAMILIES -->
@@ -959,59 +889,53 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <h2>One app per family.<br><em>Choose your plan.</em></h2>
       <p>Start free. Upgrade when you're ready. No contracts, cancel anytime.</p>
     </div>
-    <div class="pricing-grid">
+   <div class="pricing-grid" style="grid-template-columns:1fr 1fr;">
+
+      <!-- FREE -->
       <div class="pricing-card reveal">
         <div class="pricing-tag">Always free</div>
         <div class="pricing-name">Essential</div>
-        <div class="pricing-price"><div class="price-free">Free</div></div>
-        <div class="pricing-desc">Get started with the basics. One household, manual updates. A great way to see how Folia works before connecting your apps.</div>
+        <div class="pricing-price">
+          <div class="price-free">Free</div>
+        </div>
+        <div class="pricing-desc">The sitter brief generator is always free — no account needed. Create a Folia to store your family's information and view it anytime.</div>
         <ul class="pricing-features">
-          <li><span class="pf-check">✓</span> Up to 5 household members</li>
-          <li><span class="pf-check">✓</span> Health &amp; allergy profiles</li>
-          <li><span class="pf-check">✓</span> Schedules &amp; routines</li>
-          <li><span class="pf-check">✓</span> Sitter-ready brief</li>
-          <li><span class="pf-dash">–</span> Auto-updates &amp; integrations</li>
-          <li><span class="pf-dash">–</span> Connected integrations</li>
+          <li><span class="pf-check">✓</span> Free sitter brief — always</li>
+          <li><span class="pf-check">✓</span> Create a family profile</li>
+          <li><span class="pf-check">✓</span> View your family's information</li>
+          <li><span class="pf-dash">–</span> Edit profiles in the app</li>
+          <li><span class="pf-dash">–</span> Emergency snapshot</li>
+          <li><span class="pf-dash">–</span> Share with a partner or caregiver</li>
           <li><span class="pf-dash">–</span> Ask Folia chat</li>
+          <li><span class="pf-dash">–</span> Auto-updates & integrations</li>
         </ul>
-        <button class="pricing-btn pricing-btn-outline" href="/sitter-brief" onclick="window.location='/sitter-brief'">Get Free Sitter Brief</button>
+        <button class="pricing-btn pricing-btn-outline" onclick="window.location='/sitter-brief'">Get Free Sitter Brief</button>
       </div>
+
+      <!-- $9/mo — FEATURED -->
       <div class="pricing-card featured reveal d1">
-        <div class="featured-badge">Most Popular</div>
+        <div class="featured-badge">Founding Family Rate</div>
         <div class="pricing-tag">Full access</div>
         <div class="pricing-name">Family</div>
-        <div class="pricing-price"><div class="price-amt">$9</div><div class="price-per">/ month</div></div>
-        <div class="pricing-desc">The full Folia experience. Connect your email, calendar, and grocery orders — Folia watches for changes and keeps your family's information current, so you don't have to.</div>
+        <div class="pricing-price">
+          <div class="price-amt">$9</div>
+          <div class="price-per">/ month</div>
+        </div>
+        <div class="pricing-desc">Your family's information — editable, shareable, and always at your fingertips. Plus every new feature first as Folia grows.</div>
         <ul class="pricing-features">
           <li><span class="pf-check">✓</span> Everything in Essential</li>
-          <li><span class="pf-check">✓</span> Folia — always current</li>
-          <li><span class="pf-check">✓</span> Gmail &amp; Calendar sync</li>
-          <li><span class="pf-check">✓</span> Grocery pattern learning</li>
-          <li><span class="pf-check">✓</span> Pharmacy &amp; health alerts</li>
-          <li><span class="pf-check">✓</span> Ask Folia chat</li>
-          <li><span class="pf-check">✓</span> Weekly family briefing</li>
+          <li><span class="pf-check">✓</span> Edit family profiles in the app</li>
+          <li><span class="pf-check">✓</span> Emergency snapshot — share in one tap</li>
+          <li><span class="pf-check">✓</span> Share with a partner or caregiver</li>
+          <li><span class="pf-check">✓</span> Ask Folia chat — unlimited</li>
+          <li><span class="pf-check">✓</span> Gmail & Calendar sync — coming soon</li>
+          <li><span class="pf-check">✓</span> Grocery learning — coming soon</li>
+          <li><span class="pf-check">✓</span> Every new feature, first</li>
         </ul>
-        <a href="https://buy.stripe.com/00w9AM4KUgVrfuE7Ft53O00" class="pricing-btn pricing-btn-light">Start Free Trial →</a>
+        <a href="https://buy.stripe.com/bJedR23GQ0Wtcis9NB53O01" class="pricing-btn pricing-btn-light">Join as a Founding Family →</a>
       </div>
-      <div class="pricing-card reveal d2">
-        <div class="pricing-tag">Extended household</div>
-        <div class="pricing-name">Family+</div>
-        <div class="pricing-price"><div class="price-amt">$15</div><div class="price-per">/ month</div></div>
-        <div class="pricing-desc">For families that span multiple homes — co-parents, grandparents, caregivers all in the loop.</div>
-        <ul class="pricing-features">
-          <li><span class="pf-check">✓</span> Everything in Family</li>
-          <li><span class="pf-check">✓</span> Multiple household views</li>
-          <li><span class="pf-check">✓</span> Caregiver shared access</li>
-          <li><span class="pf-check">✓</span> Co-parent coordination</li>
-          <li><span class="pf-check">✓</span> Grandparent profiles</li>
-          <li><span class="pf-check">✓</span> Priority support</li>
-          <li><span class="pf-check">✓</span> Early access to new features</li>
-        </ul>
-        <a href="https://buy.stripe.com/bJedR23GQ0Wtcis9NB53O01" class="pricing-btn pricing-btn-dark">Start Free Trial →</a>
-      </div>
+
     </div>
-  </div>
-</section>
 
 <!-- AUTH OVERLAY -->
 <div class="auth-overlay" id="authOverlay" onclick="handleAuthOverlayClick(event)">
