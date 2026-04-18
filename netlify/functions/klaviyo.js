@@ -21,7 +21,7 @@ exports.handler = async function(event) {
   console.log('Sending to Klaviyo for:', email);
 
   try {
-    // Step 1: Create or update the profile
+    // Step 1: Create or update profile with subscription
     const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',
       headers: {
@@ -32,34 +32,34 @@ exports.handler = async function(event) {
       body: JSON.stringify({
         data: {
           type: 'profile',
-      attributes: {
-  email: email,
-  first_name: name,
-  properties: {
-    sitter_brief: brief
-  },
-  subscriptions: {
-    email: {
-      marketing: {
-        consent: 'SUBSCRIBED'
-      }
-    }
-  }
-}
+          attributes: {
+            email: email,
+            first_name: name,
+            subscriptions: {
+              email: {
+                marketing: {
+                  consent: 'SUBSCRIBED'
+                }
+              }
+            }
+          }
         }
       })
     });
 
-   const profileText = await profileRes.text();
+    const profileText = await profileRes.text();
+    console.log('Profile response status:', profileRes.status);
+    console.log('Profile response body:', profileText);
+
     const profileData = JSON.parse(profileText);
-    // Handle both new profile (201) and duplicate (409)
     const profileId = profileData?.data?.id || profileData?.errors?.[0]?.meta?.duplicate_profile_id;
+    console.log('Profile ID:', profileId);
 
     if (!profileId) {
       return { statusCode: 500, body: JSON.stringify({ error: 'No profile ID returned' }) };
     }
 
-// Step 2: Track custom event
+    // Step 2: Track event
     const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
       method: 'POST',
       headers: {
