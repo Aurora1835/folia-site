@@ -1109,7 +1109,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 
     <!-- Settings panel -->
     <div class="settings-panel" id="settingsPanel">
-      <div class="settings-top">
+     <div class="settings-top" style="position:relative;">
+        <button onclick="closeSettings()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:var(--stone-500);font-size:13px;cursor:pointer;font-family:'Jost',sans-serif;letter-spacing:0.5px;">← Back</button>
         <div class="settings-title">Folia</div>
         <div class="settings-email" id="settingsEmail"></div>
       </div>
@@ -1914,7 +1915,20 @@ function openAppShell(){
   document.body.style.overflow='hidden';
   requestAnimationFrame(()=>overlay.classList.add('ready'));
 }
-function closeApp(){document.getElementById('appOverlay').classList.remove('open');document.body.style.overflow='';}
+function isPWA(){return window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;}
+
+function closeApp(){
+  if(isPWA()&&isLoggedIn){
+    openSettings();
+  }else{
+    document.getElementById('appOverlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+}
+
+function closeSettings(){
+  document.getElementById('settingsPanel').classList.remove('open');
+}
 
 let isLoggedIn=false;
 
