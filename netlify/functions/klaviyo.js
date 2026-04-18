@@ -17,11 +17,11 @@ exports.handler = async function(event) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
   }
 
-  const { email, name, brief } = body;
+  const { email, name } = body;
   console.log('Sending to Klaviyo for:', email);
 
   try {
-    // Step 1: Create or update profile with subscription
+    // Step 1: Create or update profile
     const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',
       headers: {
@@ -34,14 +34,7 @@ exports.handler = async function(event) {
           type: 'profile',
           attributes: {
             email: email,
-            first_name: name,
-            subscriptions: {
-              email: {
-                marketing: {
-                  consent: 'SUBSCRIBED'
-                }
-              }
-            }
+            first_name: name
           }
         }
       })
@@ -49,17 +42,50 @@ exports.handler = async function(event) {
 
     const profileText = await profileRes.text();
     console.log('Profile response status:', profileRes.status);
-    console.log('Profile response body:', profileText);
 
     const profileData = JSON.parse(profileText);
     const profileId = profileData?.data?.id || profileData?.errors?.[0]?.meta?.duplicate_profile_id;
     console.log('Profile ID:', profileId);
 
     if (!profileId) {
-      return { statusCode: 500, body: JSON.stringify({ error: 'No profile ID returned' }) };
+      return { statusCode: 500, body: JSON.stringify({ error: 'No profile ID' }) };
     }
 
-    // Step 2: Track event
+    // Step 2: Subscribe profile to list with email consent
+    const subRes = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+        'Content-Type': 'application/json',
+        'revision': '2024-02-15'
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'profile-subscription-bulk-create-job',
+          attributes: {
+            profiles: {
+              data: [{
+                type: 'profile',
+                attributes: {
+                  email: email
+                }
+              }]
+            }
+          },
+          relationships: {
+            list: {
+              data: { type: 'list', id: KLAVIYO_LIST_ID }
+            }
+          }
+        }
+      })
+    });
+
+    const subText = await subRes.text();
+    console.log('Subscription response status:', subRes.status);
+    console.log('Subscription response body:', subText);
+
+    // Step 3: Track event
     const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
       method: 'POST',
       headers: {
@@ -74,31 +100,22 @@ exports.handler = async function(event) {
             profile: {
               data: {
                 type: 'profile',
-                attributes: {
-                  email: email,
-                  first_name: name
-                }
+                attributes: { email: email }
               }
             },
             metric: {
               data: {
                 type: 'metric',
-                attributes: {
-                  name: 'Sitter Brief Generated'
-                }
+                attributes: { name: 'Sitter Brief Generated' }
               }
             },
-            properties: {
-              family_name: name
-            }
+            properties: { family_name: name }
           }
         }
       })
     });
 
-    const eventText = await eventRes.text();
     console.log('Event response status:', eventRes.status);
-    console.log('Event response body:', eventText);
 
     return {
       statusCode: 200,
