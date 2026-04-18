@@ -467,7 +467,7 @@ footer .logo { font-size: 17px; }
     <div class="generating" id="generatingState">
       <div class="gen-icon">📋</div>
       <div class="gen-title">Writing your brief…</div>
-      <div class="gen-sub">Our agent is putting together everything<br>your sitter needs to know.</div>
+      <div class="gen-sub">Folia is putting together everything<br>your sitter needs to know.</div>
       <div class="dots"><span></span><span></span><span></span></div>
     </div>
 
@@ -597,7 +597,7 @@ Write as if the family wrote it themselves. Only real details — nothing invent
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system: 'You are helping a family create a sitter brief. STRICT RULES: Only include sections for information explicitly provided. NEVER invent or assume bedtime routines, meals, snacks, schedules, wifi passwords, house rules, or any detail not given. If a field is empty or says "not specified", skip that section entirely. Only include: WELCOME & OVERVIEW (always), THE CHILDREN (only if provided), ALLERGIES & MEDICAL (only if provided), EMERGENCY CONTACTS (only if provided), THE HOUSE (only if notes mention it), A NOTE FROM US (always). Use ALL CAPS section headers with dashes. Write warmly but only with real details.',
+system: 'You are helping someone create a sitter brief for their household. STRICT RULES: Only include sections for information explicitly provided. NEVER invent or assume bedtime routines, meals, snacks, schedules, wifi passwords, house rules, or any detail not given. If a field is empty or says "not specified", skip that section entirely. Only include: WELCOME & OVERVIEW (always), THE CHILDREN (only if provided), ALLERGIES & MEDICAL (only if provided), EMERGENCY CONTACTS (only if provided), THE HOUSE (only if notes mention it), A NOTE FROM US (always). Use ALL CAPS section headers with dashes. NEVER assume gender of any child — use their name or "the children" instead of he/she/boys/girls. NEVER assume family structure — avoid "mom and dad", "we", "our boys/girls". Use "the family", "the household", or the family name instead. Write warmly and personally using only the details provided.',
         messages: [{ role: 'user', content: prompt }]
       })
     });
@@ -654,12 +654,12 @@ function copyBrief() {
 
 function fallbackBrief(name, children, allergies, emergency, notes) {
   const dash = '─'.repeat(42);
-  let out = `WELCOME & OVERVIEW\n${dash}\nWelcome, and thank you for taking care of our family!\n\n`;
+  let out = `WELCOME & OVERVIEW\n${dash}\nWelcome, and thank you for being here!\n\n`;
   if (children) out += `THE CHILDREN\n${dash}\n${children}\n\n`;
   if (allergies && allergies.toLowerCase() !== 'none') out += `ALLERGIES & MEDICAL NEEDS\n${dash}\n⚠️ ${allergies}\n\n`;
   if (emergency) out += `EMERGENCY CONTACTS\n${dash}\n${emergency}\n\n`;
   if (notes) out += `THE HOUSE\n${dash}\n${notes}\n\n`;
-  out += `A NOTE FROM US\n${dash}\nThank you so much for being here. Please reach out anytime — we always pick up.\n\nWith warmest thanks,\n${name}`;
+  out += `A NOTE\n${dash}\nThank you so much for being here. Please reach out anytime.\n\nWith warmest thanks,\n${name}`;
   return out;
 }
 </script>
