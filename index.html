@@ -1410,38 +1410,64 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="ptop">
           <div class="ptop-row">
             <div><div class="ptitle">Folia</div><div class="psub" id="dashFamilyName">Your Family</div></div>
-            <div class="agent-badge"><div class="agent-dot"></div>Folia Active</div>
           </div>
         </div>
-        <div class="pscroll" id="agentFeed" style="gap:0;padding-bottom:8px;">
-          <div class="agent-strip">
-            <div class="strip-icon" style="font-size:20px;">✦</div>
-            <div class="strip-text"><div class="strip-title">Folia is watching for you</div><div class="strip-sub">Email · Calendar · Groceries · Health</div></div>
-            <div class="strip-count" id="updCount">0</div>
+        <div class="pscroll" style="gap:0;padding-bottom:8px;">
+
+          <!-- Greeting -->
+          <div style="padding:18px 18px 4px;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;font-style:italic;color:var(--stone-900);line-height:1.2;">How can Folia<br>help you today?</div>
           </div>
-          <div class="sec-lbl">INCOMING SIGNALS</div>
-          <!-- cards injected by JS -->
+
+          <!-- Action tiles -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 18px;">
+
+            <div onclick="window.location='/sitter-brief/'" style="background:var(--stone-900);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:22px;">📋</div>
+              <div style="font-size:12px;font-weight:500;color:var(--white);line-height:1.3;">Generate a sitter brief</div>
+              <div style="font-size:10px;color:var(--stone-500);font-weight:300;">Free · instant</div>
+            </div>
+
+            <div onclick="switchTab('family')" style="background:var(--parchment);border:1px solid var(--stone-200);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:22px;">👨‍👩‍👧‍👦</div>
+              <div style="font-size:12px;font-weight:500;color:var(--stone-900);line-height:1.3;">View family profiles</div>
+              <div style="font-size:10px;color:var(--stone-500);font-weight:300;">Edit · share</div>
+            </div>
+
+            <div onclick="switchTab('ask')" style="background:var(--parchment);border:1px solid var(--stone-200);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:22px;">✦</div>
+              <div style="font-size:12px;font-weight:500;color:var(--stone-900);line-height:1.3;">Ask Folia anything</div>
+              <div style="font-size:10px;color:var(--stone-500);font-weight:300;">About your family</div>
+            </div>
+
+            <div onclick="generateAppBrief()" style="background:var(--parchment);border:1px solid var(--stone-200);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:22px;">🚨</div>
+              <div style="font-size:12px;font-weight:500;color:var(--stone-900);line-height:1.3;">Emergency snapshot</div>
+              <div style="font-size:10px;color:var(--stone-500);font-weight:300;">Copy · share fast</div>
+            </div>
+
+          </div>
+
+          <!-- Coming soon card -->
+          <div style="margin:4px 18px 18px;background:var(--stone-900);border-radius:14px;padding:18px;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,#7C6A52,#C4B49E,#7C6A52,transparent);"></div>
+            <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Coming soon</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;font-style:italic;color:var(--stone-100);line-height:1.3;margin-bottom:8px;">Folia that keeps<br>itself current.</div>
+            <div style="font-size:11px;font-weight:300;color:var(--stone-500);line-height:1.6;">Connect Gmail, Google Calendar, and your grocery orders. Folia will watch for changes and flag updates — so your family's info is always accurate without you lifting a finger.</div>
+            <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">
+              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-700);background:rgba(124,106,82,0.15);padding:4px 10px;border-radius:100px;">Gmail</div>
+              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-700);background:rgba(124,106,82,0.15);padding:4px 10px;border-radius:100px;">Google Calendar</div>
+              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-700);background:rgba(124,106,82,0.15);padding:4px 10px;border-radius:100px;">Groceries</div>
+            </div>
+          </div>
+
         </div>
         <div class="tab-bar">
-          <div class="tab active" id="t-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Updates</div></div>
+          <div class="tab active" id="t-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab" id="t-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
           <div class="tab" id="t-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
         </div>
-        <!-- confirm sheet -->
-        <div class="confirm-modal" id="confirmModal">
-          <div class="confirm-sheet">
-            <div class="sheet-eyebrow">⚕️ Health Change · Confirmation Required</div>
-            <div class="sheet-title">Update medication profile?</div>
-            <div class="sheet-body">The agent detected a new prescription from CVS. Medication changes are never applied without your explicit approval.</div>
-            <div class="sheet-change"><strong>Montelukast 5mg — once daily at bedtime</strong>Prescribed by Dr. Patel · Replaces Albuterol as primary controller</div>
-            <div class="sheet-actions">
-              <button class="sheet-confirm" onclick="confirmMed()">Yes, Update Profile</button>
-              <button class="sheet-dismiss" onclick="closeConfirm()">Not Yet</button>
-            </div>
-          </div>
-        </div>
       </div>
-
       <!-- Dashboard: Family -->
       <div class="pscreen" id="dash-family">
          <!-- Member profile detail panel -->
@@ -1488,7 +1514,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           </div>
         </div>
         <div class="tab-bar">
-          <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Updates</div></div>
+          <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab active" id="t2-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
           <div class="tab" id="t2-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
         </div>
@@ -1515,7 +1541,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           <button onclick="sendChat()" style="padding:10px 14px;background:var(--stone-900);color:var(--white);border:none;border-radius:9px;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;">→</button>
         </div>
         <div class="tab-bar">
-          <div class="tab" id="t3-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Updates</div></div>
+          <div class="tab" id="t3-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab" id="t3-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
           <div class="tab active" id="t3-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
         </div>
