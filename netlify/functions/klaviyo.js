@@ -32,13 +32,20 @@ exports.handler = async function(event) {
       body: JSON.stringify({
         data: {
           type: 'profile',
-          attributes: {
-            email: email,
-            first_name: name,
-            properties: {
-              sitter_brief: brief
-            }
-          }
+      attributes: {
+  email: email,
+  first_name: name,
+  properties: {
+    sitter_brief: brief
+  },
+  subscriptions: {
+    email: {
+      marketing: {
+        consent: 'SUBSCRIBED'
+      }
+    }
+  }
+}
         }
       })
     });
