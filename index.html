@@ -2267,6 +2267,15 @@ const disp=S.members.length>0?S.members:[];
   closeProfile();
   openDashboard();
 }
+   async function generateAppBrief(){
+  if(S.members.length===0){
+    alert('Add your family members in the Family tab first.');
+    return;
+  }
+  switchTab('ask');
+  const q='Generate a complete sitter brief for my family based on everything in my Folia.';
+  await runChat(q);
+}
 async function askQ(el,q){el.style.display='none';switchTab('ask');await runChat(q);}
 async function sendChat(){const i=document.getElementById('chatIn');const q=i.value.trim();if(!q)return;i.value='';await runChat(q);}
 
