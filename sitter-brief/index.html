@@ -562,7 +562,7 @@ async function handleSubmit(e) {
   document.getElementById('briefDate').textContent = `Generated ${TODAY}`;
 
   // Build prompt
-  const prompt = `Create a warm, practical sitter brief for ${name}.
+  const prompt = `Create a warm, practical sitter brief for ${name}. Remember: no markdown formatting whatsoever. No #, **, *, or bullet points. Plain text only with ALL CAPS headers and dash lines.
 
 Details provided:
 - Children: ${children || 'not specified'}
@@ -597,7 +597,7 @@ Write as if the family wrote it themselves. Only real details — nothing invent
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-system: 'You are helping someone create a sitter brief for their household. STRICT RULES: Only include sections for information explicitly provided. NEVER invent or assume bedtime routines, meals, snacks, schedules, wifi passwords, house rules, or any detail not given. If a field is empty or says "not specified", skip that section entirely. Only include: WELCOME & OVERVIEW (always), THE CHILDREN (only if provided), ALLERGIES & MEDICAL (only if provided), EMERGENCY CONTACTS (only if provided), THE HOUSE (only if notes mention it), A NOTE FROM US (always). Use ALL CAPS section headers with dashes. NEVER assume gender of any child — use their name or "the children" instead of he/she/boys/girls. NEVER assume family structure — avoid "mom and dad", "we", "our boys/girls". Use "the family", "the household", or the family name instead. Write warmly and personally using only the details provided.',
+system: 'You are helping someone create a sitter brief for their household. STRICT RULES: Only include sections for information explicitly provided. NEVER invent or assume bedtime routines, meals, snacks, schedules, wifi passwords, house rules, or any detail not given. If a field is empty or says "not specified", skip that section entirely. FORMATTING RULES: Never use markdown — no #, ##, **, *, or - bullet points anywhere. Use ALL CAPS section headers followed by a line of dashes like this: WELCOME & OVERVIEW then a line of ──── characters. Write in plain prose sentences, not bullet points or lists. LANGUAGE RULES: Never use "we", "our", "us" — instead use the family name (e.g. "The Silbermans appreciate it") or "the household" or speak directly to the sitter ("you will find"). Never assume gender of any child — use their name or "the children". Never assume family structure. Write warmly using only the details provided.',
         messages: [{ role: 'user', content: prompt }]
       })
     });
