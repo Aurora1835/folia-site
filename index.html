@@ -2221,7 +2221,7 @@ function openEmergency(){
 
   const fname=S.familyName||'Your Family';
   document.getElementById('emergencyTitle').textContent='Emergency Snapshot';
-  document.getElementById('emergencySubtitle').textContent=`The ${fname}`;
+  document.getElementById('emergencySubtitle').textContent=fname;
 
   const allergies=document.getElementById('allergies')?.value||'';
   const medications=document.getElementById('medications')?.value||'';
@@ -2294,7 +2294,7 @@ function buildEmergencyText(){
   const doctor=document.getElementById('doctor')?.value||'';
   const pickup=document.getElementById('pickup')?.value||'';
   const dash='─'.repeat(36);
-  let text=`EMERGENCY SNAPSHOT — THE ${fname.toUpperCase()}\n${dash}\n\n`;
+  let text=`EMERGENCY SNAPSHOT — ${fname.toUpperCase()}\n${dash}\n\n`;
   const kids=S.members.filter(m=>!['🐕','🐈'].includes(m.emoji)&&m.role!=='Parent'&&m.role!=='Caregiver');
   kids.forEach(k=>{
     text+=`${k.name.toUpperCase()} — ${k.role}\n`;
