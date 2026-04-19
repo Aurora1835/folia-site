@@ -604,7 +604,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .profile-avatar { width:44px; height:44px; border-radius:50%; background:rgba(124,106,82,0.3); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
 .profile-name { font-size:16px; font-weight:600; color:var(--white); line-height:1.2; }
 .profile-role-lbl { font-size:10px; color:var(--stone-500); letter-spacing:1px; margin-top:2px; }
-.profile-body { flex:1; overflow-y:auto; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+.profile-body { flex:1; overflow-y:auto; padding:14px 16px 80px; display:flex; flex-direction:column; gap:8px; }
 .profile-section { background:var(--stone-50); border:1px solid var(--stone-200); border-radius:10px; overflow:hidden; }
 .profile-section.alert { background:#FDEAEA; border-color:#E8B4B4; }
 .profile-field { padding:10px 13px; border-bottom:1px solid var(--stone-100); display:flex; flex-direction:column; gap:3px; }
@@ -1756,7 +1756,12 @@ async function loadHouseholdProfile(householdId){
   if(document.getElementById('pickup'))document.getElementById('pickup').value=data.pickup||'';
   if(document.getElementById('activities'))document.getElementById('activities').value=data.activities||'';
   if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
+  if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
+  if(data.household){ Object.assign(H, data.household); loadHouseholdDisplay(); }
   openDashboard();
+  return true;
+}
+   openDashboard();
   return true;
 }
 
@@ -2476,10 +2481,11 @@ function getMemberFields(m) {
     ];
   }
   if (!isKid) {
-    return [
+   return [
       { key:'role', label:'Role', placeholder:'e.g. Parent, Grandparent', alert:false },
       { key:'phone', label:'Phone', placeholder:'(555) 000-0000', alert:false },
-      { key:'schedule', label:'Work schedule / travel', placeholder:'Travels Mon–Wed most weeks', alert:false },
+      { key:'doctor', label:'Doctor', placeholder:'Dr. name · (555) 000-0000', alert:false },
+      { key:'schedule', label:'Weekly schedule', placeholder:'Travels Mon–Wed · WFH Thu/Fri', alert:false },
       { key:'notes', label:'Notes', placeholder:'Anything relevant', alert:false }
     ];
   }
