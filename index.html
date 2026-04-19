@@ -598,6 +598,23 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .fam-block-lbl { font-size:9px; letter-spacing:2.5px; text-transform:uppercase; color:var(--stone-500); margin-bottom:10px; }
 .fam-chip { display:flex; align-items:center; gap:9px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
 .fam-chip:last-child { border-bottom:none; }
+   .profile-panel { position:absolute; inset:0; background:var(--white); z-index:60; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
+.profile-panel.open { display:flex; }
+.profile-top { background:var(--stone-900); padding:20px 18px 16px; display:flex; align-items:center; gap:13px; flex-shrink:0; }
+.profile-avatar { width:44px; height:44px; border-radius:50%; background:rgba(124,106,82,0.3); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.profile-name { font-size:16px; font-weight:600; color:var(--white); line-height:1.2; }
+.profile-role-lbl { font-size:10px; color:var(--stone-500); letter-spacing:1px; margin-top:2px; }
+.profile-body { flex:1; overflow-y:auto; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+.profile-section { background:var(--stone-50); border:1px solid var(--stone-200); border-radius:10px; overflow:hidden; }
+.profile-section.alert { background:#FDEAEA; border-color:#E8B4B4; }
+.profile-field { padding:10px 13px; border-bottom:1px solid var(--stone-100); display:flex; flex-direction:column; gap:3px; }
+.profile-field:last-child { border-bottom:none; }
+.profile-field-label { font-size:8.5px; letter-spacing:2px; text-transform:uppercase; color:var(--stone-400); }
+.profile-section.alert .profile-field-label { color:#8B3A3A; }
+.profile-field-value { font-size:13px; color:var(--stone-700); font-weight:300; line-height:1.5; }
+.profile-field-input { font-size:13px; color:var(--stone-900); font-weight:300; line-height:1.5; width:100%; border:none; background:transparent; font-family:'Jost',sans-serif; outline:none; resize:none; }
+.profile-edit-btn { margin:0 16px 8px; padding:12px; background:var(--stone-900); color:var(--white); border:none; border-radius:10px; font-family:'Jost',sans-serif; font-size:12px; font-weight:500; letter-spacing:1px; cursor:pointer; flex-shrink:0; }
+.profile-save-btn { margin:0 16px 8px; padding:12px; background:var(--green); color:var(--white); border:none; border-radius:10px; font-family:'Jost',sans-serif; font-size:12px; font-weight:500; letter-spacing:1px; cursor:pointer; display:none; flex-shrink:0; }
 .household-row { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-bottom:1px solid var(--stone-100); }
 .household-row:last-child { border-bottom:none; }
 .hh-label { font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-400); flex-shrink:0; width:80px; padding-top:2px; }
@@ -1052,6 +1069,19 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
    <button class="shell-close" id="shellCloseBtn" onclick="handleClose()">×</button>
 
     <!-- Settings panel -->
+     <!-- Member profile panel -->
+        <div class="profile-panel" id="profilePanel">
+          <div class="profile-top">
+            <div class="profile-avatar" id="profileAvatar"></div>
+            <div>
+              <div class="profile-name" id="profileName"></div>
+              <div class="profile-role-lbl" id="profileRoleLbl"></div>
+            </div>
+          </div>
+          <div class="profile-body" id="profileBody"></div>
+          <button class="profile-edit-btn" id="profileEditBtn" onclick="toggleProfileEdit()">Edit Profile</button>
+          <button class="profile-save-btn" id="profileSaveBtn" onclick="saveProfileMember()">Save Changes</button>
+        </div>
      <!-- Emergency snapshot panel -->
         <div class="emergency-panel" id="emergencyPanel">
           <div class="emergency-top">
@@ -2132,7 +2162,13 @@ function openDashboard(){
   document.getElementById('famBlockLbl').textContent=fname;
   const fc=document.getElementById('famChips');fc.innerHTML='';
   const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent'},{emoji:'👨',name:'Marcus',role:'Parent'},{emoji:'👧',name:'Nora',role:'Age 11'},{emoji:'👦',name:'Ben',role:'Age 7'}];
-  disp.forEach((m,i)=>{const d=document.createElement('div');d.className='fam-chip';d.innerHTML=`<div class="chip-av">${m.emoji}</div><div class="chip-nm">${m.name}</div><div class="chip-tg">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;d.onclick=()=>openProfile(i);fc.appendChild(d);});
+  disp.forEach((m,i)=>{
+    const d=document.createElement('div');d.className='fam-chip';
+    d.style.cursor='pointer';
+    d.innerHTML=`<div class="chip-av">${m.emoji}</div><div class="chip-nm">${m.name}</div><div class="chip-tg">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;
+    d.onclick=()=>openMemberProfile(i);
+    fc.appendChild(d);
+  });
   pGoTo(10);
   if(!dashReady){dashReady=true;setTimeout(()=>animateAgentCards(),600);}
   setTimeout(()=>loadInviteList(),800);
@@ -2142,8 +2178,10 @@ function switchTab(name){
   // Close any open panels
   const ep=document.getElementById('emergencyPanel');
   const sp=document.getElementById('settingsPanel');
+  const pp=document.getElementById('profilePanel');
   if(ep)ep.classList.remove('open');
   if(sp)sp.classList.remove('open');
+  if(pp)pp.classList.remove('open');
 
   const map={home:'dash-home',family:'dash-family',ask:'dash-ask'};
   Object.entries(map).forEach(([k,v])=>{document.getElementById(v).classList.toggle('active',k===name);});
@@ -2422,6 +2460,118 @@ async function saveHousehold(){
   document.getElementById('householdEdit').style.display='none';
   // Save to Supabase alongside profile
   try{ await saveProfile(); }catch(e){}
+}
+   let currentMemberIndex = -1;
+let profileEditMode = false;
+
+function getMemberFields(m) {
+  const isKid = !['🐕','🐈'].includes(m.emoji) && m.role !== 'Parent' && m.role !== 'Caregiver';
+  const isPet = ['🐕','🐈'].includes(m.emoji);
+  if (isPet) {
+    return [
+      { key:'role', label:'Animal type', placeholder:'e.g. Dog, Cat', alert:false },
+      { key:'vet', label:'Vet name & number', placeholder:'Dr. Hale · (555) 204-8810', alert:false },
+      { key:'medications', label:'Medications & feeding', placeholder:'Heartworm pill 1st of month', alert:false },
+      { key:'notes', label:'Notes', placeholder:'Anything a sitter should know', alert:false }
+    ];
+  }
+  if (!isKid) {
+    return [
+      { key:'role', label:'Role', placeholder:'e.g. Parent, Grandparent', alert:false },
+      { key:'phone', label:'Phone', placeholder:'(555) 000-0000', alert:false },
+      { key:'schedule', label:'Work schedule / travel', placeholder:'Travels Mon–Wed most weeks', alert:false },
+      { key:'notes', label:'Notes', placeholder:'Anything relevant', alert:false }
+    ];
+  }
+  return [
+    { key:'role', label:'Age / grade', placeholder:'e.g. Age 9, 4th grade', alert:false },
+    { key:'school', label:'School', placeholder:'e.g. Jefferson Elementary', alert:false },
+    { key:'allergies', label:'Allergies & medical', placeholder:'None, or describe with Epi-pen location', alert:true },
+    { key:'medications', label:'Medications', placeholder:'None, or name & instructions', alert:false },
+    { key:'doctor', label:'Pediatrician', placeholder:'Dr. name · (555) 000-0000', alert:false },
+    { key:'pickup', label:'Pickup schedule', placeholder:'Bus #7 Mon/Wed/Fri · Mom Tue/Thu 3:15pm', alert:false },
+    { key:'activities', label:'Activities', placeholder:'Soccer · Saturdays 9am · Millbrook Field', alert:false },
+    { key:'bedtime', label:'Bedtime', placeholder:'7:30pm · brush teeth · one book', alert:false },
+    { key:'routine', label:'Morning routine', placeholder:'Wake 7am · breakfast · out by 8am', alert:false },
+    { key:'notes', label:'Notes for sitter', placeholder:'Anything a caregiver should know', alert:false }
+  ];
+}
+
+function openMemberProfile(i) {
+  const members = S.members.length > 0 ? S.members : [];
+  if (members.length === 0) return;
+  currentMemberIndex = i;
+  profileEditMode = false;
+  const m = members[i];
+  document.getElementById('profileAvatar').textContent = m.emoji;
+  document.getElementById('profileName').textContent = m.name;
+  document.getElementById('profileRoleLbl').textContent = m.role || 'Household member';
+  document.getElementById('profileEditBtn').style.display = 'block';
+  document.getElementById('profileSaveBtn').style.display = 'none';
+  renderProfileView(m);
+  document.getElementById('profilePanel').classList.add('open');
+}
+
+function renderProfileView(m) {
+  const fields = getMemberFields(m);
+  const body = document.getElementById('profileBody');
+  body.innerHTML = '';
+  const hasAlert = m.allergies && m.allergies.toLowerCase() !== 'none' && m.allergies !== '';
+  const sec = document.createElement('div');
+  sec.className = `profile-section${hasAlert ? ' alert' : ''}`;
+  fields.forEach(f => {
+    const val = m[f.key] || '';
+    const row = document.createElement('div');
+    row.className = 'profile-field';
+    row.innerHTML = `<div class="profile-field-label">${f.label}</div><div class="profile-field-value">${val || '—'}</div>`;
+    sec.appendChild(row);
+  });
+  body.appendChild(sec);
+}
+
+function toggleProfileEdit() {
+  profileEditMode = true;
+  const members = S.members.length > 0 ? S.members : [];
+  const m = members[currentMemberIndex];
+  if (!m) return;
+  const fields = getMemberFields(m);
+  const body = document.getElementById('profileBody');
+  body.innerHTML = '';
+  const sec = document.createElement('div');
+  sec.className = 'profile-section';
+  fields.forEach(f => {
+    const val = m[f.key] || '';
+    const row = document.createElement('div');
+    row.className = 'profile-field';
+    const isLong = ['notes','routine','activities','pickup','schedule','medications'].includes(f.key);
+    row.innerHTML = `<div class="profile-field-label">${f.label}</div>${
+      isLong
+        ? `<textarea class="profile-field-input" id="pe-${f.key}" rows="2" placeholder="${f.placeholder}">${val}</textarea>`
+        : `<input class="profile-field-input" id="pe-${f.key}" placeholder="${f.placeholder}" value="${val}" />`
+    }`;
+    sec.appendChild(row);
+  });
+  body.appendChild(sec);
+  document.getElementById('profileEditBtn').style.display = 'none';
+  document.getElementById('profileSaveBtn').style.display = 'block';
+}
+
+async function saveProfileMember() {
+  if (currentMemberIndex < 0 || S.members.length === 0) return;
+  const m = S.members[currentMemberIndex];
+  const fields = getMemberFields(m);
+  fields.forEach(f => {
+    const el = document.getElementById(`pe-${f.key}`);
+    if (el) m[f.key] = el.value.trim();
+  });
+  S.members[currentMemberIndex] = m;
+  document.getElementById('profileName').textContent = m.name;
+  document.getElementById('profileRoleLbl').textContent = m.role || 'Household member';
+  document.getElementById('profileEditBtn').style.display = 'block';
+  document.getElementById('profileSaveBtn').style.display = 'none';
+  profileEditMode = false;
+  renderProfileView(m);
+  try { await saveProfile(); } catch(e) {}
 }
 async function askQ(el,q){el.style.display='none';switchTab('ask');await runChat(q);}
 async function sendChat(){const i=document.getElementById('chatIn');const q=i.value.trim();if(!q)return;i.value='';await runChat(q);}
