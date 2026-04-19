@@ -1050,7 +1050,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
      <!-- Emergency snapshot panel -->
         <div class="emergency-panel" id="emergencyPanel">
           <div class="emergency-top">
-            <button class="emergency-back" onclick="closeEmergency()">← Back</button>
+           
             <div class="emergency-title" id="emergencyTitle">Emergency Snapshot</div>
             <div class="emergency-subtitle" id="emergencySubtitle">The Silbermans</div>
           </div>
@@ -1062,7 +1062,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         </div>
     <div class="settings-panel" id="settingsPanel">
      <div class="settings-top" style="position:relative;">
-        <button onclick="closeSettings()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:var(--stone-500);font-size:13px;cursor:pointer;font-family:'Jost',sans-serif;letter-spacing:0.5px;">← Back</button>
+       
         <div class="settings-title">Folia</div>
         <div class="settings-email" id="settingsEmail"></div>
       </div>
@@ -2090,6 +2090,12 @@ function openDashboard(){
 }
 
 function switchTab(name){
+  // Close any open panels
+  const ep=document.getElementById('emergencyPanel');
+  const sp=document.getElementById('settingsPanel');
+  if(ep)ep.classList.remove('open');
+  if(sp)sp.classList.remove('open');
+
   const map={home:'dash-home',family:'dash-family',ask:'dash-ask'};
   Object.entries(map).forEach(([k,v])=>{document.getElementById(v).classList.toggle('active',k===name);});
   ['home','family','ask'].forEach(t=>{['t','t2','t3'].forEach(prefix=>{const el=document.getElementById(`${prefix}-${t}`);if(el)el.classList.toggle('active',t===name);});});
