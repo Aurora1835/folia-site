@@ -409,7 +409,7 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
   transition:background 0.2s;
 }
 .shell-close:hover { background:rgba(255,255,255,0.28); }
-   .emergency-panel { position:absolute; inset:0; background:var(--white); z-index:60; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
+   .emergency-panel { position:absolute; top:0; left:0; right:0; bottom:56px; background:var(--white); z-index:60; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
 .emergency-panel.open { display:flex; }
 .emergency-top { background:#8B3A3A; padding:56px 20px 16px; position:relative; }
 .emergency-back { position:absolute; top:18px; left:16px; background:none; border:none; color:rgba(255,255,255,0.9); font-size:14px; cursor:pointer; font-family:'Jost',sans-serif; letter-spacing:0.3px; padding:4px 8px; }
@@ -424,7 +424,7 @@ footer p { font-size:12px; color:var(--stone-300); letter-spacing:0.5px; }
 .emergency-actions { padding:12px 16px 20px; display:flex; gap:8px; }
 .emergency-copy-btn { flex:1; padding:13px; background:var(--stone-900); color:var(--white); border:none; border-radius:10px; font-family:'Jost',sans-serif; font-size:12px; font-weight:500; letter-spacing:1px; cursor:pointer; }
 .emergency-share-btn { padding:13px 16px; background:transparent; color:var(--stone-500); border:1px solid var(--stone-200); border-radius:10px; font-family:'Jost',sans-serif; font-size:12px; cursor:pointer; }
-.settings-panel { position:absolute; inset:0; background:var(--stone-50); z-index:200; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
+.settings-panel { position:absolute; top:0; left:0; right:0; bottom:56px; background:var(--stone-50); z-index:200; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
 .settings-panel.open { display:flex; }
 .settings-top { background:var(--stone-900); padding:52px 20px 20px; }
 .settings-title { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; font-style:italic; color:var(--accent-lt); margin-bottom:4px; }
