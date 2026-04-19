@@ -1756,14 +1756,12 @@ async function loadHouseholdProfile(householdId){
   if(document.getElementById('pickup'))document.getElementById('pickup').value=data.pickup||'';
   if(document.getElementById('activities'))document.getElementById('activities').value=data.activities||'';
   if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
-  if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
+  
   if(data.household){ Object.assign(H, data.household); loadHouseholdDisplay(); }
   openDashboard();
   return true;
 }
-   openDashboard();
-  return true;
-}
+ 
 
 async function loadProfile(userId){
   try {
