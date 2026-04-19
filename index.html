@@ -598,7 +598,12 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .fam-block-lbl { font-size:9px; letter-spacing:2.5px; text-transform:uppercase; color:var(--stone-500); margin-bottom:10px; }
 .fam-chip { display:flex; align-items:center; gap:9px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
 .fam-chip:last-child { border-bottom:none; }
-.chip-av { width:27px; height:27px; border-radius:50%; background:rgba(124,106,82,0.3); display:flex; align-items:center; justify-content:center; font-size:12.5px; flex-shrink:0; }
+.household-row { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-bottom:1px solid var(--stone-100); }
+.household-row:last-child { border-bottom:none; }
+.hh-label { font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-400); flex-shrink:0; width:80px; padding-top:2px; }
+.hh-value { font-size:12.5px; color:var(--stone-700); font-weight:300; line-height:1.5; flex:1; }
+.hh-input { flex:1; font-size:12px; font-family:'Jost',sans-serif; color:var(--stone-900); border:none; outline:none; background:transparent; width:100%; resize:none; line-height:1.5; }
+   .chip-av { width:27px; height:27px; border-radius:50%; background:rgba(124,106,82,0.3); display:flex; align-items:center; justify-content:center; font-size:12.5px; flex-shrink:0; }
 .chip-nm { font-size:12.5px; font-weight:500; flex:1; }
 .chip-tg { font-size:9.5px; padding:2px 7px; border-radius:100px; background:rgba(124,106,82,0.25); color:var(--accent-lt); white-space:nowrap; }
 .chip-tg.updated { background:rgba(74,124,89,0.25); color:#6FCF97; animation:flash-tag 1s ease; }
@@ -1419,32 +1424,79 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         </div>
       </div>
       <!-- Dashboard: Family -->
-      <div class="pscreen" id="dash-family">
-         <!-- Member profile detail panel -->
-        <div class="profile-panel" id="profilePanel">
-          <div class="profile-top">
-            <div class="profile-avatar" id="profileAvatar"></div>
-            <div>
-              <div class="profile-name" id="profileName"></div>
-              <div class="profile-role" id="profileRole"></div>
-            </div>
-            <button class="profile-back" onclick="closeProfile()">✕</button>
-          </div>
-          <div class="profile-body" id="profileBody"></div>
-          <button class="profile-edit-btn" id="profileEditBtn" onclick="toggleEditMode()">Edit Profile</button>
-          <button class="profile-save-btn" id="profileSaveBtn" onclick="saveProfile()">Save Changes</button>
-        </div>
+     <div class="pscreen" id="dash-family">
         <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your People</div></div></div></div>
-        <div class="pscroll" style="gap:0;">
+        <div class="pscroll" style="gap:0;padding-bottom:16px;">
+
+          <!-- People -->
           <div class="fam-block">
             <div class="fam-block-lbl" id="famBlockLbl">Your Household</div>
             <div id="famChips"></div>
           </div>
 
-          <!-- Invite section -->
+          <!-- Household section -->
+          <div style="margin:10px 0 0;">
+            <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--stone-500);margin-bottom:8px;">The House</div>
+
+            <div id="householdView">
+              <!-- View mode -->
+              <div style="background:var(--stone-50);border:1px solid var(--stone-200);border-radius:12px;overflow:hidden;">
+                <div class="household-row" id="hw-wifi">
+                  <div class="hh-label">Wifi</div>
+                  <div class="hh-value" id="hv-wifi">—</div>
+                </div>
+                <div class="household-row" id="hw-address">
+                  <div class="hh-label">Address</div>
+                  <div class="hh-value" id="hv-address">—</div>
+                </div>
+                <div class="household-row" id="hw-donot">
+                  <div class="hh-label">Do-not list</div>
+                  <div class="hh-value" id="hv-donot">—</div>
+                </div>
+                <div class="household-row" id="hw-trusted">
+                  <div class="hh-label">Trusted contacts</div>
+                  <div class="hh-value" id="hv-trusted">—</div>
+                </div>
+                <div class="household-row" id="hw-notes">
+                  <div class="hh-label">House notes</div>
+                  <div class="hh-value" id="hv-notes">—</div>
+                </div>
+              </div>
+              <button onclick="editHousehold()" style="width:100%;margin-top:8px;padding:11px;background:transparent;border:1px solid var(--stone-200);border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;color:var(--stone-500);cursor:pointer;letter-spacing:0.5px;">Edit Household Info</button>
+            </div>
+
+            <!-- Edit mode (hidden by default) -->
+            <div id="householdEdit" style="display:none;">
+              <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;overflow:hidden;">
+                <div class="household-row">
+                  <div class="hh-label">Wifi</div>
+                  <input id="he-wifi" class="hh-input" placeholder="Network name & password" />
+                </div>
+                <div class="household-row">
+                  <div class="hh-label">Address</div>
+                  <input id="he-address" class="hh-input" placeholder="Home address" />
+                </div>
+                <div class="household-row">
+                  <div class="hh-label">Do-not list</div>
+                  <textarea id="he-donot" class="hh-input" rows="2" placeholder="No screen time before homework. No sweets after 6pm."></textarea>
+                </div>
+                <div class="household-row">
+                  <div class="hh-label">Trusted contacts</div>
+                  <textarea id="he-trusted" class="hh-input" rows="2" placeholder="Neighbor with key: Sara Chen (555) 391-7742"></textarea>
+                </div>
+                <div class="household-row">
+                  <div class="hh-label">House notes</div>
+                  <textarea id="he-notes" class="hh-input" rows="2" placeholder="Alarm code, parking, anything a sitter should know"></textarea>
+                </div>
+              </div>
+              <button onclick="saveHousehold()" style="width:100%;margin-top:8px;padding:11px;background:var(--stone-900);color:var(--white);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;letter-spacing:0.5px;">Save</button>
+            </div>
+          </div>
+
+          <!-- Share section -->
           <div style="margin:12px 0 0;background:var(--stone-50);border:1px solid var(--stone-200);border-radius:12px;padding:14px 16px;">
             <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-500);margin-bottom:8px;">Share With Family</div>
-            <div style="font-size:12.5px;color:var(--stone-700);font-weight:300;margin-bottom:10px;line-height:1.5;">Invite your partner or caregiver to see your family's Folia.</div>
+            <div style="font-size:12px;color:var(--stone-700);font-weight:300;margin-bottom:10px;line-height:1.5;">Invite a partner or caregiver to see your family's Folia.</div>
             <div style="display:flex;gap:7px;">
               <input type="email" id="inviteEmail" placeholder="their@email.com" style="flex:1;font-size:12px;padding:9px 12px;border-radius:8px;border:1px solid var(--stone-200);font-family:'Jost',sans-serif;" />
               <button onclick="handleInvite()" style="background:var(--stone-900);color:var(--white);border:none;border-radius:8px;padding:9px 14px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;white-space:nowrap;">Invite →</button>
@@ -1453,7 +1505,6 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
             <div id="inviteList" style="margin-top:10px;"></div>
           </div>
 
-         
         </div>
         <div class="tab-bar">
           <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
@@ -1599,11 +1650,12 @@ async function saveProfile(){
   // Ensure this user has a household — create one if not
   const householdId = await ensureHousehold(user.id);
 
-  const profile={
+ const profile={
     user_id:user.id,
     household_id:householdId,
     family_name:S.familyName||'Your Family',
     parent_name:S.parentName,
+    household:H,
     members:S.members,
     connections:S.connections,
     allergies:document.getElementById('allergies')?.value||'',
@@ -1716,7 +1768,9 @@ async function loadProfile(userId){
     if(document.getElementById('pickup'))document.getElementById('pickup').value=data.pickup||'';
     if(document.getElementById('activities'))document.getElementById('activities').value=data.activities||'';
     if(document.getElementById('doctor'))document.getElementById('doctor').value=data.doctor||'';
+   if(data.household){ Object.assign(H, data.household); loadHouseholdDisplay(); }
     openDashboard();
+   
   } catch(e) {
     // Safety net — if anything fails, show welcome screen
     console.error('loadProfile error:', e);
@@ -2333,6 +2387,41 @@ async function shareEmergency(){
 
 async function generateAppBrief(){
   openEmergency();
+}
+   // Household data
+const H = {
+  wifi:'', address:'', donot:'', trusted:'', notes:''
+};
+
+function loadHouseholdDisplay(){
+  document.getElementById('hv-wifi').textContent = H.wifi||'—';
+  document.getElementById('hv-address').textContent = H.address||'—';
+  document.getElementById('hv-donot').textContent = H.donot||'—';
+  document.getElementById('hv-trusted').textContent = H.trusted||'—';
+  document.getElementById('hv-notes').textContent = H.notes||'—';
+}
+
+function editHousehold(){
+  document.getElementById('he-wifi').value = H.wifi||'';
+  document.getElementById('he-address').value = H.address||'';
+  document.getElementById('he-donot').value = H.donot||'';
+  document.getElementById('he-trusted').value = H.trusted||'';
+  document.getElementById('he-notes').value = H.notes||'';
+  document.getElementById('householdView').style.display='none';
+  document.getElementById('householdEdit').style.display='block';
+}
+
+async function saveHousehold(){
+  H.wifi = document.getElementById('he-wifi').value.trim();
+  H.address = document.getElementById('he-address').value.trim();
+  H.donot = document.getElementById('he-donot').value.trim();
+  H.trusted = document.getElementById('he-trusted').value.trim();
+  H.notes = document.getElementById('he-notes').value.trim();
+  loadHouseholdDisplay();
+  document.getElementById('householdView').style.display='block';
+  document.getElementById('householdEdit').style.display='none';
+  // Save to Supabase alongside profile
+  try{ await saveProfile(); }catch(e){}
 }
 async function askQ(el,q){el.style.display='none';switchTab('ask');await runChat(q);}
 async function sendChat(){const i=document.getElementById('chatIn');const q=i.value.trim();if(!q)return;i.value='';await runChat(q);}
