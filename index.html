@@ -1696,7 +1696,9 @@ async function saveProfile(){
     doctor:document.getElementById('doctor')?.value||'',
     updated_at:new Date().toISOString()
   };
-  const {error}=await sb.from('family_profiles').upsert(profile,{onConflict:'user_id'});
+ const {error}=await sb.from('family_profiles').upsert(profile,{onConflict:'user_id'});
+  console.log('Save error:', error);
+  console.log('Household saved:', JSON.stringify(H));
   if(!error)showSaved();
 }
 
