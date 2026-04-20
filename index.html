@@ -2335,7 +2335,7 @@ function openEmergency(){
       const hasAlert=k.allergies&&k.allergies.toLowerCase()!=='none'&&k.allergies!=='';
       const sec=document.createElement('div');
       sec.className=`emergency-section${hasAlert?' alert':''}`;
-      sec.innerHTML=`<div class="emergency-section-label">${k.emoji} ${k.name}${hasAlert?' · ⚠ Allergy/Medical':''}</div><div class="emergency-section-value">${k.role}${hasAlert?`<br><strong>${k.allergies}</strong>`:''}${k.notes?`<br>${k.notes}`:''}</div>`;
+     sec.innerHTML = '<div class="emergency-section-label">'+k.emoji+' '+k.name+(hasAlert?' · ⚠ Allergy/Medical':'')+'</div><div class="emergency-section-value">'+k.role+(hasAlert?'<br><strong>'+k.allergies+'</strong>':'')+(k.notes?'<br>'+k.notes:'')+'</div>';
       body.appendChild(sec);
     });
   }
