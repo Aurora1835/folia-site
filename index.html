@@ -2165,8 +2165,10 @@ function openDashboard(){
   const fname=S.familyName||'Your Family';
   document.getElementById('dashFamilyName').textContent=fname;
   document.getElementById('famBlockLbl').textContent=fname;
-  const fc=document.getElementById('famChips');fc.innerHTML='';
-  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent'},{emoji:'👨',name:'Marcus',role:'Parent'},{emoji:'👧',name:'Nora',role:'Age 11'},{emoji:'👦',name:'Ben',role:'Age 7'}];
+  const fc=document.getElementById('famChips');
+  if(!fc)return;
+  fc.innerHTML='';
+  const disp=S.members.length>0?S.members:[];
   disp.forEach((m,i)=>{
     const d=document.createElement('div');d.className='fam-chip';
     d.style.cursor='pointer';
