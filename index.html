@@ -2516,7 +2516,46 @@ function openMemberProfile(i) {
   renderProfileView(m);
   document.getElementById('profilePanel').classList.add('open');
 }
+function inferType(m) {
+  const petEmojis=['🐕','🐈','🐾'];
+  const kidEmojis=['👧','👧🏻','👧🏼','👧🏽','👧🏾','👧🏿','👦','👦🏻','👦🏼','👦🏽','👦🏾','👦🏿','👶','👶🏽','👶🏿'];
+  if(petEmojis.includes(m.emoji)) return 'pet';
+  if(kidEmojis.includes(m.emoji)) return 'child';
+  return 'adult';
+}
 
+function getMemberFields(m) {
+  const type = m.type || inferType(m);
+  if (type === 'pet') {
+    return [
+      { key:'role', label:'Animal type', placeholder:'e.g. Dog, Cat', alert:false },
+      { key:'vet', label:'Vet name & number', placeholder:'Dr. Hale · (555) 204-8810', alert:false },
+      { key:'medications', label:'Medications & feeding', placeholder:'Heartworm pill 1st of month', alert:false },
+      { key:'notes', label:'Notes', placeholder:'Anything a sitter should know', alert:false }
+    ];
+  }
+  if (type === 'adult') {
+    return [
+      { key:'role', label:'Role', placeholder:'e.g. Parent, Nanny, Grandparent', alert:false },
+      { key:'phone', label:'Phone', placeholder:'(555) 000-0000', alert:false },
+      { key:'doctor', label:'Doctor', placeholder:'Dr. name · (555) 000-0000', alert:false },
+      { key:'schedule', label:'Weekly schedule', placeholder:'Travels Mon–Wed · WFH Thu/Fri', alert:false },
+      { key:'notes', label:'Notes', placeholder:'Anything relevant', alert:false }
+    ];
+  }
+  return [
+    { key:'role', label:'Age / grade', placeholder:'e.g. Age 9, 4th grade', alert:false },
+    { key:'school', label:'School', placeholder:'e.g. Jefferson Elementary', alert:false },
+    { key:'allergies', label:'Allergies & medical', placeholder:'None, or describe with location', alert:true },
+    { key:'medications', label:'Medications', placeholder:'None, or name & instructions', alert:false },
+    { key:'doctor', label:'Pediatrician', placeholder:'Dr. name · (555) 000-0000', alert:false },
+    { key:'pickup', label:'Pickup schedule', placeholder:'Bus #7 Mon/Wed/Fri · Mom Tue/Thu 3:15pm', alert:false },
+    { key:'activities', label:'Activities', placeholder:'Soccer · Saturdays 9am · Millbrook Field', alert:false },
+    { key:'bedtime', label:'Bedtime', placeholder:'7:30pm · brush teeth · one book', alert:false },
+    { key:'routine', label:'Morning routine', placeholder:'Wake 7am · breakfast · out by 8am', alert:false },
+    { key:'notes', label:'Notes for sitter', placeholder:'Anything a caregiver should know', alert:false }
+  ];
+}
 function renderProfileView(m) {
   const fields = getMemberFields(m);
   const body = document.getElementById('profileBody');
