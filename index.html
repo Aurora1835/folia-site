@@ -1697,10 +1697,7 @@ async function saveProfile(){
     updated_at:new Date().toISOString()
   };
  const {error}=await sb.from('family_profiles').upsert(profile,{onConflict:'user_id'});
-  console.log('Save error:', error);
-  console.log('Household saved:', JSON.stringify(H));
   if(!error)showSaved();
-}
 
 // Create a household for this user using secure DB function
 async function ensureHousehold(userId){
