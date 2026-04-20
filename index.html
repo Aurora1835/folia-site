@@ -2419,7 +2419,7 @@ async function shareEmergency(){
   const text=buildEmergencyText();
   if(navigator.share){
     try{
-      await navigator.share({title:`Emergency Snapshot — ${S.familyName||'Your Family'}`,text});
+      await navigator.share({title:'Emergency Snapshot — '+(S.familyName||'Your Family'),text});
     }catch(e){}
   }else{
     copyEmergency();
