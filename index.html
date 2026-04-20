@@ -2604,7 +2604,7 @@ async function saveProfileMember() {
   const m = S.members[currentMemberIndex];
   const fields = getMemberFields(m);
   fields.forEach(f => {
-    const el = document.getElementById(`pe-${f.key}`);
+   const el = document.getElementById('pe-'+f.key);
     if (el) m[f.key] = el.value.trim();
   });
   S.members[currentMemberIndex] = m;
