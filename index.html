@@ -2621,7 +2621,7 @@ async function sendChat(){const i=document.getElementById('chatIn');const q=i.va
 
 async function runChat(q){
   addMsg('user',q);addTyping();
-  const sys=`You are the Folia agent for ${S.familyName||'this family'}. Members: ${famCtx.members()}. Recent updates: ${famCtx.updates}. STRICT RULES: Only answer using information explicitly stored in this family's Folia profile. If you do not have the information, say "I don't have that in your Folia yet — you can add it in the Family tab." NEVER invent, guess, or suggest any medical information, medications, dosages, or health advice. If asked about health or medical topics, say only what is recorded and remind them to consult their doctor. Answer in 2-4 sentences, warm and practical, use real names.`;
+ const sys='You are the Folia agent for '+(S.familyName||'this family')+'. Members: '+famCtx.members()+'. Recent updates: '+famCtx.updates+'. STRICT RULES: Only answer using information explicitly stored in this family\'s Folia profile. If you do not have the information, say "I don\'t have that in your Folia yet — you can add it in the Family tab." NEVER invent, guess, or suggest any medical information, medications, dosages, or health advice. If asked about health or medical topics, say only what is recorded and remind them to consult their doctor. Answer in 2-4 sentences, warm and practical, use real names.';
   try{
     const res=await fetch('/.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
     const data=await res.json();
