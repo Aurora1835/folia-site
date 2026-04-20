@@ -2093,21 +2093,20 @@ function renderPreview(){
   else{S.connections.forEach(id=>{const ch=document.createElement('div');ch.className='summary-chip-p';ch.style.cssText='background:var(--green-lt);border-color:rgba(74,124,89,0.3);color:var(--green);';ch.textContent='✓ '+intNames[id];sc.appendChild(ch);});}
   generateInsight();
 }
-
 async function generateInsight(){
-  const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'a family';
+  const mems=S.members.length>0?S.members.map(m=>m.name+' ('+m.role+')').join(', '):'a family';
   const allerg=document.getElementById('allergies')?.value||'none';
   const sched=document.getElementById('pickup')?.value||'not set';
   const conns=S.connections.map(c=>intNames[c]).join(', ')||'none yet';
-  const prompt=`New Folia family: "${S.familyName||'unnamed'}". Members: ${mems}. Allergies: ${allerg}. Pickup: ${sched}. Connected: ${conns}. Write ONE warm specific observation, 2-3 sentences, emoji first, personal not generic.`;
+  const prompt='New Folia family: "'+( S.familyName||'unnamed')+'". Members: '+mems+'. Allergies: '+allerg+'. Pickup: '+sched+'. Connected: '+conns+'. Write ONE warm specific observation, 2-3 sentences, emoji first, personal not generic.';
   try{
-    const res=await fetch('.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent welcoming a new family. Warm, specific, practical.',messages:[{role:'user',content:prompt}]})});
+    const res=await fetch('/.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are Folia welcoming a new family. Warm, specific, practical.',messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     document.getElementById('firstInsight').textContent=data.content?.map(b=>b.text||'').join('')||fallbackInsight();
   }catch(e){document.getElementById('firstInsight').textContent=fallbackInsight();}
-  const fd=S.familyName?`the ${S.familyName}`:'your family';
-  document.getElementById('successSub').textContent=`Folia is now set up for ${fd}. It's keeping everything in one place and ready to share.`;
-  if(S.members.length>0)document.getElementById('chipMembers').textContent=`👨‍👩‍👧‍👦 ${S.members.length} member${S.members.length!==1?'s':''} added`;
+  const fd=S.familyName?'the '+S.familyName:'your family';
+  document.getElementById('successSub').textContent='Folia is now set up for '+fd+'. It\'s keeping everything in one place and ready to share.';
+  if(S.members.length>0)document.getElementById('chipMembers').textContent='👨‍👩‍👧‍👦 '+S.members.length+' member'+(S.members.length!==1?'s':'')+' added';
 }
 function fallbackInsight(){
   if(S.members.length>2)return`🗂️ With ${S.members.length} household members, the biggest win is having one source of truth everyone can access.`;
