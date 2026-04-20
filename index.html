@@ -2588,11 +2588,11 @@ function toggleProfileEdit() {
     const row = document.createElement('div');
     row.className = 'profile-field';
     const isLong = ['notes','routine','activities','pickup','schedule','medications'].includes(f.key);
-    row.innerHTML = `<div class="profile-field-label">${f.label}</div>${
-      isLong
-        ? `<textarea class="profile-field-input" id="pe-${f.key}" rows="2" placeholder="${f.placeholder}">${val}</textarea>`
-        : `<input class="profile-field-input" id="pe-${f.key}" placeholder="${f.placeholder}" value="${val}" />`
-    }`;
+   if(isLong){
+      row.innerHTML = '<div class="profile-field-label">'+f.label+'</div><textarea class="profile-field-input" id="pe-'+f.key+'" rows="2" placeholder="'+f.placeholder+'">'+val+'</textarea>';
+    } else {
+      row.innerHTML = '<div class="profile-field-label">'+f.label+'</div><input class="profile-field-input" id="pe-'+f.key+'" placeholder="'+f.placeholder+'" value="'+val+'" />';
+    }
     sec.appendChild(row);
   });
   body.appendChild(sec);
