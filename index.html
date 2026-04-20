@@ -1698,6 +1698,9 @@ async function saveProfile(){
   };
  const {error}=await sb.from('family_profiles').upsert(profile,{onConflict:'user_id'});
   if(!error)showSaved();
+}
+
+// Create a household for this user using secure DB function
 
 // Create a household for this user using secure DB function
 async function ensureHousehold(userId){
