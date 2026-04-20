@@ -2223,9 +2223,10 @@ function addInsightCard(feed){
 
 async function generateDashInsight(){
   const fname=S.familyName||'this family';
-  const mems=S.members.length>0?S.members.map(m=>`${m.name} (${m.role})`).join(', '):'No family members added yet';
+  const mems=S.members.length>0?S.members.map(m=>m.name+' ('+m.role+')').join(', '):'No family members added yet';
   try{
-    const res=await fetch('/.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are the Folia agent. Warm, specific, practical. 2-3 sentences max.',messages:[{role:'user',content:`Family: ${fname}. Members: ${mems}. Agent found today: school early release Fri 1pm, travel conflict Mar 11-13, oat milk recurring, gluten-free pattern, new medication pending. ONE practical heads-up they might have missed.`}]})});
+    const prompt='Family: '+fname+'. Members: '+mems+'. Give a warm, brief welcome message for their family dashboard. Do not invent any details not provided. 2 sentences max.';
+    const res=await fetch('/.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'You are Folia, a warm family assistant. Be practical and concise. ONLY reference information explicitly provided — never invent family details, medical information, or schedules.',messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     const text=data.content?.map(b=>b.text||'').join('')||'';
     document.getElementById('ins-thinking').style.display='none';
@@ -2235,7 +2236,6 @@ async function generateDashInsight(){
     const ib=document.getElementById('ins-body');ib.textContent='Add your family details in the Family tab and I\'ll be able to share a real insight here.';ib.style.display='block';
   }
 }
-
 function openConfirm(){document.getElementById('confirmModal').classList.add('open');}
 function closeConfirm(){document.getElementById('confirmModal').classList.remove('open');}
 function confirmMed(){
