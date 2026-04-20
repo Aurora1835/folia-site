@@ -2247,7 +2247,7 @@ function confirmMed(){
 function dismissMed(btn){btn.closest('.action-row').style.opacity='0.3';}
 
 const famCtx={
-  members:()=>S.members.length>0?S.members.map(m=>`${m.name} (${m.role}${m.allergies?' — '+m.allergies:''}${m.notes?' — '+m.notes:''})`).join(', '):'No family members added yet',
+  members:()=>S.members.length>0?S.members.map(m=>m.name+' ('+m.role+(m.allergies?' — '+m.allergies:'')+(m.notes?' — '+m.notes:'')+')'  ).join(', '):'No family members added yet',
   updates:'No recent updates'
 };
 
