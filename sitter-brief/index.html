@@ -496,12 +496,11 @@ footer .logo { font-size: 17px; }
         <button class="btn-print" onclick="window.print()">Print / Save PDF</button>
         <button class="btn-email" onclick="emailBrief()">✉ Email to Myself</button>
       </div>
-      <div class="brief-upsell">
-        <div class="upsell-text">
-          <div class="upsell-title">Want this to update itself automatically?</div>
-          <div class="upsell-sub">Folia keeps your family's brief current — so you never have to rewrite it when things change.</div>
-        </div>
-        <a href="/" class="upsell-btn">Try Folia →</a>
+      <div id="saveCTA" style="padding:22px 32px;border-top:1px solid var(--stone-100);background:#F2E8D0;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:400;color:#3A2E1E;margin-bottom:6px;">Save this to your Folia.</div>
+        <div style="font-size:13px;color:#8B7355;font-weight:300;line-height:1.65;margin-bottom:16px;">Next time you need this, it generates itself. Your family's info lives in one place — and you only have to say it once.</div>
+        <button onclick="openSaveCTA()" style="width:100%;padding:14px;background:#3A2E1E;color:#F2E8D0;border:none;border-radius:4px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-bottom:8px;">Save to My Folia →</button>
+        <div style="font-size:11px;color:#A89070;text-align:center;">Free · takes 2 minutes · no credit card</div>
       </div>
     </div>
 
@@ -661,6 +660,19 @@ function fallbackBrief(name, children, allergies, emergency, notes) {
   if (notes) out += `THE HOUSE\n${dash}\n${notes}\n\n`;
   out += `A NOTE\n${dash}\nThank you so much for being here. Please reach out anytime.\n\nWith warmest thanks,\n${name}`;
   return out;
+}
+  function openSaveCTA(){
+  const name = document.getElementById('familyName')?.value.trim() || '';
+  const children = document.getElementById('children')?.value.trim() || '';
+  const allergies = document.getElementById('allergies')?.value.trim() || '';
+  const emergency = document.getElementById('emergency')?.value.trim() || '';
+  const params = new URLSearchParams();
+  if(name) params.set('name', name);
+  if(children) params.set('children', children);
+  if(allergies) params.set('allergies', allergies);
+  if(emergency) params.set('emergency', emergency);
+  params.set('source', 'sitter-brief');
+  window.location = 'https://withfolia.com/?' + params.toString();
 }
 </script>
 </body>
