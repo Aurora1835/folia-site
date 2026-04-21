@@ -1696,15 +1696,15 @@ window.addEventListener('load',async()=>{
       const briefName = urlParams.get('name')||'';
       const briefChildren = urlParams.get('children')||'';
       const briefAllergies = urlParams.get('allergies')||'';
-      if(briefName && document.getElementById('familyName')) document.getElementById('familyName').value = briefName;
-      if(briefAllergies && document.getElementById('allergies')) document.getElementById('allergies').value = briefAllergies;
+      if(briefName) S.familyName = briefName;
+      if(briefAllergies) S.briefAllergies = briefAllergies;
       if(briefChildren){
         briefChildren.split(',').forEach(k=>{
-          const trimmed = k.trim();
-          if(!trimmed) return;
-          const ageMatch = trimmed.match(/(\d+)/);
-          const namePart = trimmed.replace(/\s*\d+\s*/, '').trim();
-          S.members.push({emoji:'👧', name:namePart||trimmed, role:ageMatch?'Age '+ageMatch[1]:'Child', type:'child'});
+          const trimmed=k.trim();
+          if(!trimmed)return;
+          const ageMatch=trimmed.match(/(\d+)/);
+          const namePart=trimmed.replace(/\s*\d+\s*/,'').trim();
+          S.members.push({emoji:'👧',name:namePart||trimmed,role:ageMatch?'Age '+ageMatch[1]:'Child',type:'child'});
         });
       }
     }
@@ -1841,8 +1841,12 @@ async function loadProfile(userId){
       document.body.style.overflow='hidden';
       cur=0;
       document.querySelectorAll('.pscreen').forEach(s=>s.classList.remove('active','exit'));
-      const welcome=document.getElementById('p0');
+     const welcome=document.getElementById('p0');
       if(welcome)welcome.classList.add('active');
+      if(S.familyName){
+        document.getElementById('familyName').value=S.familyName;
+        setTimeout(()=>pGoTo(2),300);
+      }
       return;
     }
 
@@ -2238,10 +2242,11 @@ function openDashboard(){
     d.onclick=()=>openMemberProfile(i);
     fc.appendChild(d);
   });
- pGoTo(5);
-  
+pGoTo(5);
+  if(S.briefAllergies && document.getElementById('allergies')){
+    document.getElementById('allergies').value=S.briefAllergies;
+  }
   setTimeout(()=>loadInviteList(),800);
-}
 
 function switchTab(name){
   // Close any open panels
