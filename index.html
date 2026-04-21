@@ -1691,13 +1691,13 @@ async function handleSignup(){
 // Check for existing session on load
 window.addEventListener('load',async()=>{
   try{
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams=new URLSearchParams(window.location.search);
     if(urlParams.get('source')==='sitter-brief'){
-      const briefName = urlParams.get('name')||'';
-      const briefChildren = urlParams.get('children')||'';
-      const briefAllergies = urlParams.get('allergies')||'';
-      if(briefName) S.familyName = briefName;
-      if(briefAllergies) S.briefAllergies = briefAllergies;
+      const briefName=urlParams.get('name')||'';
+      const briefChildren=urlParams.get('children')||'';
+      const briefAllergies=urlParams.get('allergies')||'';
+      if(briefName) S.familyName=briefName;
+      if(briefAllergies) S.briefAllergies=briefAllergies;
       if(briefChildren){
         briefChildren.split(',').forEach(k=>{
           const trimmed=k.trim();
