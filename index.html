@@ -1672,8 +1672,6 @@ async function handleSignup(){
 // Check for existing session on load
 window.addEventListener('load',async()=>{
   try{
-     window.addEventListener('load',async()=>{
-  try{
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get('source')==='sitter-brief'){
       const briefName = urlParams.get('name')||'';
@@ -1694,9 +1692,6 @@ window.addEventListener('load',async()=>{
     const {data:{session}}=await sb.auth.getSession();
     const navBtn=document.getElementById('navAuthBtn');
     if(session){
-    const {data:{session}}=await sb.auth.getSession();
-    const navBtn=document.getElementById('navAuthBtn');
-    if(session){
       isLoggedIn=true;
       if(navBtn){navBtn.textContent='Open Folia →';navBtn.onclick=()=>{const o=document.getElementById('appOverlay');o.classList.add('open');document.body.style.overflow='hidden';requestAnimationFrame(()=>o.classList.add('ready'));}}
       const overlay=document.getElementById('appOverlay');
@@ -1712,7 +1707,6 @@ window.addEventListener('load',async()=>{
     console.error('Session check error:',e);
   }
 });
-
 // ════════════════════════════
 // DATABASE
 // ════════════════════════════
