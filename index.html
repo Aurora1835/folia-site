@@ -1672,6 +1672,28 @@ async function handleSignup(){
 // Check for existing session on load
 window.addEventListener('load',async()=>{
   try{
+     window.addEventListener('load',async()=>{
+  try{
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get('source')==='sitter-brief'){
+      const briefName = urlParams.get('name')||'';
+      const briefChildren = urlParams.get('children')||'';
+      const briefAllergies = urlParams.get('allergies')||'';
+      if(briefName && document.getElementById('familyName')) document.getElementById('familyName').value = briefName;
+      if(briefAllergies && document.getElementById('allergies')) document.getElementById('allergies').value = briefAllergies;
+      if(briefChildren){
+        briefChildren.split(',').forEach(k=>{
+          const trimmed = k.trim();
+          if(!trimmed) return;
+          const ageMatch = trimmed.match(/(\d+)/);
+          const namePart = trimmed.replace(/\s*\d+\s*/, '').trim();
+          S.members.push({emoji:'👧', name:namePart||trimmed, role:ageMatch?'Age '+ageMatch[1]:'Child', type:'child'});
+        });
+      }
+    }
+    const {data:{session}}=await sb.auth.getSession();
+    const navBtn=document.getElementById('navAuthBtn');
+    if(session){
     const {data:{session}}=await sb.auth.getSession();
     const navBtn=document.getElementById('navAuthBtn');
     if(session){
