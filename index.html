@@ -2310,17 +2310,7 @@ function toggleEditMode(){
   document.getElementById('profileSaveBtn').style.display='block';
 }
 
-function saveProfile(){
-const disp=S.members.length>0?S.members:[];
-  if(disp.length===0)return;  if(currentProfileIndex>=0 && S.members.length>0){
-    S.members[currentProfileIndex].name=document.getElementById('pf-name').value;
-    S.members[currentProfileIndex].role=document.getElementById('pf-role').value;
-    S.members[currentProfileIndex].allergies=document.getElementById('pf-allergies').value;
-    S.members[currentProfileIndex].notes=document.getElementById('pf-notes').value;
-  }
-  closeProfile();
-  openDashboard();
-}
+
 function openEmergency(){
   if(S.members.length===0){
     alert('Add your family members in the Family tab first.');
