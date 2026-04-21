@@ -594,7 +594,19 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 
 /* ── FAMILY PREVIEW BLOCK ── */
 .fam-block { background:var(--stone-900); border-radius:13px; padding:14px; color:var(--white); margin-bottom:9px; }
-.fam-block-lbl { font-size:9px; letter-spacing:2.5px; text-transform:uppercase; color:var(--stone-500); margin-bottom:10px; }
+/* ── WARMER APP SHELL ── */
+.phone { background: var(--parchment); }
+.pscreen { background: var(--parchment); }
+.pscroll { background: var(--parchment); }
+.ptop { background: var(--stone-900); border-radius: 0; }
+.tab-bar { background: var(--white); border-top: 1px solid var(--stone-200); border-radius: 0 0 48px 48px; }
+.pbtn { border-radius: 14px; }
+.pbtn.ghost { border-radius: 14px; }
+input[type=text],input[type=email],input[type=tel],select,textarea { border-radius: 12px; background: var(--white); }
+.fam-block { border-radius: 16px; }
+.acard { border-radius: 16px; }
+.f-group { margin-bottom: 16px; }
+   .fam-block-lbl { font-size:9px; letter-spacing:2.5px; text-transform:uppercase; color:var(--stone-500); margin-bottom:10px; }
 .fam-chip { display:flex; align-items:center; gap:9px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
 .fam-chip:last-child { border-bottom:none; }
    .profile-panel { position:absolute; inset:0; background:var(--white); z-index:60; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
@@ -1397,8 +1409,9 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="pscroll" style="gap:0;padding-bottom:8px;">
 
           <!-- Greeting -->
-          <div style="padding:18px 18px 4px;">
+          <div style="padding:20px 18px 4px;display:flex;align-items:center;justify-content:space-between;">
             <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;font-style:italic;color:var(--stone-900);line-height:1.2;">How can Folia<br>help you today?</div>
+            <div id="homeGreetingName" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);"></div>
           </div>
 
           <!-- Action tiles -->
@@ -1448,7 +1461,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       </div>
       <!-- Dashboard: Family -->
      <div class="pscreen" id="dash-family">
-        <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your People</div></div></div></div>
+        <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your Household</div></div></div></div>
         <div class="pscroll" style="gap:0;padding-bottom:16px;">
 
           <!-- People -->
@@ -2156,6 +2169,8 @@ async function loadInviteList(){
 function openDashboard(){
   const fname=S.familyName||'Your Family';
   document.getElementById('dashFamilyName').textContent=fname;
+   const greet=document.getElementById('homeGreetingName');
+  if(greet)greet.textContent=S.parentName||'';
   document.getElementById('famBlockLbl').textContent=fname;
   const fc=document.getElementById('famChips');
   if(!fc)return;
