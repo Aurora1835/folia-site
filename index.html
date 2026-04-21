@@ -2674,6 +2674,38 @@ const sys=`You are the Folia agent for ${S.familyName||'this family'}. Members: 
     addMsg('agent-b',r);
   }
 }
+     // Add to home screen prompt
+function showA2HSIfNeeded(){
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isPWA = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+  const dismissed = localStorage.getItem('a2hs-dismissed');
+  if(isIOS && !isPWA && !dismissed){
+    setTimeout(()=>{
+      document.getElementById('a2hsPrompt').style.display='block';
+    }, 4000);
+  }
+}
+
+function dismissA2HS(){
+  document.getElementById('a2hsPrompt').style.display='none';
+  localStorage.setItem('a2hs-dismissed','1');
+}
+
+showA2HSIfNeeded();
 </script>
+     <!-- Add to home screen prompt -->
+<div id="a2hsPrompt" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;padding:16px;background:rgba(46,40,32,0.96);backdrop-filter:blur(12px);">
+  <div style="max-width:420px;margin:0 auto;display:flex;align-items:flex-start;gap:14px;">
+    <div style="width:44px;height:44px;border-radius:10px;background:#F2E8D0;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">🏡</div>
+    <div style="flex:1;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:#F2E8D0;margin-bottom:3px;">Add Folia to your home screen</div>
+      <div style="font-size:12px;color:#9A8E81;font-weight:300;line-height:1.5;margin-bottom:12px;">Tap <strong style="color:#C4B49E;">Share</strong> then <strong style="color:#C4B49E;">Add to Home Screen</strong> for the full app experience.</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="dismissA2HS()" style="flex:1;padding:10px;background:transparent;border:1px solid #5C5147;border-radius:8px;color:#9A8E81;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;">Not now</button>
+        <button onclick="dismissA2HS()" style="flex:1;padding:10px;background:#6A7C60;border:none;border-radius:8px;color:#F2E8D0;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;cursor:pointer;">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
