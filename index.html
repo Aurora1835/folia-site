@@ -1415,49 +1415,55 @@ input[type=text],input[type=email],input[type=tel],select,textarea { background:
             <div><div class="ptitle">Folia</div><div class="psub" id="dashFamilyName">Your Family</div></div>
           </div>
         </div>
-        <div class="pscroll" style="gap:0;padding-bottom:8px;">
+       <div class="pscroll" style="gap:0;padding-bottom:8px;padding:0;">
 
           <!-- Greeting -->
-          <div style="padding:20px 18px 4px;display:flex;align-items:center;justify-content:space-between;">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;font-style:italic;color:var(--stone-900);line-height:1.2;">How can Folia<br>help you today?</div>
-            <div id="homeGreetingName" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);"></div>
+          <div style="padding:16px 18px 12px;border-bottom:1px solid var(--stone-200);">
+            <div id="homeGreetingName" style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;margin-bottom:4px;"></div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;font-style:italic;color:var(--stone-900);line-height:1.2;">How can Folia<br>help you today?</div>
           </div>
 
-          <!-- Action tiles -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 18px;">
+          <!-- Tool rows -->
+          <div style="padding:8px 18px;border-bottom:1px solid var(--stone-200);">
+            <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;padding:8px 0 6px;">Your tools</div>
 
-            <div onclick="window.location='/sitter-brief/'" style="background:var(--stone-700);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
-              <div style="font-size:22px;">📋</div>
-              <div style="font-size:12px;font-weight:500;color:var(--white);line-height:1.3;">Generate a sitter brief</div>
-              <div style="font-size:10px;color:var(--stone-500);font-weight:300;">Free · instant</div>
+            <div onclick="window.location='/sitter-brief/'" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--stone-100);cursor:pointer;">
+              <div style="width:32px;height:32px;border-radius:9px;background:var(--stone-700);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">📋</div>
+              <div style="flex:1;">
+                <div style="font-size:12px;font-weight:500;color:var(--stone-900);font-family:'Jost',sans-serif;">Sitter brief</div>
+                <div style="font-size:10px;color:var(--stone-400);font-family:'Jost',sans-serif;margin-top:1px;">Free · instant · shareable</div>
+              </div>
+              <div style="color:var(--stone-300);font-size:16px;">›</div>
             </div>
 
-            <div onclick="switchTab('family')" style="background:var(--parchment);border:1px solid var(--stone-200);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
-              <div style="font-size:22px;">👨‍👩‍👧‍👦</div>
-              <div style="font-size:12px;font-weight:500;color:var(--stone-900);line-height:1.3;">View family profiles</div>
-              <div style="font-size:10px;color:var(--stone-500);font-weight:300;">Edit · share</div>
+            <div onclick="switchTab('family')" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--stone-100);cursor:pointer;">
+              <div style="width:32px;height:32px;border-radius:9px;background:var(--sage-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">👨‍👩‍👧‍👦</div>
+              <div style="flex:1;">
+                <div style="font-size:12px;font-weight:500;color:var(--stone-900);font-family:'Jost',sans-serif;">Family profiles</div>
+                <div style="font-size:10px;color:var(--stone-400);font-family:'Jost',sans-serif;margin-top:1px;">Edit · share · update</div>
+              </div>
+              <div style="color:var(--stone-300);font-size:16px;">›</div>
             </div>
 
-            
-
-            <div onclick="generateAppBrief()" style="background:var(--parchment);border:1px solid var(--stone-200);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
-              <div style="font-size:22px;">🚨</div>
-             <div style="font-size:12px;font-weight:500;color:var(--stone-900);line-height:1.3;">Emergency snapshot</div>
-              <div style="font-size:10px;color:var(--stone-500);font-weight:300;">Medical · contacts · schedule</div>
+            <div onclick="generateAppBrief()" style="display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer;">
+              <div style="width:32px;height:32px;border-radius:9px;background:#FDEAEA;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">🚨</div>
+              <div style="flex:1;">
+                <div style="font-size:12px;font-weight:500;color:var(--stone-900);font-family:'Jost',sans-serif;">Emergency snapshot</div>
+                <div style="font-size:10px;color:var(--stone-400);font-family:'Jost',sans-serif;margin-top:1px;">Medical · contacts · schedule</div>
+              </div>
+              <div style="color:var(--stone-300);font-size:16px;">›</div>
             </div>
-
           </div>
 
-          <!-- Coming soon card -->
-          <div style="margin:4px 18px 18px;background:var(--stone-700);border-radius:14px;padding:18px;position:relative;overflow:hidden;">
-            <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,#7C6A52,#C4B49E,#7C6A52,transparent);"></div>
-            <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Coming soon</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;font-style:italic;color:var(--stone-100);line-height:1.3;margin-bottom:8px;">Folia that keeps<br>itself current.</div>
-            <div style="font-size:11px;font-weight:300;color:var(--stone-500);line-height:1.6;">Connect Gmail, Google Calendar, and your grocery orders. Folia will watch for changes and flag updates — so your family's info is always accurate without you lifting a finger.</div>
-            <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-700);background:rgba(124,106,82,0.15);padding:4px 10px;border-radius:100px;">Gmail</div>
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-700);background:rgba(124,106,82,0.15);padding:4px 10px;border-radius:100px;">Google Calendar</div>
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-700);background:rgba(124,106,82,0.15);padding:4px 10px;border-radius:100px;">Groceries</div>
+          <!-- Coming soon -->
+          <div style="padding:14px 18px;">
+            <div style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-family:'Jost',sans-serif;margin-bottom:6px;">Coming soon</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;font-style:italic;color:var(--stone-900);line-height:1.3;margin-bottom:6px;">Folia that keeps<br>itself current.</div>
+            <div style="font-size:11px;font-weight:300;color:var(--stone-500);line-height:1.65;font-family:'Jost',sans-serif;margin-bottom:10px;">Connect Gmail, Google Calendar, and your grocery orders — Folia watches for changes so your info is always accurate.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:3px 9px;border-radius:100px;font-family:'Jost',sans-serif;">Gmail</div>
+              <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:3px 9px;border-radius:100px;font-family:'Jost',sans-serif;">Calendar</div>
+              <div style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:3px 9px;border-radius:100px;font-family:'Jost',sans-serif;">Groceries</div>
             </div>
           </div>
 
