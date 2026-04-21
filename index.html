@@ -1998,6 +1998,10 @@ let isLoggedIn=false;
 
 function handleClose(){
   if(isLoggedIn){
+    const pp=document.getElementById('profilePanel');
+    const ep=document.getElementById('emergencyPanel');
+    if(pp&&pp.classList.contains('open')){pp.classList.remove('open');return;}
+    if(ep&&ep.classList.contains('open')){ep.classList.remove('open');return;}
     openSettings();
   } else {
     closeApp();
