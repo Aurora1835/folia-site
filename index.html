@@ -1140,29 +1140,27 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 
       <!-- ── 1: FAMILY NAME ── -->
       <div class="pscreen" id="p1">
-        <div class="prog-bar"><div class="prog-fill" style="width:12%"></div></div>
-        <div class="pscroll">
-          <div style="margin-bottom:24px;">
-            <div class="p-eyebrow">Step 1 of 7</div>
-            <div class="p-title">What's your<br><em>family name?</em></div>
-            <div class="p-sub">This is how your app will refer to your household — your family's home base.</div>
-          </div>
-          <div class="f-group"><div class="f-label">Family name</div><input type="text" id="familyName" placeholder="e.g. The Ashfords" /></div>
-          <div class="f-group"><div class="f-label">Your name</div><input type="text" id="parentName" placeholder="e.g. Claire" /></div>
-          <div class="f-group"><div class="f-label">Email</div><input type="email" id="parentEmail" placeholder="your@email.com" /></div>
-          <div style="margin-top:auto;padding-top:20px;">
-            <button class="pbtn accent" onclick="pGoTo(2)">Continue →</button>
-            <button class="pbtn ghost" onclick="pGoTo(0)">← Back</button>
-          </div>
-        </div>
-      </div>
+  <div class="prog-bar"><div class="prog-fill" style="width:33%"></div></div>
+  <div class="pscroll">
+    <div style="margin-bottom:24px;">
+      <div class="p-eyebrow">Step 1 of 3</div>
+      <div class="p-title">What's your<br><em>family name?</em></div>
+      <div class="p-sub">This is how Folia will refer to your household.</div>
+    </div>
+    <div class="f-group"><div class="f-label">Family name</div><input type="text" id="familyName" placeholder="e.g. The Silbermans" /></div>
+    <div class="f-group"><div class="f-label">Your name</div><input type="text" id="parentName" placeholder="e.g. Jess" /></div>
+    <div style="margin-top:auto;padding-top:20px;">
+      <button class="pbtn accent" onclick="pGoTo(2)">Continue →</button>
+    </div>
+  </div>
+</div>
 
       <!-- ── 2: MEMBERS ── -->
       <div class="pscreen" id="p2">
         <div class="prog-bar"><div class="prog-fill" style="width:26%"></div></div>
         <div class="pscroll">
           <div style="margin-bottom:18px;">
-            <div class="p-eyebrow">Step 2 of 7</div>
+            <div class="p-eyebrow">Step 2 of 3</div>
             <div class="p-title">Who's in your<br><em>household?</em></div>
             <div class="p-sub">Add every person and pet. Folia keeps information for each one separately.</div>
           </div>
@@ -1217,8 +1215,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
           </div>
           <button class="add-btn-p" id="addBtn" onclick="showAdd()"><span style="font-size:17px;">+</span> Add person or pet</button>
           <div style="margin-top:auto;padding-top:18px;">
-            <button class="pbtn accent" onclick="pGoTo(3)">Continue →</button>
-            <button class="pbtn ghost" onclick="pGoTo(1)">← Back</button>
+            <button class="pbtn accent" onclick="startBuild()">Build My Folia →</button>
+<button class="pbtn ghost" onclick="pGoTo(1)">← Back</button>
           </div>
         </div>
       </div>
@@ -1418,11 +1416,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
               <div style="font-size:10px;color:var(--stone-500);font-weight:300;">Edit · share</div>
             </div>
 
-            <div onclick="switchTab('ask')" style="background:var(--parchment);border:1px solid var(--stone-200);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
-              <div style="font-size:22px;">✦</div>
-              <div style="font-size:12px;font-weight:500;color:var(--stone-900);line-height:1.3;">Ask Folia anything</div>
-              <div style="font-size:10px;color:var(--stone-500);font-weight:300;">About your family</div>
-            </div>
+            
 
             <div onclick="generateAppBrief()" style="background:var(--parchment);border:1px solid var(--stone-200);border-radius:14px;padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:10px;">
               <div style="font-size:22px;">🚨</div>
@@ -1449,7 +1443,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="tab-bar">
           <div class="tab active" id="t-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab" id="t-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab" id="t-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
+          
         </div>
       </div>
       <!-- Dashboard: Family -->
@@ -1538,12 +1532,12 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="tab-bar">
           <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab active" id="t2-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab" id="t2-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
+          
         </div>
       </div>
 
       <!-- Dashboard: Ask Folia -->
-      <div class="pscreen" id="dash-ask">
+      <div class="pscreen" id="dash-ask" style="display:none;">
         <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Ask Folia</div></div><div class="agent-badge"><div class="agent-dot"></div>Ready</div></div></div>
         <div class="pscroll" id="chatMessages" style="gap:6px;padding-bottom:80px;">
           <div style="text-align:center;padding:16px 0 10px;">
@@ -1565,7 +1559,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <div class="tab-bar">
           <div class="tab" id="t3-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab" id="t3-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab active" id="t3-ask" onclick="switchTab('ask')"><div class="tab-icon" style="font-size:19px;">✦</div><div class="tab-label">Ask Folia</div></div>
+          
         </div>
       </div>
 
@@ -2023,7 +2017,7 @@ function openAuthOverlay(tab='login'){
 
 const S={familyName:'',parentName:'',members:[],connections:[],emoji:'👩'};
 let cur=0;
-const allScreens=['p0','p1','p2','p3','p4','p5','p6','p7','p8','p9','dash-home','dash-family','dash-ask'];
+const allScreens=['p0','p1','p2','p7','p9','dash-home','dash-family','dash-ask'];
 function pGoTo(n){
   const cid=allScreens[cur],nid=allScreens[n];
   const cel=document.getElementById(cid),nel=document.getElementById(nid);
@@ -2072,7 +2066,7 @@ function connectInt(id){
 async function startBuild(){
   S.familyName=document.getElementById('familyName').value||'Your Family';
   S.parentName=document.getElementById('parentName').value||'You';
-  pGoTo(7);
+  pGoTo(3);
   runBuildSeq();
 }
 function runBuildSeq(){
@@ -2191,7 +2185,7 @@ function switchTab(name){
   const map={home:'dash-home',family:'dash-family',ask:'dash-ask'};
   Object.entries(map).forEach(([k,v])=>{document.getElementById(v).classList.toggle('active',k===name);});
   ['home','family','ask'].forEach(t=>{['t','t2','t3'].forEach(prefix=>{const el=document.getElementById(`${prefix}-${t}`);if(el)el.classList.toggle('active',t===name);});});
-  if(name==='ask')cur=12;else if(name==='family')cur=11;else cur=10;
+ if(name==='family')cur=6;else cur=5;
 }
 
 let updCount=0;
