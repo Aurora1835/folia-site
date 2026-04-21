@@ -11,24 +11,24 @@
    TOKENS
 ════════════════════════════════════════ */
 :root {
-  --stone-50:  #F7F5F2;
-  --stone-100: #EDE9E3;
-  --stone-200: #DDD7CE;
-  --stone-300: #C9C0B4;
-  --stone-400: #B5A898;
-  --stone-500: #9A8E81;
-  --stone-700: #5C5147;
-  --stone-900: #2E2820;
-  --sand:      #E8E0D0;
-  --taupe:     #A89880;
-  --accent:    #7C6A52;
-  --accent-lt: #C4B49E;
-  --white:     #FDFCFA;
-  --parchment: #F0EBE1;
-  --sage-lt:   #EEF2EB;
-  --sage-mid:  #D6E0D0;
+  --stone-50:  #F5EDD8;
+  --stone-100: #EAD9BC;
+  --stone-200: #D4C4A0;
+  --stone-300: #C4B08A;
+  --stone-400: #A89070;
+  --stone-500: #8B7355;
+  --stone-700: #5C4A30;
+  --stone-900: #3A2E1E;
+  --sand:      #EAD9BC;
+  --taupe:     #A08560;
+  --accent:    #6A7C60;
+  --accent-lt: #B8CEB4;
+  --white:     #FDFAF4;
+  --parchment: #F2E8D0;
+  --sage-lt:   #E8F0E4;
+  --sage-mid:  #C8DCC4;
   --green:     #4A7C59;
-  --green-lt:  #EAF2EC;
+  --green-lt:  #E4F0E8;
   --amber:     #A0722A;
   --amber-lt:  #FDF3E3;
   --red:       #8B3A3A;
@@ -36,7 +36,6 @@
   --blue:      #3A5A8B;
   --blue-lt:   #EAF0FD;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 * { scrollbar-width: none; }
@@ -753,7 +752,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
         <span class="lbl" style="color:var(--accent)">Built by a mom. For every family.</span>
       </div>
      <h1 class="hero-h1 reveal d1">You know everything<br>about your family.<br><strong>That's the problem.</strong></h1>
-      <p class="hero-body reveal d2">I'm Jess — mom of two boys. I realized that all the information keeping our household running lived in exactly one place: me. The pickup times, the allergies, the sitter instructions, the vet number. So I built Folia — one secure place for all of it, shareable in a tap, built to keep itself current.</p>
+      <p class="hero-body reveal d2">Most families already have this. It's called a shared Google Doc — someone made it with good intentions, shared it, and it hasn't been updated since. I'm Jess, mom of two boys, and I built the version that actually works. One place for all of it, shareable in a tap, that keeps itself current.</p>
       <div class="hero-actions reveal d3">
         <button class="btn btn-accent-land" href="/sitter-brief" onclick="window.location='/sitter-brief'">Get My Free Sitter Brief</button>
         <button class="btn btn-outline" onclick="openApp()">Build My Family's App</button>
@@ -800,8 +799,8 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
   <div class="container">
     <div class="features-head reveal">
      <div class="lbl" style="margin-bottom:18px;">What Folia Is</div>
-      <h2>Not a notes app.<br>A living record — for your whole family.</h2>
-      <p>Family information tends to collect in one place: one person's head, one person's phone. That works until it doesn't — until the sitter needs the pickup time, or the school needs the emergency contact, or someone needs to know where the Epi-pen is. Folia gives all of it a proper home. Organized, secure, and shareable in one tap.</p>
+      <h2>Not a Google Doc.<br>A living record — for your whole family.</h2>
+      <p>Most families already have a system — a shared doc, a group chat, a folder someone made two years ago. The problem isn't organization. It's that nothing stays current.</p>
     </div>
     <div class="feat-grid">
       <div class="feat reveal"><div class="feat-glyph">i.</div><h3>Profiles that stay current</h3><p>Each person in your household has their own profile. When something changes — a new pickup time, a new caregiver — update it once and everyone who needs it sees the new version instantly.</p></div>
@@ -822,7 +821,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
     </div>
     <div class="steps-land">
       <div class="step-land reveal"><div class="step-num">01</div><h3>Add your family</h3><p>Add each person in your household — kids, partners, pets, regular caregivers. Takes about five minutes. Folia shapes itself around your actual family, not a generic template.</p></div>
-      <div class="step-land reveal d1"><div class="step-num">02</div><h3>Tell it the important things</h3><p>The pickup time, the allergy, the sitter instructions, the emergency contacts. Enter it once. That's the last time you'll have to.</p></div>
+      <div class="step-land reveal d1"><div class="step-num">02</div><h3>Tell it the important things</h3><p>The pickup time, the allergy, the wifi password, the emergency contacts. Enter it once — not into a doc that goes stale, but into a Folia that keeps itself current.</p></div>
       <div class="step-land reveal d2"><div class="step-num">03</div><h3>Automatic updates <span style="font-size:10px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);vertical-align:middle;margin-left:6px;">Coming soon</span></h3><p>Connect your email, calendar, and grocery orders. Folia will watch for changes and flag updates automatically. Founding families get early access — join the waitlist to be first.</p></div>
      <div class="step-land reveal d3"><div class="step-num">04</div><h3>Share with whoever needs it</h3><p>The sitter, a grandparent, a co-parent, a caregiver — give them access to exactly what they need. Everyone has the current version, without anyone having to ask.</p></div>
     </div>
@@ -831,7 +830,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 
 <section class="pullquote">
   <div class="container">
-    <blockquote class="reveal">"Family information has to live somewhere. For most of us, it lives in our heads — and that's exhausting. I built Folia so it could live somewhere better. Somewhere everyone can find it, and nobody has to ask."</blockquote>
+    <blockquote class="reveal">"Most families already have a shared doc for this. It was last updated in 2022. I built Folia to be the version that actually works — the one that keeps itself current, so you never have to."</blockquote>
     <cite class="reveal d1">— Jess, founder of Folia</cite>
   </div>
 </section>
@@ -842,7 +841,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
       <div class="why-left">
         <div class="lbl reveal" style="margin-bottom:18px;">Why It's Different</div>
         <h2 class="reveal d1">It's not about storing information.<br>It's about never having<br>to update it again.</h2>
-        <p class="reveal d2">A notes app is passive. You put information in, and then you have to remember to update it when things change — which in a busy family, is constantly. Most of the time, you don't. So it goes stale.</p>
+        <p class="reveal d2">A Google Doc is passive. You make it with good intentions, share it with everyone who needs it, and within a month it's out of date. You know the one. It has the old pediatrician's number and a pickup schedule from last school year.</p>
         <p class="reveal d2">Folia is designed to be active. It's built to connect to your email, your calendar, and your grocery orders — so that when something changes, it catches it and asks you to confirm. That's what makes it different from a notes app. Those connections are rolling out to founding families now — and you can be one of them.</p>
         <ul class="checklist">
           <li class="reveal d2"><div class="check-mark">✓</div>Your family's information in one place — organized, secure, and shareable in one tap</li>
