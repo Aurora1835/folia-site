@@ -1673,7 +1673,7 @@ async function saveProfile(){
   // Ensure this user has a household — create one if not
   const householdId = await ensureHousehold(user.id);
 
- const profile={
+const profile={
     user_id:user.id,
     household_id:householdId,
     family_name:S.familyName||'Your Family',
@@ -2075,7 +2075,7 @@ function runBuildSeq(){
     setTimeout(()=>{document.getElementById(`bs${s.i}`).classList.add('active');document.getElementById(`bs${s.i}d`).style.display='flex';},s.d);
     setTimeout(()=>{document.getElementById(`bs${s.i}d`).style.display='none';document.getElementById(`bs${s.i}c`).style.display='inline';document.getElementById(`bs${s.i}`).classList.remove('active');document.getElementById(`bs${s.i}`).classList.add('done');},s.d+s.dur);
   });
-  setTimeout(async()=>{ try{ await saveProfile(); }catch(e){ console.log("Save skipped:",e); } pGoTo(8); },6300);
+  setTimeout(async()=>{ try{ await saveProfile(); }catch(e){ console.log("Save skipped:",e); } pGoTo(4); },6300);
 }
 
 function renderPreview(){
