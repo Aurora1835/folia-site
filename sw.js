@@ -1,4 +1,4 @@
-const CACHE_NAME = 'folia-v3';
+const CACHE_NAME = 'folia-v4';
 
 const APP_SHELL = [
   '/',
