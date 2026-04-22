@@ -2302,7 +2302,7 @@ function openDashboard(){
   disp.forEach((m,i)=>{
     const d=document.createElement('div');d.className='fam-chip';
     d.style.cursor='pointer';
-    d.innerHTML=`<div class="chip-av" style="background:var(--sage-lt);">${m.emoji}</div><div class="chip-nm" style="color:var(--stone-900);">${m.name}</div><div class="chip-tg" style="background:var(--sage-lt);color:var(--accent);">${m.role||'Member'}</div>
+   d.innerHTML=`<div class="chip-av" style="background:var(--sage-lt);">${m.emoji}</div><div class="chip-nm" style="color:var(--stone-900);">${m.name}</div><div class="chip-tg" style="background:var(--sage-lt);color:var(--accent);">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;
     d.onclick=()=>openMemberProfile(i);
     fc.appendChild(d);
   });
