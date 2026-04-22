@@ -593,7 +593,7 @@ input::placeholder,textarea::placeholder { color:var(--stone-300); }
 .strip-count { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--accent-lt); }
 
 /* ── FAMILY PREVIEW BLOCK ── */
-.fam-block { background:var(--stone-700); border-radius:16px; padding:14px; color:var(--white); margin-bottom:9px; }
+.fam-block { background:var(--white); border:1px solid var(--stone-200); border-radius:6px; padding:14px; color:var(--stone-900); margin-bottom:9px; }
 
 /* ── WARMER APP SHELL ── */
 .phone { background: var(--parchment) !important; }
@@ -608,7 +608,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
 .acard { border-radius: 16px; }
 .f-group { margin-bottom: 16px; }
    .fam-block-lbl { font-size:9px; letter-spacing:2.5px; text-transform:uppercase; color:var(--stone-500); margin-bottom:10px; }
-.fam-chip { display:flex; align-items:center; gap:9px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.fam-chip { display:flex; align-items:center; gap:9px; padding:7px 0; border-bottom:1px solid var(--stone-100); }
 .fam-chip:last-child { border-bottom:none; }
    .profile-panel { position:absolute; inset:0; background:var(--white); z-index:60; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
 .profile-panel.open { display:flex; }
@@ -1539,14 +1539,14 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
           </div>
 
           <!-- Coming soon -->
-          <div style="padding:20px 22px 24px;">
-            <div style="font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-family:'Jost',sans-serif;margin-bottom:8px;">Coming soon</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;font-style:italic;color:var(--stone-900);line-height:1.2;margin-bottom:8px;">Folia that keeps itself current.</div>
-            <div style="font-size:12px;font-weight:300;color:var(--stone-500);line-height:1.7;font-family:'Jost',sans-serif;margin-bottom:14px;">Connect Gmail, Google Calendar, and your grocery orders — Folia watches for changes so your family's info is always accurate.</div>
+          <div style="margin:0 18px 20px;background:var(--stone-900);border-radius:6px;padding:20px 18px;">
+            <div style="font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-lt);font-family:'Jost',sans-serif;margin-bottom:8px;">Coming soon</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;font-style:italic;color:var(--stone-100);line-height:1.25;margin-bottom:8px;">Folia that keeps itself current.</div>
+            <div style="font-size:12px;font-weight:300;color:var(--stone-500);line-height:1.7;font-family:'Jost',sans-serif;margin-bottom:16px;">Connect Gmail, Google Calendar, and your grocery orders — Folia watches for changes so your family's info is always accurate.</div>
             <div style="display:flex;gap:7px;flex-wrap:wrap;">
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;">Gmail</div>
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;">Calendar</div>
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;">Groceries</div>
+              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-400);background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;border:1px solid rgba(255,255,255,0.1);">Gmail</div>
+              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-400);background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;border:1px solid rgba(255,255,255,0.1);">Calendar</div>
+              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-400);background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;border:1px solid rgba(255,255,255,0.1);">Groceries</div>
             </div>
           </div>
 
@@ -2302,7 +2302,7 @@ function openDashboard(){
   disp.forEach((m,i)=>{
     const d=document.createElement('div');d.className='fam-chip';
     d.style.cursor='pointer';
-    d.innerHTML=`<div class="chip-av">${m.emoji}</div><div class="chip-nm">${m.name}</div><div class="chip-tg">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;
+    d.innerHTML=`<div class="chip-av" style="background:var(--sage-lt);">${m.emoji}</div><div class="chip-nm" style="color:var(--stone-900);">${m.name}</div><div class="chip-tg" style="background:var(--sage-lt);color:var(--accent);">${m.role||'Member'}</div>
     d.onclick=()=>openMemberProfile(i);
     fc.appendChild(d);
   });
