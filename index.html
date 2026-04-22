@@ -1494,186 +1494,128 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
 
       <!-- ── DASHBOARD SCREENS ── -->
 
-      <!-- Dashboard: Agent Feed -->
+      <!-- Dashboard: Home — Ask Folia -->
       <div class="pscreen" id="dash-home">
         <div class="ptop">
           <div class="ptop-row">
             <div><div class="ptitle">Folia</div><div class="psub" id="dashFamilyName">Your Family</div></div>
           </div>
         </div>
-      <div class="pscroll" style="padding:0;gap:0;">
-
-          <!-- Greeting -->
-          <div style="padding:22px 22px 18px;border-bottom:1px solid var(--stone-200);">
-            <div id="homeGreetingName" style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;margin-bottom:6px;"></div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;font-style:italic;color:var(--stone-900);line-height:1.2;">How can Folia help you today?</div>
+        <div class="pscroll" style="padding:0;gap:0;display:flex;flex-direction:column;">
+          <div style="text-align:center;padding:28px 22px 20px;border-bottom:1px solid var(--stone-200);">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;font-style:italic;color:var(--stone-900);line-height:1.1;margin-bottom:8px;">Ask Folia.</div>
+            <div style="font-size:11px;color:var(--stone-400);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;letter-spacing:0.3px;">Allergies · pickups · contacts<br>schedules · house info · doctors</div>
           </div>
-
-          <!-- Tool rows -->
-          <div style="padding:0 22px;border-bottom:1px solid var(--stone-200);">
-            <div style="font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;padding:14px 0 8px;">Your tools</div>
-
-            <div onclick="window.location='/sitter-brief/'" style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--stone-100);cursor:pointer;transition:opacity 0.15s;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
-              <div style="width:44px;height:44px;border-radius:12px;background:var(--stone-700);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📋</div>
-              <div style="flex:1;">
-                <div style="font-size:14px;font-weight:500;color:var(--stone-900);font-family:'Jost',sans-serif;margin-bottom:2px;">Sitter brief</div>
-                <div style="font-size:11px;color:var(--stone-400);font-family:'Jost',sans-serif;font-weight:300;">Free · instant · shareable</div>
-              </div>
-              <div style="color:var(--stone-300);font-size:20px;font-weight:300;">›</div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;flex:1;">
+            <div onclick="sendHomeQ('What does the sitter need to know?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
+              <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 What does the sitter need to know?</div>
             </div>
-
-            <div onclick="switchTab('family')" style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--stone-100);cursor:pointer;transition:opacity 0.15s;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
-              <div style="width:44px;height:44px;border-radius:12px;background:var(--sage-lt);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👨‍👩‍👧‍👦</div>
-              <div style="flex:1;">
-                <div style="font-size:14px;font-weight:500;color:var(--stone-900);font-family:'Jost',sans-serif;margin-bottom:2px;">Family profiles</div>
-                <div style="font-size:11px;color:var(--stone-400);font-family:'Jost',sans-serif;font-weight:300;">Edit · share · update</div>
-              </div>
-              <div style="color:var(--stone-300);font-size:20px;font-weight:300;">›</div>
+            <div onclick="sendHomeQ('What are the kids allergies?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
+              <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 What are the kids' allergies?</div>
             </div>
-
-            <div onclick="generateAppBrief()" style="display:flex;align-items:center;gap:16px;padding:14px 0;cursor:pointer;transition:opacity 0.15s;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
-              <div style="width:44px;height:44px;border-radius:12px;background:#FDEAEA;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🚨</div>
-              <div style="flex:1;">
-                <div style="font-size:14px;font-weight:500;color:var(--stone-900);font-family:'Jost',sans-serif;margin-bottom:2px;">Emergency snapshot</div>
-                <div style="font-size:11px;color:var(--stone-400);font-family:'Jost',sans-serif;font-weight:300;">Medical · contacts · schedule</div>
+            <div onclick="sendHomeQ('Who picks up the kids today?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
+              <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 Who picks up the kids today?</div>
+            </div>
+            <div onclick="sendHomeQ('What is the wifi password?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
+              <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 What's the wifi password?</div>
+            </div>
+            <div style="border-top:1px solid var(--stone-200);padding-top:16px;margin-top:4px;">
+              <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-family:'Jost',sans-serif;margin-bottom:6px;">Coming soon</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;font-style:italic;color:var(--stone-900);margin-bottom:6px;">Folia that keeps itself current.</div>
+              <div style="font-size:12px;font-weight:300;color:var(--stone-500);line-height:1.7;font-family:'Jost',sans-serif;margin-bottom:12px;">Connect Gmail, Google Calendar, and your grocery orders — Folia watches for changes so your family's info is always accurate.</div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;">Gmail</div>
+                <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;">Calendar</div>
+                <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--sage-lt);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;">Groceries</div>
               </div>
-              <div style="color:var(--stone-300);font-size:20px;font-weight:300;">›</div>
             </div>
           </div>
-
-          <!-- Coming soon -->
-          <div style="margin:0 18px 20px;background:var(--stone-900);border-radius:6px;padding:20px 18px;">
-            <div style="font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-lt);font-family:'Jost',sans-serif;margin-bottom:8px;">Coming soon</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;font-style:italic;color:var(--stone-100);line-height:1.25;margin-bottom:8px;">Folia that keeps itself current.</div>
-            <div style="font-size:12px;font-weight:300;color:var(--stone-500);line-height:1.7;font-family:'Jost',sans-serif;margin-bottom:16px;">Connect Gmail, Google Calendar, and your grocery orders — Folia watches for changes so your family's info is always accurate.</div>
-            <div style="display:flex;gap:7px;flex-wrap:wrap;">
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-400);background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;border:1px solid rgba(255,255,255,0.1);">Gmail</div>
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-400);background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;border:1px solid rgba(255,255,255,0.1);">Calendar</div>
-              <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stone-400);background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px;font-family:'Jost',sans-serif;border:1px solid rgba(255,255,255,0.1);">Groceries</div>
-            </div>
+          <div style="padding:10px 16px 12px;border-top:1px solid var(--stone-200);background:var(--white);display:flex;gap:8px;align-items:center;flex-shrink:0;">
+            <input id="homeAskInput" type="text" placeholder="Ask about your family…" style="flex:1;padding:10px 16px;border-radius:100px;font-size:13px;font-family:'Jost',sans-serif;" onkeydown="if(event.key==='Enter')sendHomeAsk()" />
+            <button onclick="sendHomeAsk()" style="width:36px;height:36px;background:var(--stone-900);border:none;border-radius:50%;color:var(--white);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">→</button>
           </div>
-
         </div>
         <div class="tab-bar">
           <div class="tab active" id="t-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab" id="t-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          
+          <div class="tab" id="t-share" onclick="switchTab('share')"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
         </div>
       </div>
+
       <!-- Dashboard: Family -->
-     <div class="pscreen" id="dash-family">
+      <div class="pscreen" id="dash-family">
         <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your Household</div></div></div></div>
         <div class="pscroll" style="gap:0;padding-bottom:16px;">
-
-          <!-- People -->
-          <div class="fam-block">
-            <div class="fam-block-lbl" id="famBlockLbl">Your Household</div>
+          <div style="margin:12px 14px 8px;background:var(--white);border:1px solid var(--stone-200);border-radius:16px;overflow:hidden;">
+            <div style="padding:10px 14px 6px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;" id="famBlockLbl">Your Household</div>
             <div id="famChips"></div>
           </div>
-
-          <!-- Household section -->
-          <div style="margin:10px 0 0;">
-            <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--stone-500);margin-bottom:8px;">The House</div>
-
+          <div style="padding:0 14px 10px;">
+            <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;margin-bottom:8px;">The House</div>
             <div id="householdView">
-              <!-- View mode -->
-              <div style="background:var(--stone-50);border:1px solid var(--stone-200);border-radius:12px;overflow:hidden;">
-                <div class="household-row" id="hw-wifi">
-                  <div class="hh-label">Wifi</div>
-                  <div class="hh-value" id="hv-wifi">—</div>
-                </div>
-                <div class="household-row" id="hw-address">
-                  <div class="hh-label">Address</div>
-                  <div class="hh-value" id="hv-address">—</div>
-                </div>
-                <div class="household-row" id="hw-donot">
-                  <div class="hh-label">Do-not list</div>
-                  <div class="hh-value" id="hv-donot">—</div>
-                </div>
-                <div class="household-row" id="hw-trusted">
-                  <div class="hh-label">Trusted contacts</div>
-                  <div class="hh-value" id="hv-trusted">—</div>
-                </div>
-                <div class="household-row" id="hw-notes">
-                  <div class="hh-label">House notes</div>
-                  <div class="hh-value" id="hv-notes">—</div>
-                </div>
+              <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:14px;overflow:hidden;">
+                <div class="household-row"><div class="hh-label">Wifi</div><div class="hh-value" id="hv-wifi">—</div></div>
+                <div class="household-row"><div class="hh-label">Address</div><div class="hh-value" id="hv-address">—</div></div>
+                <div class="household-row"><div class="hh-label">Do-not list</div><div class="hh-value" id="hv-donot">—</div></div>
+                <div class="household-row"><div class="hh-label">Trusted contacts</div><div class="hh-value" id="hv-trusted">—</div></div>
+                <div class="household-row"><div class="hh-label">House notes</div><div class="hh-value" id="hv-notes">—</div></div>
               </div>
-              <button onclick="editHousehold()" style="width:100%;margin-top:8px;padding:11px;background:transparent;border:1px solid var(--stone-200);border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;color:var(--stone-500);cursor:pointer;letter-spacing:0.5px;">Edit Household Info</button>
+              <button onclick="editHousehold()" style="width:100%;margin-top:8px;padding:11px;background:transparent;border:1px solid var(--stone-200);border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;color:var(--stone-500);cursor:pointer;">Edit Household Info</button>
             </div>
-
-            <!-- Edit mode (hidden by default) -->
             <div id="householdEdit" style="display:none;">
-              <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;overflow:hidden;">
-                <div class="household-row">
-                  <div class="hh-label">Wifi</div>
-                  <input id="he-wifi" class="hh-input" placeholder="Network name & password" />
-                </div>
-                <div class="household-row">
-                  <div class="hh-label">Address</div>
-                  <input id="he-address" class="hh-input" placeholder="Home address" />
-                </div>
-                <div class="household-row">
-                  <div class="hh-label">Do-not list</div>
-                  <textarea id="he-donot" class="hh-input" rows="2" placeholder="No screen time before homework. No sweets after 6pm."></textarea>
-                </div>
-                <div class="household-row">
-                  <div class="hh-label">Trusted contacts</div>
-                  <textarea id="he-trusted" class="hh-input" rows="2" placeholder="Neighbor with key: Sara Chen (555) 391-7742"></textarea>
-                </div>
-                <div class="household-row">
-                  <div class="hh-label">House notes</div>
-                  <textarea id="he-notes" class="hh-input" rows="2" placeholder="Alarm code, parking, anything a sitter should know"></textarea>
-                </div>
+              <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:14px;overflow:hidden;">
+                <div class="household-row"><div class="hh-label">Wifi</div><input id="he-wifi" class="hh-input" placeholder="Network name & password" /></div>
+                <div class="household-row"><div class="hh-label">Address</div><input id="he-address" class="hh-input" placeholder="Home address" /></div>
+                <div class="household-row"><div class="hh-label">Do-not list</div><textarea id="he-donot" class="hh-input" rows="2" placeholder="No screen time before homework…"></textarea></div>
+                <div class="household-row"><div class="hh-label">Trusted contacts</div><textarea id="he-trusted" class="hh-input" rows="2" placeholder="Neighbor with key: Sara Chen (555) 391-7742"></textarea></div>
+                <div class="household-row"><div class="hh-label">House notes</div><textarea id="he-notes" class="hh-input" rows="2" placeholder="Alarm code, parking, anything a sitter should know"></textarea></div>
               </div>
-              <button onclick="saveHousehold()" style="width:100%;margin-top:8px;padding:11px;background:var(--stone-900);color:var(--white);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;letter-spacing:0.5px;">Save</button>
+              <button onclick="saveHousehold()" style="width:100%;margin-top:8px;padding:11px;background:var(--stone-900);color:var(--white);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;">Save</button>
             </div>
           </div>
-
-          <!-- Share section -->
-          <div style="margin:12px 0 0;background:var(--stone-50);border:1px solid var(--stone-200);border-radius:12px;padding:14px 16px;">
-            <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-500);margin-bottom:8px;">Share With Family</div>
-            <div style="font-size:12px;color:var(--stone-700);font-weight:300;margin-bottom:10px;line-height:1.5;">Invite a partner or caregiver to see your family's Folia.</div>
-            <div style="display:flex;gap:7px;">
-              <input type="email" id="inviteEmail" placeholder="their@email.com" style="flex:1;font-size:12px;padding:9px 12px;border-radius:8px;border:1px solid var(--stone-200);font-family:'Jost',sans-serif;" />
-              <button onclick="handleInvite()" style="background:var(--stone-900);color:var(--white);border:none;border-radius:8px;padding:9px 14px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;white-space:nowrap;">Invite →</button>
-            </div>
-            <div id="inviteMsg" style="font-size:11.5px;margin-top:8px;color:var(--green);display:none;"></div>
-            <div id="inviteList" style="margin-top:10px;"></div>
-          </div>
-
         </div>
         <div class="tab-bar">
           <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab active" id="t2-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          
+          <div class="tab" id="t2-share" onclick="switchTab('share')"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
         </div>
       </div>
 
-      <!-- Dashboard: Ask Folia -->
-      <div class="pscreen" id="dash-ask" style="display:none;">
-        <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Ask Folia</div></div><div class="agent-badge"><div class="agent-dot"></div>Ready</div></div></div>
-        <div class="pscroll" id="chatMessages" style="gap:6px;padding-bottom:80px;">
-          <div style="text-align:center;padding:16px 0 10px;">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;font-style:italic;color:var(--accent);margin-bottom:8px;">Folia</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--stone-900);margin-bottom:5px;">Ask anything about your family</div>
-            <div style="font-size:12.5px;color:var(--stone-500);font-weight:300;line-height:1.6;">I know your schedules, health needs,<br>allergies, routines, and more.</div>
+      <!-- Dashboard: Share -->
+      <div class="pscreen" id="dash-share">
+        <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Share</div></div></div></div>
+        <div class="pscroll" style="gap:0;padding-bottom:16px;">
+          <div style="padding:18px 18px 14px;border-bottom:1px solid var(--stone-200);">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;font-style:italic;color:var(--stone-900);line-height:1.2;margin-bottom:4px;">Send what they need.</div>
+            <div style="font-size:12px;color:var(--stone-400);font-family:'Jost',sans-serif;font-weight:300;">Choose what to share and with whom.</div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:7px;margin-top:6px;">
-            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`What does the sitter need to know?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 What does the sitter need to know?</div></div>
-            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`Any conflicts next week?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 Any conflicts next week?</div></div>
-            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`What\\'s safe for Nora at the party?`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 What time does school let out today?</div></div>
-            <div class="acard" style="cursor:pointer;" onclick="askQ(this,`Summarize what the agent updated today`)"><div class="acard-body" style="padding:11px 14px;font-size:12.5px;color:var(--stone-700);">💬 Summarize what the agent updated today</div></div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:14px;padding:16px;">
+              <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-family:'Jost',sans-serif;margin-bottom:5px;">Sitter brief</div>
+              <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;line-height:1.6;margin-bottom:12px;">Everything a sitter needs — allergies, pickup, bedtime, emergency contacts. Generated instantly.</div>
+              <button onclick="window.location='/sitter-brief/'" style="width:100%;padding:11px;background:var(--stone-900);color:var(--white);border:none;border-radius:8px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.5px;cursor:pointer;">Generate & share →</button>
+            </div>
+            <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:14px;padding:16px;">
+              <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red);font-family:'Jost',sans-serif;margin-bottom:5px;">Emergency snapshot</div>
+              <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;line-height:1.6;margin-bottom:12px;">Medical info, doctor details, and emergency contacts in one shareable card.</div>
+              <button onclick="generateAppBrief()" style="width:100%;padding:11px;background:var(--red-lt);color:var(--red);border:1px solid rgba(139,58,58,0.2);border-radius:8px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.5px;cursor:pointer;">Share snapshot →</button>
+            </div>
+            <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:14px;padding:16px;">
+              <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;margin-bottom:5px;">Invite a caregiver</div>
+              <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;line-height:1.6;margin-bottom:12px;">Give a partner or nanny access to your full family Folia.</div>
+              <div style="display:flex;gap:7px;">
+                <input type="email" id="inviteEmail" placeholder="their@email.com" style="flex:1;font-size:12px;padding:9px 12px;border-radius:8px;border:1px solid var(--stone-200);font-family:'Jost',sans-serif;" />
+                <button onclick="handleInvite()" style="background:var(--sage-lt);color:var(--accent);border:1px solid var(--sage-mid);border-radius:8px;padding:9px 14px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;white-space:nowrap;font-weight:500;">Invite →</button>
+              </div>
+              <div id="inviteMsg" style="font-size:11.5px;margin-top:8px;color:var(--green);display:none;"></div>
+              <div id="inviteList" style="margin-top:10px;"></div>
+            </div>
           </div>
-        </div>
-        <div style="position:absolute;bottom:56px;left:0;right:0;padding:9px 14px;background:var(--white);border-top:1px solid var(--stone-200);display:flex;gap:7px;">
-          <input id="chatIn" type="text" placeholder="Ask about your family…" style="flex:1;padding:10px 13px;border-radius:9px;" onkeydown="if(event.key==='Enter')sendChat()" />
-          <button onclick="sendChat()" style="padding:10px 14px;background:var(--stone-900);color:var(--white);border:none;border-radius:9px;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;">→</button>
         </div>
         <div class="tab-bar">
           <div class="tab" id="t3-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab" id="t3-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          
+          <div class="tab active" id="t3-share" onclick="switchTab('share')"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
         </div>
       </div>
 
@@ -2156,7 +2098,7 @@ function openAuthOverlay(tab='login'){
 const S={familyName:'',parentName:'',members:[],connections:[],emoji:'👩'};
 var H={wifi:'',address:'',donot:'',trusted:'',notes:''};
 let cur=0;
-const allScreens=['p0','p1','p2','p7','p9','dash-home','dash-family','dash-ask'];
+const allScreens=['p0','p1','p2','p7','p9','dash-home','dash-family','dash-share'];
 function pGoTo(n){
   const cid=allScreens[cur],nid=allScreens[n];
   const cel=document.getElementById(cid),nel=document.getElementById(nid);
@@ -2325,10 +2267,10 @@ function switchTab(name){
   if(sp)sp.classList.remove('open');
   if(pp)pp.classList.remove('open');
 
-  const map={home:'dash-home',family:'dash-family',ask:'dash-ask'};
+const map={home:'dash-home',family:'dash-family',share:'dash-share'};
   Object.entries(map).forEach(([k,v])=>{document.getElementById(v).classList.toggle('active',k===name);});
-['home','family','ask'].forEach(t=>{['t','t2','t3'].forEach(prefix=>{const el=document.getElementById(`${prefix}-${t}`);if(el)el.classList.toggle('active',t===name);});});
- if(name==='family')cur=6;else cur=5;
+['home','family','share'].forEach(t=>{['t','t2','t3'].forEach(prefix=>{const el=document.getElementById(`${prefix}-${t}`);if(el)el.classList.toggle('active',t===name);});});
+ if(name==='share')cur=7;else if(name==='family')cur=6;else cur=5;
 }
 
 let updCount=0;
@@ -2778,6 +2720,17 @@ function dismissA2HS(){
 }
 
 showA2HSIfNeeded();
+   function sendHomeQ(q){
+  document.getElementById('homeAskInput').value=q;
+  sendHomeAsk();
+}
+async function sendHomeAsk(){
+  const input=document.getElementById('homeAskInput');
+  const q=input.value.trim();
+  if(!q)return;
+  input.value='';
+  await runChat(q);
+}
    async function joinIOSWaitlist(){
   const email = document.getElementById('iosWaitlistEmail').value.trim();
   const msg = document.getElementById('iosWaitlistMsg');
