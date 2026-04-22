@@ -2324,7 +2324,7 @@ function switchTab(name){
 
   const map={home:'dash-home',family:'dash-family',ask:'dash-ask'};
   Object.entries(map).forEach(([k,v])=>{document.getElementById(v).classList.toggle('active',k===name);});
-  ['home','family','ask'].forEach(t=>{['t','t2','t3'].forEach(prefix=>{const el=document.getElementById(`${prefix}-${t}`);if(el)el.classList.toggle('active',t===name);});});
+['home','family','ask'].forEach(t=>{['t','t2','t3'].forEach(prefix=>{const el=document.getElementById(`${prefix}-${t}`);if(el)el.classList.toggle('active',t===name);});});
  if(name==='family')cur=6;else cur=5;
 }
 
