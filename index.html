@@ -739,6 +739,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea { background:
 .pscreen { background: #F7F5F0 !important; }
 .pscroll { background: #F7F5F0 !important; }
 .phone { background: #F7F5F0 !important; }
+   .pscroll > div { pointer-events: all !important; }
 
 /* Top bar — lighter, more refined */
 .ptop { background: #4A3828 !important; }
@@ -1512,7 +1513,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
             <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;font-style:italic;color:var(--stone-900);line-height:1.1;margin-bottom:8px;">Ask Folia.</div>
             <div style="font-size:11px;color:var(--stone-400);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;letter-spacing:0.3px;">Allergies · pickups · contacts<br>schedules · house info · doctors</div>
           </div>
-          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;flex:1;">
+         <div id="homeChips" style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;"> 
            <div onclick="sendHomeQ('What does the sitter need to know?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
               <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 What does the sitter need to know?</div>
             </div>
@@ -1534,6 +1535,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
               </div>
             </div>
           </div>
+           <div id="chatMessages" style="flex:1;overflow-y:auto;padding:0 20px;display:flex;flex-direction:column;gap:8px;"></div>
           <div style="padding:10px 16px 12px;border-top:1px solid var(--stone-200);background:var(--white);display:flex;gap:8px;align-items:center;flex-shrink:0;">
             <input id="homeAskInput" type="text" placeholder="Ask about your family…" style="flex:1;padding:10px 16px;border-radius:100px;font-size:13px;font-family:'Jost',sans-serif;" onkeydown="if(event.key==='Enter')sendHomeAsk()" />
             <button onclick="sendHomeAsk()" style="width:36px;height:36px;background:var(--stone-900);border:none;border-radius:50%;color:var(--white);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">→</button>
@@ -2058,6 +2060,7 @@ function closeApp(){
 
 function closeSettings(){
   document.getElementById('settingsPanel').classList.remove('open');
+  cur=5;
 }
 
 let isLoggedIn=false;
@@ -2338,8 +2341,25 @@ const famCtx={
   updates:'No recent updates'
 };
 
-function addMsg(role,text){const chat=document.getElementById('chatMessages');const d=document.createElement('div');d.className=`chat-bubble ${role}`;d.innerHTML=`<div class="bubble-inner">${text}</div>`;chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});}
-function addTyping(){const chat=document.getElementById('chatMessages');const d=document.createElement('div');d.id='typing';d.className='chat-bubble agent-b';d.innerHTML=`<div class="bubble-inner"><div class="t-dots"><span></span><span></span><span></span></div></div>`;chat.appendChild(d);d.scrollIntoView({behavior:'smooth'});}
+function addMsg(role,text){
+  const chat=document.getElementById('chatMessages');
+  if(!chat)return;
+  chat.style.display='flex';
+  const d=document.createElement('div');
+  d.className=`chat-bubble ${role}`;
+  d.innerHTML=`<div class="bubble-inner">${text}</div>`;
+  chat.appendChild(d);
+  d.scrollIntoView({behavior:'smooth'});
+}
+function addTyping(){
+  const chat=document.getElementById('chatMessages');
+  if(!chat)return;
+  const d=document.createElement('div');
+  d.id='typing';d.className='chat-bubble agent-b';
+  d.innerHTML=`<div class="bubble-inner"><div class="t-dots"><span></span><span></span><span></span></div></div>`;
+  chat.appendChild(d);
+  d.scrollIntoView({behavior:'smooth'});
+}
 function rmTyping(){document.getElementById('typing')?.remove();}
 let editingProfile=false;
 let currentProfileIndex=-1;
@@ -2735,6 +2755,9 @@ async function sendHomeAsk(){
   const q=input.value.trim();
   if(!q)return;
   input.value='';
+  // Hide the question chips once conversation starts
+  const chips=document.getElementById('homeChips');
+  if(chips)chips.style.display='none';
   await runChat(q);
 }
    async function joinIOSWaitlist(){
