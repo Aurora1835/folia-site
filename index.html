@@ -1719,12 +1719,13 @@ window.addEventListener('load',async()=>{
       if(briefName) S.familyName=briefName;
       if(briefAllergies) S.briefAllergies=briefAllergies;
       if(briefChildren){
-        briefChildren.split(',').forEach(k=>{
+       briefChildren.split(',').forEach(k=>{
           const trimmed=k.trim();
           if(!trimmed)return;
-          const ageMatch=trimmed.match(/(\d+)/);
-          const namePart=trimmed.replace(/\s*\d+\s*/,'').trim();
-          S.members.push({emoji:'👧',name:namePart||trimmed,role:ageMatch?'Age '+ageMatch[1]:'Child',type:'child'});
+          const ageMatch=trimmed.match(/\b(\d+)\b/);
+          const namePart=trimmed.replace(/\b(age\s*)?\d+\b/i,'').replace(/[,.\s]+$/,'').trim();
+          if(!namePart)return;
+          S.members.push({emoji:'👧',name:namePart,role:ageMatch?'Age '+ageMatch[1]:'Child',type:'child'});
         });
       }
       if(urlParams.get('action')==='signup'){
