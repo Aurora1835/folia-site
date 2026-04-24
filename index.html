@@ -799,6 +799,12 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
 /* Welcome screen */
 .welcome-hero-p { background: #F5EEE0 !important; }
 .willus { border-color: #D4C4A0 !important; background: #EAD9BC !important; }
+   .fam-chip:hover { background: rgba(106,124,96,0.08) !important; }
+.fam-chip { border-bottom: 1px solid var(--stone-200) !important; }
+.profile-top { background: var(--stone-900) !important; }
+.profile-body { background: var(--white) !important; }
+.profile-section { background: var(--white) !important; border-radius: 12px !important; }
+.profile-field { background: transparent !important; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link rel="manifest" href="/manifest.json">
@@ -1507,16 +1513,14 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
             <div style="font-size:11px;color:var(--stone-400);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;letter-spacing:0.3px;">Allergies · pickups · contacts<br>schedules · house info · doctors</div>
           </div>
           <div style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;flex:1;">
-            <div onclick="sendHomeQ('What does the sitter need to know?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
+           <div onclick="sendHomeQ('What does the sitter need to know?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
               <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 What does the sitter need to know?</div>
             </div>
-            <div onclick="sendHomeQ('What are the kids allergies?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
-              <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 What are the kids' allergies?</div>
-            </div>
-            <div onclick="sendHomeQ('Who picks up the kids today?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
+           
+           <div onclick="sendHomeQ('Who picks up the kids today?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
               <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 Who picks up the kids today?</div>
             </div>
-            <div onclick="sendHomeQ('What is the wifi password?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
+            <div onclick="sendHomeQ('What's the wifi password?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
               <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 What's the wifi password?</div>
             </div>
             <div style="border-top:1px solid var(--stone-200);padding-top:16px;margin-top:4px;">
@@ -2062,6 +2066,8 @@ function handleClose(){
   if(isLoggedIn){
     const pp=document.getElementById('profilePanel');
     const ep=document.getElementById('emergencyPanel');
+    const sp=document.getElementById('settingsPanel');
+    if(sp&&sp.classList.contains('open')){sp.classList.remove('open');return;}
     if(pp&&pp.classList.contains('open')){pp.classList.remove('open');return;}
     if(ep&&ep.classList.contains('open')){ep.classList.remove('open');return;}
     openSettings();
@@ -2390,10 +2396,10 @@ function openEmergency(){
   document.getElementById('emergencyTitle').textContent='Emergency Snapshot';
   document.getElementById('emergencySubtitle').textContent=fname;
 
-  const allergies=document.getElementById('allergies')?.value||'';
-  const medications=document.getElementById('medications')?.value||'';
-  const doctor=document.getElementById('doctor')?.value||'';
-  const pickup=document.getElementById('pickup')?.value||'';
+ const allergies=S.members.map(m=>m.allergies).filter(a=>a&&a.toLowerCase()!=='none'&&a!=='').join(', ')||document.getElementById('allergies')?.value||'';
+  const medications=S.members.map(m=>m.medications).filter(Boolean).join(', ')||document.getElementById('medications')?.value||'';
+  const doctor=S.members.map(m=>m.doctor).filter(Boolean)[0]||document.getElementById('doctor')?.value||'';
+  const pickup=S.members.map(m=>m.pickup).filter(Boolean).join(' · ')||document.getElementById('pickup')?.value||'';
 
   const body=document.getElementById('emergencyBody');
   body.innerHTML='';
