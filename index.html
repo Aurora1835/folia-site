@@ -1727,6 +1727,16 @@ window.addEventListener('load',async()=>{
           S.members.push({emoji:'👧',name:namePart||trimmed,role:ageMatch?'Age '+ageMatch[1]:'Child',type:'child'});
         });
       }
+      if(urlParams.get('action')==='signup'){
+        setTimeout(()=>{
+          document.getElementById('authOverlay').classList.add('open');
+          document.body.style.overflow='hidden';
+          switchAuthTab('signup');
+          if(briefName && document.getElementById('signupName')){
+            document.getElementById('signupName').value=briefName;
+          }
+        },400);
+      }
     }
     const {data:{session}}=await sb.auth.getSession();
     const navBtn=document.getElementById('navAuthBtn');
