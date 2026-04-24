@@ -672,6 +672,7 @@ function fallbackBrief(name, children, allergies, emergency, notes) {
   if(allergies) params.set('allergies', allergies);
   if(emergency) params.set('emergency', emergency);
   params.set('source', 'sitter-brief');
+  params.set('action', 'signup');
   window.location = 'https://withfolia.com/?' + params.toString();
 }
 </script>
