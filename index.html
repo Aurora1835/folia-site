@@ -1699,7 +1699,13 @@ async function handleSignup(){
   if(document.getElementById('signupLoading'))document.getElementById('signupLoading').classList.remove('show');
   closeAuth();
   openAppShell();
-  pGoTo(0);
+  if(S.familyName){
+    if(document.getElementById('familyName'))document.getElementById('familyName').value=S.familyName;
+    if(document.getElementById('parentName'))document.getElementById('parentName').value=name;
+    setTimeout(()=>pGoTo(2),200);
+  } else {
+    pGoTo(0);
+  }
 }
 
 // Check for existing session on load
@@ -2033,6 +2039,9 @@ function openApp(){
   document.getElementById('authOverlay').classList.add('open');
   document.body.style.overflow='hidden';
   switchAuthTab('signup');
+  if(S.familyName && document.getElementById('signupName')){
+    document.getElementById('signupName').value=S.familyName;
+  }
 }
 function showLogin(){
   // Layer auth overlay on top — keep app shell intact underneath
