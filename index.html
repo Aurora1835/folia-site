@@ -1523,7 +1523,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
            <div onclick="sendHomeQ('Who picks up the kids today?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
               <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 Who picks up the kids today?</div>
             </div>
-            <div onclick="sendHomeQ('What's the wifi password?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
+            <div onclick="sendHomeQ('What is the wifi password?')" style="background:var(--white);border:1px solid var(--stone-200);border-radius:12px;padding:13px 15px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;" onmousedown="this.style.opacity='0.6'" onmouseup="this.style.opacity='1'">
               <div style="font-size:13px;color:var(--stone-700);font-family:'Jost',sans-serif;font-weight:300;">💬 What's the wifi password?</div>
             </div>
             <div style="border-top:1px solid var(--stone-200);padding-top:16px;margin-top:4px;">
@@ -2280,7 +2280,8 @@ function openDashboard(){
     const d=document.createElement('div');d.className='fam-chip';
     d.style.cursor='pointer';
    d.innerHTML=`<div class="chip-av" style="background:var(--sage-lt);">${m.emoji}</div><div class="chip-nm" style="color:var(--stone-900);">${m.name}</div><div class="chip-tg" style="background:var(--sage-lt);color:var(--accent);">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;
-    d.onclick=()=>openMemberProfile(i);
+    const idx=i;
+    d.onclick=()=>openMemberProfile(idx);
     fc.appendChild(d);
   });
 pGoTo(5);
@@ -2373,6 +2374,17 @@ function addMsg(role,text){
   d.innerHTML=`<div class="bubble-inner">${text}</div>`;
   chat.appendChild(d);
   d.scrollIntoView({behavior:'smooth'});
+  if(role==='agent-b'){
+    const existing=document.getElementById('askAgainBtn');
+    if(!existing){
+      const btn=document.createElement('button');
+      btn.id='askAgainBtn';
+      btn.onclick=resetHomeAsk;
+      btn.style.cssText='margin:8px 20px 0;padding:10px;background:transparent;border:1px solid var(--stone-200);border-radius:10px;font-family:Jost,sans-serif;font-size:12px;color:var(--stone-500);cursor:pointer;width:calc(100% - 40px);';
+      btn.textContent='← Ask something else';
+      chat.appendChild(btn);
+    }
+  }
 }
 function addTyping(){
   const chat=document.getElementById('chatMessages');
@@ -2803,6 +2815,12 @@ async function sendHomeAsk(){
   msg.style.color='var(--green)';
   msg.textContent='✓ You\'re on the list. We\'ll reach out when the iOS app is ready.';
  document.getElementById('iosWaitlistEmail').value='';
+}
+   function resetHomeAsk(){
+  const chat=document.getElementById('chatMessages');
+  if(chat){chat.innerHTML='';chat.style.display='none';}
+  const chips=document.getElementById('homeChips');
+  if(chips)chips.style.display='flex';
 }
 </script>
      <!-- Add to home screen prompt -->
