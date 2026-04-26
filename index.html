@@ -725,6 +725,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
   .app-overlay { padding:0; }
 }
    /* ── FINAL OVERRIDES ── */
+   .fam-chip { pointer-events: all !important; touch-action: manipulation !important; -webkit-tap-highlight-color: transparent; }
    .emergency-panel { z-index: 55 !important; }
    .pscreen.active { z-index: 56 !important; }
    .chip-nm { color: var(--stone-900) !important; }
@@ -1555,7 +1556,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
       <div class="pscreen" id="dash-family">
         <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your Household</div></div></div></div>
         <div class="pscroll" style="gap:0;padding-bottom:16px;">
-          <div style="margin:12px 14px 8px;background:var(--white);border:1px solid var(--stone-200);border-radius:16px;overflow:hidden;">
+          <div style="margin:12px 14px 8px;background:var(--white);border:1px solid var(--stone-200);border-radius:16px;overflow:visible;">
             <div style="padding:10px 14px 6px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;" id="famBlockLbl">Your Household</div>
             <div id="famChips"></div>
           </div>
