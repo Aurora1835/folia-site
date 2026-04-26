@@ -1486,19 +1486,19 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
         </div>
       </div>
 
-      <!-- ── 9: SUCCESS → DASHBOARD ── -->
+     <!-- ── 9: SUCCESS → DASHBOARD ── -->
       <div class="pscreen" id="p9">
         <div class="success-p">
           <div class="success-ring">🏡</div>
-          <div class="success-title">Your app is<br><em>alive.</em></div>
-          <div class="success-sub" id="successSub">Folia is now watching, learning, and keeping everything current — so you don't have to.</div>
+          <div class="success-title">Your profile<br><em>is ready.</em></div>
+          <div class="success-sub" id="successSub">Your profile is ready. (Email & calendar auto-updates coming soon!)</div>
           <div class="summary-chips-p">
-            <div class="summary-chip-p">✦ Always current</div>
+            <div class="summary-chip-p">✦ One place for everything</div>
             <div class="summary-chip-p" id="chipMembers">👨‍👩‍👧‍👦 Family ready</div>
-            <div class="summary-chip-p">⚕️ Health protected</div>
-            <div class="summary-chip-p">📅 Schedules mapped</div>
+            <div class="summary-chip-p">⚕️ Shareable anytime</div>
+            <div class="summary-chip-p">📅 Always editable</div>
           </div>
-          <button class="pbtn accent" style="width:100%;" onclick="openDashboard()">Open My Family's App →</button>
+          <button class="pbtn accent" style="width:100%;" onclick="openDashboard()">Open My Family Profile →</button>
         </div>
       </div>
 
@@ -2310,12 +2310,19 @@ function openDashboard(){
   if(!fc)return;
   fc.innerHTML='';
   const disp=S.members.length>0?S.members:[];
-  disp.forEach((m,i)=>{
-    const d=document.createElement('div');d.className='fam-chip';
+ disp.forEach((m,i)=>{
+    const d=document.createElement('div');
+    d.className='fam-chip';
     d.style.cursor='pointer';
-   d.innerHTML=`<div class="chip-av" style="background:var(--sage-lt);">${m.emoji}</div><div class="chip-nm" style="color:var(--stone-900);">${m.name}</div><div class="chip-tg" style="background:var(--sage-lt);color:var(--accent);">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;
-    const idx=i;
-    d.onclick=()=>openMemberProfile(idx);
+    d.style.webkitTapHighlightColor='transparent';
+    d.innerHTML=`<div class="chip-av" style="background:var(--sage-lt);">${m.emoji}</div><div class="chip-nm" style="color:var(--stone-900);">${m.name}</div><div class="chip-tg" style="background:var(--sage-lt);color:var(--accent);">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;
+    d.addEventListener('click', (function(index) {
+      return function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openMemberProfile(index);
+      };
+    })(i));
     fc.appendChild(d);
   });
 pGoTo(5);
@@ -2785,12 +2792,34 @@ async function sendChat(){const i=document.getElementById('chatIn');const q=i.va
 
 async function runChat(q){
   addMsg('user',q);addTyping();
+  
+  // Check stored data FIRST for common questions
+  const ql = q.toLowerCase();
+  let quickAnswer = null;
+  
+  if(ql.includes('wifi') || ql.includes('password') || ql.includes('network')){
+    quickAnswer = H.wifi && H.wifi !== '' 
+      ? `Your WiFi: ${H.wifi}` 
+      : "I don't have your WiFi info yet. Add it in Family → The House.";
+  }
+  else if(ql.includes('address')){
+    quickAnswer = H.address && H.address !== ''
+      ? `Your address: ${H.address}`
+      : "I don't have your address yet. Add it in the Family tab.";
+  }
+  
+  if(quickAnswer){
+    rmTyping();
+    addMsg('agent-b', quickAnswer);
+    return;
+  }
+  
 const sys=`You are the Folia agent for ${S.familyName||'this family'}. Members: ${famCtx.members()}. Recent updates: ${famCtx.updates}. STRICT RULES: Only answer using information explicitly stored in this family's Folia profile. If you do not have the information, say "I don't have that in your Folia yet — you can add it in the Family tab." NEVER invent, guess, or suggest any medical information, medications, dosages, or health advice. If asked about health or medical topics, say only what is recorded and remind them to consult their doctor. Answer in 2-4 sentences, warm and practical, use real names.`;
   try{
     const res=await fetch('/.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
     const data=await res.json();
     rmTyping();addMsg('agent-b',data.content?.map(b=>b.text||'').join('')||"I'm having trouble connecting.");
- }catch(e){
+  }catch(e){
     rmTyping();
     const ql=q.toLowerCase();
     let r="I'm having trouble connecting right now.";
