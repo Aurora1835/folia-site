@@ -2460,23 +2460,18 @@ function rmTyping(){document.getElementById('typing')?.remove();}
 let editingProfile=false;
 let currentProfileIndex=-1;
 
-function openProfile(i){
-  const disp=S.members.length>0?S.members:[{emoji:'👩',name:'Claire',role:'Parent',allergies:'',notes:''},{emoji:'👨',name:'Marcus',role:'Parent',allergies:'',notes:''},{emoji:'👧',name:'Nora',role:'Age 11',allergies:'Peanuts — Epi-pen in red pouch',notes:''},{emoji:'👦',name:'Ben',role:'Age 7',allergies:'',notes:'Albuterol inhaler, blue backpack'}];
-  const m=disp[i];
-  currentProfileIndex=i;
-  editingProfile=false;
-  document.getElementById('profileAvatar').textContent=m.emoji;
-  document.getElementById('profileName').textContent=m.name;
-  document.getElementById('profileRole').textContent=m.role||'Household member';
-  document.getElementById('profileEditBtn').style.display='block';
-  document.getElementById('profileSaveBtn').style.display='none';
-  const body=document.getElementById('profileBody');
-  body.innerHTML=`
-    <div class="profile-field"><div class="profile-field-label">Name</div><div class="profile-field-value" id="pf-name">${m.name}</div></div>
-    <div class="profile-field"><div class="profile-field-label">Role</div><div class="profile-field-value" id="pf-role">${m.role||'Household member'}</div></div>
-    <div class="profile-field"><div class="profile-field-label">Allergies & Medical</div><div class="profile-field-value" id="pf-allergies">${m.allergies||'None recorded'}</div></div>
-    <div class="profile-field"><div class="profile-field-label">Notes</div><div class="profile-field-value" id="pf-notes">${m.notes||'—'}</div></div>
-  `;
+function openMemberProfile(i){
+  const members = S.members.length > 0 ? S.members : [];
+  if (members.length === 0) return;
+  currentMemberIndex = i;
+  profileEditMode = false;
+  const m = members[i];
+  document.getElementById('profileAvatar').textContent = m.emoji;
+  document.getElementById('profileName').textContent = m.name;
+  document.getElementById('profileRoleLbl').textContent = m.role || 'Household member';
+  document.getElementById('profileEditBtn').style.display = 'block';
+  document.getElementById('profileSaveBtn').style.display = 'none';
+  renderProfileView(m);
   document.getElementById('profilePanel').classList.add('open');
 }
 
