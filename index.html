@@ -2485,20 +2485,31 @@ function closeProfile(){
   editingProfile=false;
 }
 
-function toggleEditMode(){
-  editingProfile=true;
-  const disp=S.members.length>0?S.members:[];
-  if(disp.length===0)return;
-  const m=disp[currentProfileIndex];
-  const body=document.getElementById('profileBody');
-  body.innerHTML=`
-    <div class="profile-field"><div class="profile-field-label">Name</div><textarea class="profile-field-input" id="pf-name" rows="1">${m.name}</textarea></div>
-    <div class="profile-field"><div class="profile-field-label">Role</div><textarea class="profile-field-input" id="pf-role" rows="1">${m.role||''}</textarea></div>
-    <div class="profile-field"><div class="profile-field-label">Allergies & Medical</div><textarea class="profile-field-input" id="pf-allergies" rows="2">${m.allergies||''}</textarea></div>
-    <div class="profile-field"><div class="profile-field-label">Notes</div><textarea class="profile-field-input" id="pf-notes" rows="2">${m.notes||''}</textarea></div>
-  `;
-  document.getElementById('profileEditBtn').style.display='none';
-  document.getElementById('profileSaveBtn').style.display='block';
+function toggleProfileEdit(){
+  profileEditMode = true;
+  const members = S.members.length > 0 ? S.members : [];
+  const m = members[currentMemberIndex];
+  if (!m) return;
+  const fields = getMemberFields(m);
+  const body = document.getElementById('profileBody');
+  body.innerHTML = '';
+  const sec = document.createElement('div');
+  sec.className = 'profile-section';
+  fields.forEach(f => {
+    const val = m[f.key] || '';
+    const row = document.createElement('div');
+    row.className = 'profile-field';
+    const isLong = ['notes','routine','activities','pickup','schedule','medications'].includes(f.key);
+   if(isLong){
+      row.innerHTML = '<div class="profile-field-label">'+f.label+'</div><textarea class="profile-field-input" id="pe-'+f.key+'" rows="2" placeholder="'+f.placeholder+'">'+val+'</textarea>';
+    } else {
+      row.innerHTML = '<div class="profile-field-label">'+f.label+'</div><input class="profile-field-input" id="pe-'+f.key+'" placeholder="'+f.placeholder+'" value="'+val+'" />';
+    }
+    sec.appendChild(row);
+  });
+  body.appendChild(sec);
+  document.getElementById('profileEditBtn').style.display = 'none';
+  document.getElementById('profileSaveBtn').style.display = 'block';
 }
 
 
