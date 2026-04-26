@@ -444,6 +444,11 @@ footer .logo { font-size: 17px; }
         </div>
 
         <div class="field-group">
+          <label class="field-label">Parents / caregivers <span class="opt">(optional)</span></label>
+          <input type="text" id="parents" placeholder="e.g. Mom: Sarah · Dad: Mike" autocomplete="off" />
+        </div>
+
+        <div class="field-group">
           <label class="field-label">Allergies or medical needs <span class="opt">(or 'none')</span></label>
           <input type="text" id="allergies" placeholder="e.g. Nora: peanut allergy — Epi-pen in red pouch" autocomplete="off" />
         </div>
@@ -661,20 +666,23 @@ function fallbackBrief(name, children, allergies, emergency, notes) {
   out += `A NOTE\n${dash}\nThank you so much for being here. Please reach out anytime.\n\nWith warmest thanks,\n${name}`;
   return out;
 }
-  function openSaveCTA(){
+ function openSaveCTA(){
   const name = document.getElementById('familyName')?.value.trim() || '';
   const children = document.getElementById('children')?.value.trim() || '';
   const allergies = document.getElementById('allergies')?.value.trim() || '';
   const emergency = document.getElementById('emergency')?.value.trim() || '';
+  const parents = document.getElementById('parents')?.value.trim() || '';
   const params = new URLSearchParams();
   if(name) params.set('name', name);
   if(children) params.set('children', children);
   if(allergies) params.set('allergies', allergies);
   if(emergency) params.set('emergency', emergency);
+  if(parents) params.set('parents', parents);
   params.set('source', 'sitter-brief');
   params.set('action', 'signup');
   window.location = 'https://withfolia.com/?' + params.toString();
-}function shareAsText(){
+}
+  function shareAsText(){
   const title = document.getElementById('briefTitle').textContent;
   const body = document.getElementById('briefBody').textContent;
 
