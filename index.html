@@ -2479,6 +2479,20 @@ function closeProfile(){
   document.getElementById('profilePanel').classList.remove('open');
   editingProfile=false;
 }
+   function openMemberProfile(i){
+  const members = S.members.length > 0 ? S.members : [];
+  if (members.length === 0) return;
+  currentMemberIndex = i;
+  profileEditMode = false;
+  const m = members[i];
+  document.getElementById('profileAvatar').textContent = m.emoji;
+  document.getElementById('profileName').textContent = m.name;
+  document.getElementById('profileRoleLbl').textContent = m.role || 'Household member';
+  document.getElementById('profileEditBtn').style.display = 'block';
+  document.getElementById('profileSaveBtn').style.display = 'none';
+  renderProfileView(m);
+  document.getElementById('profilePanel').classList.add('open');
+}
 
 function toggleProfileEdit(){
   profileEditMode = true;
