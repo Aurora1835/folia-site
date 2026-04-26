@@ -1723,36 +1723,49 @@ window.addEventListener('load',async()=>{
       const briefAllergies=urlParams.get('allergies')||'';
       if(briefName) S.familyName=briefName;
       if(briefAllergies) S.briefAllergies=briefAllergies;
-      if(briefChildren){
-      if(briefChildren){
-  // Parse "Jacob, age 9. Asher, age 6" correctly
-  const entries = briefChildren
-    .split(/\.|;|\sand\s/i)  // Split by period, semicolon, or " and "
-    .map(s => s.trim())
-    .filter(Boolean);
-  
-  entries.forEach(entry => {
-    // Match: "Name age X" or "Name, age X" or "Name X"
-    const patterns = [
-      /^([A-Za-z]+)\s*,?\s*age\s*(\d+)/i,
-      /^([A-Za-z]+)\s+(\d+)$/,
-      /^([A-Za-z]+)\s*,\s*(\d+)$/
-    ];
-    
-    for (const pattern of patterns) {
-      const match = entry.match(pattern);
-      if (match) {
-        S.members.push({
-          emoji:'👧',
-          name:match[1].trim(),
-          role:'Age '+match[2],
-          type:'child'
+     if(briefChildren){
+        // Parse "Jacob, age 9. Asher, age 6" correctly
+        const entries = briefChildren
+          .split(/\.|;|\sand\s/i)
+          .map(s => s.trim())
+          .filter(Boolean);
+        
+        entries.forEach(entry => {
+          const patterns = [
+            /^([A-Za-z]+)\s*,?\s*age\s*(\d+)/i,
+            /^([A-Za-z]+)\s+(\d+)$/,
+            /^([A-Za-z]+)\s*,\s*(\d+)$/
+          ];
+          
+          for (const pattern of patterns) {
+            const match = entry.match(pattern);
+            if (match) {
+              S.members.push({
+                emoji:'👧',
+                name:match[1].trim(),
+                role:'Age '+match[2],
+                type:'child'
+              });
+              break;
+            }
+          }
         });
-        break;  // Stop after first match
       }
-    }
-  });
-}
+      const briefParents = urlParams.get('parents')||'';
+      if(briefParents){
+        const entries = briefParents.split(/,|\sand\s/i).map(s => s.trim()).filter(Boolean);
+        entries.forEach(entry => {
+          const withRole = entry.match(/(mom|dad|parent|caregiver)?:?\s*([A-Za-z]+)/i);
+          if(withRole && withRole[2]){
+            S.members.push({
+              emoji:'👩',
+              name:withRole[2].trim(),
+              role:'Parent',
+              type:'adult'
+            });
+          }
+        });
+      }
       if(urlParams.get('action')==='signup'){
         setTimeout(()=>{
           document.getElementById('authOverlay').classList.add('open');
@@ -2777,10 +2790,48 @@ const sys=`You are the Folia agent for ${S.familyName||'this family'}. Members: 
     const res=await fetch('/.netlify/functions/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:[{role:'user',content:q}]})});
     const data=await res.json();
     rmTyping();addMsg('agent-b',data.content?.map(b=>b.text||'').join('')||"I'm having trouble connecting.");
-  }catch(e){
+ }catch(e){
     rmTyping();
     const ql=q.toLowerCase();
-    let r="I'm having trouble connecting right now. Please try again in a moment.";
+    let r="I'm having trouble connecting right now.";
+    
+    if(ql.includes('wifi') || ql.includes('password') || ql.includes('network')){
+      r = H.wifi && H.wifi !== '' 
+        ? `Your WiFi: ${H.wifi}` 
+        : "I don't have your WiFi info yet. Add it in Family → The House.";
+    }
+    else if(ql.includes('address') || ql.includes('where do')){
+      r = H.address && H.address !== ''
+        ? `Your address: ${H.address}`
+        : "I don't have your address stored yet. Add it in the Family tab.";
+    }
+    else if(ql.includes('sitter') || ql.includes('babysitter')){
+      const kids = S.members.filter(m => 
+        m.type === 'child' || 
+        (!m.type && !['🐕','🐈'].includes(m.emoji) && m.role !== 'Parent')
+      );
+      if(kids.length > 0){
+        r = `Here's what your sitter needs:\n\n`;
+        kids.forEach(k => {
+          r += `${k.name} (${k.role})`;
+          if(k.allergies) r += ` — ⚠️ ${k.allergies}`;
+          if(k.bedtime) r += ` — Bedtime: ${k.bedtime}`;
+          r += '\n';
+        });
+        if(H.wifi) r += `\nWiFi: ${H.wifi}`;
+      } else {
+        r = "Add your kids in the Family tab first, then I can help with sitter info.";
+      }
+    }
+    else if(ql.includes('emergency') || ql.includes('doctor')){
+      const doctors = S.members.map(m => m.doctor).filter(Boolean);
+      if(doctors.length > 0){
+        r = `Doctor info: ${doctors.join(', ')}`;
+      } else {
+        r = "I don't have doctor/emergency info yet. Add it to family member profiles.";
+      }
+    }
+    
     addMsg('agent-b',r);
   }
 }
