@@ -1724,15 +1724,35 @@ window.addEventListener('load',async()=>{
       if(briefName) S.familyName=briefName;
       if(briefAllergies) S.briefAllergies=briefAllergies;
       if(briefChildren){
-       briefChildren.split(',').forEach(k=>{
-          const trimmed=k.trim();
-          if(!trimmed)return;
-          const ageMatch=trimmed.match(/\b(\d+)\b/);
-          const namePart=trimmed.replace(/\b(age\s*)?\d+\b/i,'').replace(/[,.\s]+$/,'').trim();
-          if(!namePart)return;
-          S.members.push({emoji:'👧',name:namePart,role:ageMatch?'Age '+ageMatch[1]:'Child',type:'child'});
+      if(briefChildren){
+  // Parse "Jacob, age 9. Asher, age 6" correctly
+  const entries = briefChildren
+    .split(/\.|;|\sand\s/i)  // Split by period, semicolon, or " and "
+    .map(s => s.trim())
+    .filter(Boolean);
+  
+  entries.forEach(entry => {
+    // Match: "Name age X" or "Name, age X" or "Name X"
+    const patterns = [
+      /^([A-Za-z]+)\s*,?\s*age\s*(\d+)/i,
+      /^([A-Za-z]+)\s+(\d+)$/,
+      /^([A-Za-z]+)\s*,\s*(\d+)$/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = entry.match(pattern);
+      if (match) {
+        S.members.push({
+          emoji:'👧',
+          name:match[1].trim(),
+          role:'Age '+match[2],
+          type:'child'
         });
+        break;  // Stop after first match
       }
+    }
+  });
+}
       if(urlParams.get('action')==='signup'){
         setTimeout(()=>{
           document.getElementById('authOverlay').classList.add('open');
@@ -2215,7 +2235,7 @@ async function generateInsight(){
     document.getElementById('firstInsight').textContent=data.content?.map(b=>b.text||'').join('')||fallbackInsight();
   }catch(e){document.getElementById('firstInsight').textContent=fallbackInsight();}
   const fd=S.familyName?'the '+S.familyName:'your family';
-  document.getElementById('successSub').textContent='Folia is now set up for '+fd+'. It\'s keeping everything in one place and ready to share.';
+  document.getElementById('successSub').textContent='Your profile is ready for '+fd+'. (Email & calendar auto-updates coming soon!)';
   if(S.members.length>0)document.getElementById('chipMembers').textContent='👨‍👩‍👧‍👦 '+S.members.length+' member'+(S.members.length!==1?'s':'')+' added';
 }
 function fallbackInsight(){
