@@ -2349,12 +2349,13 @@ function openDashboard(){
     d.style.webkitTapHighlightColor='transparent';
     d.innerHTML=`<div class="chip-av" style="background:var(--sage-lt);">${m.emoji}</div><div class="chip-nm" style="color:var(--stone-900);">${m.name}</div><div class="chip-tg" style="background:var(--sage-lt);color:var(--accent);">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;
     d.addEventListener('click', (function(index) {
-      return function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        openMemberProfile(index);
-      };
-    })(i));
+  return function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    openMemberProfile(index);
+  };
+})(i), true);
     fc.appendChild(d);
   });
 pGoTo(5);
