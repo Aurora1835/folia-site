@@ -2203,7 +2203,19 @@ function toggleChip(el){el.classList.toggle('selected');}
 function showAdd(){document.getElementById('addForm').classList.add('open');document.getElementById('addBtn').style.display='none';}
 function cancelMember(){document.getElementById('addForm').classList.remove('open');document.getElementById('addBtn').style.display='flex';document.getElementById('newName').value='';document.getElementById('newRole').value='';}
 function selEmoji(el){document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');S.emoji=el.dataset.e;}
-function saveMember(){const n=document.getElementById('newName').value.trim(),r=document.getElementById('newRole').value.trim();if(!n)return;S.members.push({emoji:S.emoji,name:n,role:r});cancelMember();renderMembers();}
+function saveMember(){
+  const n=document.getElementById('newName').value.trim();
+  const r=document.getElementById('newRole').value.trim();
+  if(!n)return;
+  const petEmojis=['🐕','🐈','🐾'];
+  const kidEmojis=['👧','👧🏻','👧🏼','👧🏽','👧🏾','👧🏿','👦','👦🏻','👦🏼','👦🏽','👦🏾','👦🏿','👶','👶🏽','👶🏿'];
+  let type='adult';
+  if(petEmojis.includes(S.emoji))type='pet';
+  else if(kidEmojis.includes(S.emoji))type='child';
+  S.members.push({emoji:S.emoji,name:n,role:r,type:type});
+  cancelMember();
+  renderMembers();
+}
 function removeMember(i){S.members.splice(i,1);renderMembers();}
 function renderMembers(){
   const l=document.getElementById('memberList');l.innerHTML='';
