@@ -1781,17 +1781,37 @@ window.addEventListener('load',async()=>{
     // Check for caregiver invite link
     if(urlParams.get('invite')){
       const inviteEmail = urlParams.get('invite');
-      // Auto-login caregiver without signup
-      const {data,error} = await sb.auth.signInWithOtp({
+      // Send magic link silently
+      await sb.auth.signInWithOtp({
         email: inviteEmail,
         options: {
-          shouldCreateUser: false,
+          shouldCreateUser: true,
           emailRedirectTo: window.location.origin
         }
       });
-      if(!error){
-        alert('Check your email! We sent you a magic link to view this family\'s Folia.');
+      // Show friendly message
+      alert('Check your email! We sent you a secure link to view this family\'s Folia. (Check spam if you don\'t see it in 1 minute)');
+      // Redirect to home page
+      window.location.href = '/';
+      return;
+    }
+     // Handle Supabase magic link callback
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    if(hashParams.get('access_token')){
+      // They just logged in via magic link - open the app
+      const overlay=document.getElementById('appOverlay');
+      overlay.classList.add('open');
+      document.body.style.overflow='hidden';
+      requestAnimationFrame(()=>overlay.classList.add('ready'));
+      
+      // Load their household profile
+      const {data:{user}}=await sb.auth.getUser();
+      if(user){
+        await loadProfile(user.id);
       }
+      // Clean up the URL
+      window.history.replaceState({}, document.title, '/');
+      return;
     }
     
     if(urlParams.get('source')==='sitter-brief'){
