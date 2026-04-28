@@ -2331,7 +2331,6 @@ function fallbackInsight(){
   return`🧠 Connect Gmail and your calendar first — within a week Folia will have learned your family's rhythms well enough to start flagging things before you notice them.`;
 }
 
-let dashReady=false;
 async function handleInvite(){
   const email=document.getElementById('inviteEmail').value.trim();
   const msg=document.getElementById('inviteMsg');
@@ -2344,13 +2343,30 @@ async function handleInvite(){
   msg.style.display='block';
   msg.style.color='var(--stone-500)';
   msg.textContent='Sending invite…';
+  
   const {error}=await inviteMember(email);
   if(error){
     msg.style.color='var(--red)';
     msg.textContent='Something went wrong. Please try again.';
   } else {
+    // Send email via Netlify function
+    const fname=S.familyName||'a family';
+    const inviterName=S.parentName||'Someone';
+    try{
+      await fetch('/.netlify/functions/send-invite',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          to:email,
+          familyName:fname,
+          inviterName:inviterName,
+          inviteLink:`https://withfolia.com/?invite=${email}`
+        })
+      });
+    }catch(e){console.log('Email send failed:',e);}
+    
     msg.style.color='var(--green)';
-    msg.textContent=`✓ Invite sent to ${email}. When they sign up at withfolia.com, they'll see your family's Folia automatically.`;
+    msg.textContent=`✓ Invite sent to ${email}. They'll get an email with a link to view your family's Folia.`;
     document.getElementById('inviteEmail').value='';
     loadInviteList();
   }
