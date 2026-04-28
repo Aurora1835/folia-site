@@ -1769,34 +1769,40 @@ window.addEventListener('load',async()=>{
       const briefAllergies=urlParams.get('allergies')||'';
       if(briefName) S.familyName=briefName;
       if(briefAllergies) S.briefAllergies=briefAllergies;
-     if(briefChildren){
-        // Parse "Jacob, age 9. Asher, age 6" correctly
-        const entries = briefChildren
-          .split(/\.|;|\sand\s/i)
-          .map(s => s.trim())
-          .filter(Boolean);
-        
-        entries.forEach(entry => {
-          const patterns = [
-            /^([A-Za-z]+)\s*,?\s*age\s*(\d+)/i,
-            /^([A-Za-z]+)\s+(\d+)$/,
-            /^([A-Za-z]+)\s*,\s*(\d+)$/
-          ];
-          
-          for (const pattern of patterns) {
-            const match = entry.match(pattern);
-            if (match) {
-              S.members.push({
-                emoji:'👧',
-                name:match[1].trim(),
-                role:'Age '+match[2],
-                type:'child'
-              });
-              break;
-            }
-          }
+    if(briefChildren){
+  const entries = briefChildren
+    .split(/\.|;|\sand\s/i)
+    .map(s => s.trim())
+    .filter(Boolean);
+  
+  entries.forEach(entry => {
+    const patterns = [
+      /^([A-Za-z]+)\s*,?\s*age\s*(\d+)/i,
+      /^([A-Za-z]+)\s+(\d+)$/,
+      /^([A-Za-z]+)\s*,\s*(\d+)$/,
+      /^([A-Za-z]+)\s*,\s*(.+)$/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = entry.match(pattern);
+      if (match) {
+        S.members.push({
+          emoji:'👧',
+          name:match[1].trim(),
+          role:match[2].includes('Age') ? match[2] : 'Age '+match[2],
+          type:'child'
         });
+        break;
       }
+    }
+  });
+}
+       // Save allergies to the form field for later use
+if(briefAllergies && briefAllergies.toLowerCase() !== 'none'){
+  S.members.forEach(m => {
+    if(m.type === 'child') m.allergies = briefAllergies;
+  });
+}
       const briefParents = urlParams.get('parents')||'';
       if(briefParents){
         const entries = briefParents.split(/,|\sand\s/i).map(s => s.trim()).filter(Boolean);
@@ -2673,14 +2679,16 @@ async function generateAppBrief(){
   const kids=S.members.filter(m=>m.type==='child'||(!m.type&&!['🐕','🐈'].includes(m.emoji)&&m.role!=='Parent')).map(m=>`${m.name}, ${m.role}`).join('. ');
   const allergies=S.members.map(m=>m.allergies).filter(a=>a&&a.toLowerCase()!=='none'&&a!=='').join(', ')||'';
   const parents=S.members.filter(m=>m.type==='adult'||m.role==='Parent').map(m=>m.name).join(' and ')||'';
+  const emergency=H.trusted||'';
   
   const params=new URLSearchParams();
   if(fname)params.set('name',fname);
   if(kids)params.set('children',kids);
   if(allergies)params.set('allergies',allergies);
   if(parents)params.set('parents',parents);
+  if(emergency)params.set('emergency',emergency);
   
-  window.location=`/sitter-brief/?${params.toString()}`;
+  window.open(`/sitter-brief/?${params.toString()}`, '_blank');
 }
    // Household data
 
