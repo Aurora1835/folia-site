@@ -1795,7 +1795,7 @@ window.addEventListener('load',async()=>{
       window.location.href = '/';
       return;
     }
-     // Handle Supabase magic link callback
+  // Handle Supabase magic link callback
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     if(hashParams.get('access_token')){
       // They just logged in via magic link - open the app
@@ -1804,10 +1804,23 @@ window.addEventListener('load',async()=>{
       document.body.style.overflow='hidden';
       requestAnimationFrame(()=>overlay.classList.add('ready'));
       
-      // Load their household profile
+      // Check if they're a caregiver viewing someone else's household
       const {data:{user}}=await sb.auth.getUser();
       if(user){
-        await loadProfile(user.id);
+        // Check if they're invited to a household
+        const {data:membership}=await sb.from('household_members')
+          .select('household_id')
+          .eq('user_id',user.id)
+          .eq('status','accepted')
+          .single();
+        
+        if(membership){
+          // They're a caregiver - load the household they're invited to
+          await loadHouseholdProfile(membership.household_id);
+        } else {
+          // They're a regular user - load their own profile
+          await loadProfile(user.id);
+        }
       }
       // Clean up the URL
       window.history.replaceState({}, document.title, '/');
