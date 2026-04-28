@@ -2532,6 +2532,11 @@ function closeProfile(){
   document.getElementById('profileSaveBtn').style.display = 'none';
   renderProfileView(m);
   document.getElementById('profilePanel').classList.add('open');
+  
+  // Prevent background scrolling
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
 }
 
 function toggleProfileEdit(){
@@ -2786,12 +2791,15 @@ function getMemberFields(m) {
   ];
 }
 
-
-
-function closeProfile() {
+function closeProfile(){
   document.getElementById('profilePanel').classList.remove('open');
-  profileEditMode = false;
-  currentMemberIndex = -1;
+  profileEditMode=false;
+  currentMemberIndex=-1;
+  
+  // Restore background scrolling
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.width = '';
 }
 function inferType(m) {
   const petEmojis=['🐕','🐈','🐾'];
