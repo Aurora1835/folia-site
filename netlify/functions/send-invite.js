@@ -10,7 +10,7 @@ exports.handler = async (event) => {
 
   const msg = {
     to,
-    from: 'hello@withfolia.com',
+    from: 'youremail@gmail.com', // Use YOUR verified email
     subject: `${inviterName} invited you to view ${familyName}'s Folia`,
     text: `${inviterName} has invited you to view ${familyName}'s family information on Folia.
 
