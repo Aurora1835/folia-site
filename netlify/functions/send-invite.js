@@ -40,10 +40,14 @@ withfolia.com`,
     `
   };
 
-  try {
+ try {
+    console.log('Attempting to send email to:', to);
+    console.log('From:', msg.from);
     await sgMail.send(msg);
+    console.log('Email sent successfully!');
     return { statusCode: 200, body: JSON.stringify({ success: true }) };
   } catch (error) {
+    console.error('SendGrid error:', error.response ? error.response.body : error.message);
     return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
