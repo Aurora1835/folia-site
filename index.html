@@ -637,10 +637,12 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
 .profile-role-lbl { font-size:10px; color:var(--stone-500); letter-spacing:1px; margin-top:2px; }
 .profile-body { 
   flex:1; 
-  overflow-y:scroll !important; 
+  overflow-y:auto !important; 
   overflow-x:hidden !important;
   padding:14px 16px 100px; 
   -webkit-overflow-scrolling:touch !important;
+  height:0 !important;
+  min-height:0 !important;
 }
 .profile-section { background:var(--stone-50); border:1px solid var(--stone-200); border-radius:10px; overflow:hidden; }
 .profile-section.alert { background:#FDEAEA; border-color:#E8B4B4; }
