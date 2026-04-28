@@ -636,13 +636,12 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
 .profile-name { font-size:16px; font-weight:600; color:var(--white); line-height:1.2; }
 .profile-role-lbl { font-size:10px; color:var(--stone-500); letter-spacing:1px; margin-top:2px; }
 .profile-body { 
-  flex:1; 
-  overflow-y:auto !important; 
+  flex:1 1 0%; 
+  overflow-y:scroll !important; 
   overflow-x:hidden !important;
-  padding:14px 16px 100px; 
+  padding:14px 16px 120px; 
   -webkit-overflow-scrolling:touch !important;
-  height:0 !important;
-  min-height:0 !important;
+  position:relative !important;
 }
 .profile-section { background:var(--stone-50); border:1px solid var(--stone-200); border-radius:10px; overflow:hidden; }
 .profile-section.alert { background:#FDEAEA; border-color:#E8B4B4; }
@@ -2640,7 +2639,12 @@ function closeProfile(){
   document.body.style.width = '100%';
 }
 
-function toggleProfileEdit(){
+function toggleProfileEdit() {
+  // Block editing for caregivers
+  if(userRole === 'caregiver'){
+    alert('You have read-only access to this family\'s Folia.');
+    return;
+  }
   profileEditMode = true;
   const members = S.members.length > 0 ? S.members : [];
   const m = members[currentMemberIndex];
