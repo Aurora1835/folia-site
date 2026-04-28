@@ -1596,14 +1596,18 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
         <div class="tab-bar">
           <div class="tab active" id="t-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab" id="t-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab" id="t-share" onclick="switchTab('share')"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
+          <div class="tab" id="t-share" onclick="switchTab('share')" style="display:var(--show-share-tab,flex);"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
         </div>
       </div>
 
       <!-- Dashboard: Family -->
       <div class="pscreen" id="dash-family">
         <div class="ptop"><div class="ptop-row"><div><div class="ptitle">Folia</div><div class="psub">Your Household</div></div></div></div>
-        <div class="pscroll" style="gap:0;padding-bottom:16px;">
+      <div id="caregiverBanner" style="display:none;background:#E4F0E8;border-bottom:1px solid #C8DCC4;padding:12px 20px;text-align:center;">
+  <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#4A7C59;font-weight:500;margin-bottom:3px;">Read-Only Access</div>
+  <div style="font-size:13px;color:#6A7C60;font-weight:300;" id="caregiverFamilyName">Viewing this family's Folia</div>
+</div>
+         <div class="pscroll" style="gap:0;padding-bottom:16px;">
           <div style="margin:12px 14px 8px;background:var(--white);border:1px solid var(--stone-200);border-radius:16px;overflow:visible;">
             <div style="padding:10px 14px 6px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;" id="famBlockLbl">Your Household</div>
             <div id="famChips"></div>
@@ -1618,7 +1622,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
                 <div class="household-row"><div class="hh-label">Trusted contacts</div><div class="hh-value" id="hv-trusted">—</div></div>
                 <div class="household-row"><div class="hh-label">House notes</div><div class="hh-value" id="hv-notes">—</div></div>
               </div>
-              <button onclick="editHousehold()" style="width:100%;margin-top:8px;padding:11px;background:transparent;border:1px solid var(--stone-200);border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;color:var(--stone-500);cursor:pointer;">Edit Household Info</button>
+              <button onclick="editHousehold()" style="width:100%;margin-top:8px;padding:11px;background:transparent;border:1px solid var(--stone-200);border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;color:var(--stone-500);cursor:pointer;display:${isCaregiver?'none':'block'};">Edit Household Info</button>
             </div>
             <div id="householdEdit" style="display:none;">
               <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:14px;overflow:hidden;">
@@ -1635,7 +1639,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
         <div class="tab-bar">
           <div class="tab" id="t2-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab active" id="t2-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab" id="t2-share" onclick="switchTab('share')"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
+         <div class="tab" id="t2-share" onclick="switchTab('share')" style="display:var(--show-share-tab,flex);"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
         </div>
       </div>
 
@@ -1673,7 +1677,7 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
         <div class="tab-bar">
           <div class="tab" id="t3-home" onclick="switchTab('home')"><div class="tab-icon">🏠</div><div class="tab-label">Home</div></div>
           <div class="tab" id="t3-family" onclick="switchTab('family')"><div class="tab-icon">👨‍👩‍👧‍👦</div><div class="tab-label">Family</div></div>
-          <div class="tab active" id="t3-share" onclick="switchTab('share')"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
+          <div class="tab active" id="t3-share" onclick="switchTab('share')" style="display:var(--show-share-tab,flex);"><div class="tab-icon">✉️</div><div class="tab-label">Share</div></div>
         </div>
       </div>
 
@@ -1947,6 +1951,7 @@ async function checkAndAcceptInvite(userEmail, userId){
 
 // Load profile for a household member (reads owner's profile)
 async function loadHouseholdProfile(householdId){
+   userRole = 'caregiver'; // They're viewing someone else's household
   const {data,error}=await sb.from('family_profiles')
     .select('*')
     .eq('household_id',householdId)
@@ -2001,6 +2006,8 @@ async function loadProfile(userId){
     // Existing profile — restore state
     S.familyName=data.family_name||'';
     S.parentName=data.parent_name||'';
+     // Check if this user is owner or caregiver
+    userRole = await checkUserRole();
     S.members=data.members||[];
     S.connections=data.connections||[];
     if(document.getElementById('familyName'))document.getElementById('familyName').value=S.familyName;
@@ -2241,6 +2248,7 @@ function openAuthOverlay(tab='login'){
 
 
 const S={familyName:'',parentName:'',members:[],connections:[],emoji:'👩'};
+let userRole='none'; // 'owner', 'caregiver', or 'none'
 var H={wifi:'',address:'',donot:'',trusted:'',notes:''};
 let cur=0;
 const allScreens=['p0','p1','p2','p7','p9','dash-home','dash-family','dash-share'];
@@ -2406,8 +2414,33 @@ async function loadInviteList(){
       </div>`).join('');
   } catch(e){console.error('loadInviteList error:',e);}
 }
-
+async function checkUserRole(){
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)return 'none';
+  
+  // Check if they own a household
+  const {data:ownedProfile}=await sb.from('family_profiles').select('household_id').eq('user_id',user.id).single();
+  if(ownedProfile)return 'owner';
+  
+  // Check if they're a member of a household
+  const {data:membership}=await sb.from('household_members').select('*').eq('user_id',user.id).eq('status','accepted').single();
+  if(membership)return 'caregiver';
+  
+  return 'none';
+}
 function openDashboard(){
+  // Hide edit features if caregiver
+  const isCaregiver = userRole === 'caregiver';
+   // Hide Share tab for caregivers
+  document.documentElement.style.setProperty('--show-share-tab', isCaregiver ? 'none' : 'flex');
+  // Show caregiver banner if needed
+  const banner = document.getElementById('caregiverBanner');
+  if(banner){
+    banner.style.display = isCaregiver ? 'block' : 'none';
+    if(isCaregiver){
+      document.getElementById('caregiverFamilyName').textContent = `Viewing ${fname}`;
+    }
+  }
   const fname=S.familyName||'Your Family';
   document.getElementById('dashFamilyName').textContent=fname;
    const greet=document.getElementById('homeGreetingName');
@@ -2891,6 +2924,10 @@ function renderProfileView(m) {
     sec.appendChild(row);
   });
   body.appendChild(sec);
+   // Hide edit button if caregiver
+  if(userRole === 'caregiver'){
+    document.getElementById('profileEditBtn').style.display = 'none';
+  }
 }
 
 function toggleProfileEdit() {
