@@ -1773,6 +1773,23 @@ async function handleSignup(){
 window.addEventListener('load',async()=>{
   try{
     const urlParams=new URLSearchParams(window.location.search);
+    
+    // Check for caregiver invite link
+    if(urlParams.get('invite')){
+      const inviteEmail = urlParams.get('invite');
+      // Auto-login caregiver without signup
+      const {data,error} = await sb.auth.signInWithOtp({
+        email: inviteEmail,
+        options: {
+          shouldCreateUser: false,
+          emailRedirectTo: window.location.origin
+        }
+      });
+      if(!error){
+        alert('Check your email! We sent you a magic link to view this family\'s Folia.');
+      }
+    }
+    
     if(urlParams.get('source')==='sitter-brief'){
       const briefName=urlParams.get('name')||'';
       const briefChildren=urlParams.get('children')||'';
