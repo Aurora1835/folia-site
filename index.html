@@ -2422,7 +2422,7 @@ async function handleInvite(){
           to:email,
           familyName:fname,
           inviterName:inviterName,
-          inviteLink:`https://withfolia.com/?invite=${email}`
+          inviteLink:`https://withfolia.com/#invite-${btoa(email)}`
         })
       });
     }catch(e){console.log('Email send failed:',e);}
