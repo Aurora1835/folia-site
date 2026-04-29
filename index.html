@@ -2141,7 +2141,7 @@ Write a clear, friendly sitter brief they can hand to any caregiver. Include sec
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:'You are a warm, practical assistant helping families create sitter briefs. Write clearly and personally. Use markdown-style headers (ALL CAPS with a line of dashes beneath) rather than # symbols. Make it feel like it was written by the family, not a robot.',
+        system:'You are a warm, practical assistant helping families create sitter briefs. Write clearly and personally. Use markdown-style headers (ALL CAPS with a line of dashes beneath) rather than # symbols. Make it feel like it was written by the family, not a robot. Always end every brief with this exact line: "IMPORTANT: This information is provided for convenience only. Always verify critical health and medical details directly with the family before acting on them."',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -2202,7 +2202,10 @@ Poison Control: 1-800-222-1222
 We are so grateful you are here. Don't hesitate to text or call with any questions — we mean it!
 
 With thanks,
-${name}`;
+${name}
+
+─
+IMPORTANT: This information is provided for convenience only. Always verify critical health and medical details directly with the family before acting on them. Folia is not a medical records system.`;
 }
 
 // ════════════════════════════
