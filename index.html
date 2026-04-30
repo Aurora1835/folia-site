@@ -1884,10 +1884,14 @@ if(briefAllergies && briefAllergies.toLowerCase() !== 'none'){
         });
       }
       if(urlParams.get('action')==='signup'){
+        const briefEmail = urlParams.get('email') || '';
         setTimeout(()=>{
           document.getElementById('authOverlay').classList.add('open');
           document.body.style.overflow='hidden';
           switchAuthTab('signup');
+          if(briefEmail && document.getElementById('signupEmail')){
+            document.getElementById('signupEmail').value = briefEmail;
+          }
           if(briefName && document.getElementById('signupName')){
             document.getElementById('signupName').value=briefName;
           }
