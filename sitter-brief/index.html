@@ -759,18 +759,27 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 let briefImageData = null;
  function openSaveCTA(){
   const name = document.getElementById('familyName')?.value.trim() || '';
+  const email = document.getElementById('familyEmail')?.value.trim() || '';
   const children = document.getElementById('children')?.value.trim() || '';
   const allergies = document.getElementById('allergies')?.value.trim() || '';
   const emergency = document.getElementById('emergency')?.value.trim() || '';
   const parents = document.getElementById('parents')?.value.trim() || '';
+  
+  if(!name || !email){
+    alert('Please fill in your family name and email first');
+    return;
+  }
+  
   const params = new URLSearchParams();
-  if(name) params.set('name', name);
+  params.set('source', 'sitter-brief');
+  params.set('action', 'signup');
+  params.set('name', name);
+  params.set('email', email);
   if(children) params.set('children', children);
   if(allergies) params.set('allergies', allergies);
   if(emergency) params.set('emergency', emergency);
   if(parents) params.set('parents', parents);
-  params.set('source', 'sitter-brief');
-  params.set('action', 'signup');
+  
   window.location = 'https://withfolia.com/?' + params.toString();
 }
   async function shareBriefImage(){
