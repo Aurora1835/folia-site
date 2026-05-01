@@ -2470,10 +2470,15 @@ async function checkUserRole(){
   return 'none';
 }
 function openDashboard(){
+   
+ const fname=S.familyName||'Your Family';
+  
   // Hide edit features if caregiver
   const isCaregiver = userRole === 'caregiver';
-   // Hide Share tab for caregivers
+  
+  // Hide Share tab for caregivers
   document.documentElement.style.setProperty('--show-share-tab', isCaregiver ? 'none' : 'flex');
+  
   // Show caregiver banner if needed
   const banner = document.getElementById('caregiverBanner');
   if(banner){
@@ -2482,7 +2487,6 @@ function openDashboard(){
       document.getElementById('caregiverFamilyName').textContent = `Viewing ${fname}`;
     }
   }
-  const fname=S.familyName||'Your Family';
   document.getElementById('dashFamilyName').textContent=fname;
    const greet=document.getElementById('homeGreetingName');
   if(greet)greet.textContent=S.parentName||'';
@@ -2634,10 +2638,10 @@ function closeProfile(){
   currentMemberIndex = i;
   profileEditMode = false;
   const m = members[i];
-  document.getElementById('profileAvatar').textContent = m.emoji;
+ document.getElementById('profileAvatar').textContent = m.emoji;
   document.getElementById('profileName').textContent = m.name;
   document.getElementById('profileRoleLbl').textContent = m.role || 'Household member';
-  document.getElementById('profileEditBtn').style.display = 'block';
+  document.getElementById('profileEditBtn').style.display = userRole === 'caregiver' ? 'none' : 'block';
   document.getElementById('profileSaveBtn').style.display = 'none';
   renderProfileView(m);
   document.getElementById('profilePanel').classList.add('open');
