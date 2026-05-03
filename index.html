@@ -617,16 +617,16 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
 .fam-chip:last-child { border-bottom:none; }
    .profile-panel { position:fixed; inset:0; background:var(--white); z-index:9999; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
 .profile-panel { 
-  position:fixed !important;
-  top:0 !important;
-  left:0 !important;
-  right:0 !important;
-  bottom:0 !important;
-  background:var(--white);
-  z-index:9999 !important;
-  display:none;
-  flex-direction:column;
-  overflow:visible;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--white);
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
 }
 .profile-panel.open { 
   display:flex !important;
@@ -636,15 +636,13 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
 .profile-name { font-size:16px; font-weight:600; color:var(--white); line-height:1.2; }
 .profile-role-lbl { font-size:10px; color:var(--stone-500); letter-spacing:1px; margin-top:2px; }
 .profile-body { 
-  flex:1 1 0%; 
-  overflow-y:auto !important; 
-  overflow-x:hidden !important;
-  padding:14px 16px 120px; 
-  -webkit-overflow-scrolling:touch !important;
-  position:relative !important;
-  overscroll-behavior: contain !important;
-  height: 100% !important;
-  min-height: 0 !important;
+  flex: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 14px 16px 160px;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  overscroll-behavior: contain;
 }
 .profile-section { background:var(--stone-50); border:1px solid var(--stone-200); border-radius:10px; overflow:hidden; }
 .profile-section.alert { background:#FDEAEA; border-color:#E8B4B4; }
@@ -654,8 +652,41 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
 .profile-section.alert .profile-field-label { color:#8B3A3A; }
 .profile-field-value { font-size:13px; color:var(--stone-700); font-weight:300; line-height:1.5; }
 .profile-field-input { font-size:13px; color:var(--stone-900); font-weight:300; line-height:1.5; width:100%; border:none; background:transparent; font-family:'Jost',sans-serif; outline:none; resize:none; }
-.profile-edit-btn { margin:0 16px 8px; padding:12px; background:var(--stone-900); color:var(--white); border:none; border-radius:10px; font-family:'Jost',sans-serif; font-size:12px; font-weight:500; letter-spacing:1px; cursor:pointer; flex-shrink:0; }
-.profile-save-btn { margin:0 16px 8px; padding:12px; background:var(--green); color:var(--white); border:none; border-radius:10px; font-family:'Jost',sans-serif; font-size:12px; font-weight:500; letter-spacing:1px; cursor:pointer; display:none; flex-shrink:0; }
+.profile-edit-btn { 
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 10000;
+  padding: 14px;
+  background: var(--stone-900);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.profile-save-btn { 
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 10000;
+  padding: 14px;
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: none;
+}}
 .household-row { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-bottom:1px solid var(--stone-100); }
 .household-row:last-child { border-bottom:none; }
 .hh-label { font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--stone-400); flex-shrink:0; width:80px; padding-top:2px; }
