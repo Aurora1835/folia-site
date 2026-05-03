@@ -1644,14 +1644,29 @@ input[type=text],input[type=email],input[type=tel],select,textarea {
           </div>
           <div style="padding:0 14px 10px;">
             <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);font-family:'Jost',sans-serif;margin-bottom:8px;">The House</div>
-            <div id="householdView">
-              <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:14px;overflow:hidden;">
-                <div class="household-row"><div class="hh-label">Wifi</div><div class="hh-value" id="hv-wifi">—</div></div>
-                <div class="household-row"><div class="hh-label">Address</div><div class="hh-value" id="hv-address">—</div></div>
-                <div class="household-row"><div class="hh-label">Do-not list</div><div class="hh-value" id="hv-donot">—</div></div>
-                <div class="household-row"><div class="hh-label">Trusted contacts</div><div class="hh-value" id="hv-trusted">—</div></div>
-                <div class="household-row"><div class="hh-label">House notes</div><div class="hh-value" id="hv-notes">—</div></div>
-              </div>
+           <div id="householdView">
+  <div style="background:var(--white);border:1px solid var(--stone-200);border-radius:14px;overflow:hidden;padding:14px;">
+    <div style="margin-bottom:16px;">
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin-bottom:5px;">WIFI</div>
+      <div id="hv-wifi" style="font-size:13px;color:var(--stone-700);line-height:1.5;">—</div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin-bottom:5px;">ADDRESS</div>
+      <div id="hv-address" style="font-size:13px;color:var(--stone-700);line-height:1.5;">—</div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin-bottom:5px;">DO-NOT LIST</div>
+      <div id="hv-donot" style="font-size:13px;color:var(--stone-700);line-height:1.5;">—</div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin-bottom:5px;">TRUSTED CONTACTS</div>
+      <div id="hv-trusted" style="font-size:13px;color:var(--stone-700);line-height:1.5;">—</div>
+    </div>
+    <div>
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--stone-400);margin-bottom:5px;">HOUSE NOTES</div>
+      <div id="hv-notes" style="font-size:13px;color:var(--stone-700);line-height:1.5;">—</div>
+    </div>
+  </div>
               <button onclick="editHousehold()" style="width:100%;margin-top:8px;padding:11px;background:transparent;border:1px solid var(--stone-200);border-radius:10px;font-family:'Jost',sans-serif;font-size:12px;color:var(--stone-500);cursor:pointer;display:${isCaregiver?'none':'block'};">Edit Household Info</button>
             </div>
             <div id="householdEdit" style="display:none;">
@@ -2529,20 +2544,18 @@ function openDashboard(){
   if(!fc)return;
   fc.innerHTML='';
   const disp=S.members.length>0?S.members:[];
- disp.forEach((m,i)=>{
+disp.forEach((m,i)=>{
     const d=document.createElement('div');
     d.className='fam-chip';
-    d.style.cursor='pointer';
-    d.style.webkitTapHighlightColor='transparent';
+    d.style.cssText='cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;';
     d.innerHTML=`<div class="chip-av" style="background:var(--sage-lt);">${m.emoji}</div><div class="chip-nm" style="color:var(--stone-900);">${m.name}</div><div class="chip-tg" style="background:var(--sage-lt);color:var(--accent);">${m.role||'Member'}</div><div style="color:var(--stone-600);font-size:14px;margin-left:auto;">›</div>`;
-    d.addEventListener('click', (function(index) {
-  return function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    openMemberProfile(index);
-  };
-})(i), true);
+    
+    d.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openMemberProfile(i);
+    };
+    
     fc.appendChild(d);
   });
 pGoTo(5);
