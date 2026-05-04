@@ -479,7 +479,7 @@ input:focus {
   <a href="/" class="logo">Folia</a>
   <div class="nav-links">
     <a href="/sitter-brief" class="nav-link">Free Sitter Brief</a>
-    <a href="#" class="btn-signin" onclick="showSignIn(); return false;">Sign In</a>
+    <a href="/folia.html" class="btn-signin">Sign In</a>
   </div>
 </nav>
 
@@ -598,118 +598,7 @@ input:focus {
   </div>
 </div>
 
-<script>
-// Supabase config
-const SUPABASE_URL = 'https://fbjkeivlabzwpgghxkjh.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiamtlaXZsYWJ6d3BnZ2h4a2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU4NDE1NTIsImV4cCI6MjA1MTQxNzU1Mn0.fGt0kTjZJXUcwCqHT1yJU5fxd8-QkL8_aKzJGVGKS-c';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Modal handling
-function showSignUp() {
-  document.getElementById('signinModal').classList.remove('show');
-  document.getElementById('signupModal').classList.add('show');
-}
-
-function showSignIn() {
-  document.getElementById('signupModal').classList.remove('show');
-  document.getElementById('signinModal').classList.add('show');
-}
-
-function closeModals() {
-  document.getElementById('signupModal').classList.remove('show');
-  document.getElementById('signinModal').classList.remove('show');
-}
-
-// Close modal on background click
-document.getElementById('signupModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModals();
-});
-document.getElementById('signinModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModals();
-});
-
-// Sign Up
-async function handleSignup() {
-  const name = document.getElementById('signupName').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const password = document.getElementById('signupPassword').value;
-  
-  if (!name) {
-    document.getElementById('signupError').textContent = 'Please enter your name.';
-    return;
-  }
-  if (!email) {
-    document.getElementById('signupError').textContent = 'Please enter your email.';
-    return;
-  }
-  if (password.length < 8) {
-    document.getElementById('signupError').textContent = 'Password must be at least 8 characters.';
-    return;
-  }
-  
-  document.getElementById('signupLoading').classList.add('show');
-  document.getElementById('signupError').textContent = '';
-  
-  const { data, error } = await sb.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { name }
-    }
-  });
-  
-  document.getElementById('signupLoading').classList.remove('show');
-  
-  if (error) {
-    document.getElementById('signupError').textContent = error.message;
-    return;
-  }
-  
-  // Success - redirect to app
-  window.location.href = '/folia.html';
-}
-
-// Sign In
-async function handleSignIn() {
-  const email = document.getElementById('signinEmail').value.trim();
-  const password = document.getElementById('signinPassword').value;
-  
-  if (!email) {
-    document.getElementById('signinError').textContent = 'Please enter your email.';
-    return;
-  }
-  if (!password) {
-    document.getElementById('signinError').textContent = 'Please enter your password.';
-    return;
-  }
-  
-  document.getElementById('signinLoading').classList.add('show');
-  document.getElementById('signinError').textContent = '';
-  
-  const { data, error } = await sb.auth.signInWithPassword({
-    email,
-    password
-  });
-  
-  document.getElementById('signinLoading').classList.remove('show');
-  
-  if (error) {
-    document.getElementById('signinError').textContent = error.message;
-    return;
-  }
-  
-  // Success - redirect to app
-  window.location.href = '/folia.html';
-}
-
-// Check if already logged in
-window.addEventListener('load', async () => {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    window.location.href = '/folia.html';
-  }
-});
-</script>
 
 </body>
 </html>
