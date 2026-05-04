@@ -696,8 +696,17 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
 .chip-nm { font-size:12.5px; font-weight:500; flex:1; }
 .chip-tg { font-size:9.5px; padding:2px 7px; border-radius:100px; background:rgba(124,106,82,0.25); color:var(--accent-lt); white-space:nowrap; }
 .chip-tg.updated { background:rgba(74,124,89,0.25); color:#6FCF97; animation:flash-tag 1s ease; }
-.fam-chip { cursor:pointer; transition:background 0.15s; border-radius:8px; padding:7px 6px; margin:0 -6px; }
-.fam-chip:hover { background:rgba(255,255,255,0.06); }
+.fam-chip { 
+  cursor: pointer; 
+  transition: background 0.15s; 
+  border-radius: 8px; 
+  padding: 7px 6px; 
+  margin: 0 -6px;
+  position: relative;
+  z-index: 1;
+}
+.fam-chip:hover { background: rgba(255,255,255,0.06); }
+.fam-chip:active { background: rgba(106,124,96,0.12); }
 .profile-panel { position:absolute; inset:0; background:var(--white); z-index:50; display:none; flex-direction:column; border-radius:inherit; overflow:hidden; }
 .profile-panel.open { display:flex; }
 .profile-top { background:var(--stone-900); padding:20px 18px 16px; display:flex; align-items:center; gap:13px; }
@@ -805,8 +814,10 @@ input[type=text],input[type=email],input[type=tel],select,textarea { border-radi
 }
    /* ── FINAL OVERRIDES ── */
    .fam-chip { pointer-events: all !important; touch-action: manipulation !important; -webkit-tap-highlight-color: transparent; }
-   .emergency-panel { z-index: 55 !important; }
-   .pscreen.active { z-index: 56 !important; }
+.emergency-panel { z-index: 55; }
+.pscreen.active { z-index: 56; }
+.profile-panel { z-index: 9999 !important; }
+.profile-panel.open { z-index: 10000 !important; display: flex !important; }
    .chip-nm { color: var(--stone-900) !important; }
 .chip-tg { color: var(--accent) !important; background: var(--sage-lt) !important; }
 .chip-av { background: var(--sage-lt) !important; }
@@ -2713,24 +2724,35 @@ function closeProfile(){
   document.getElementById('profilePanel').classList.remove('open');
   editingProfile=false;
 }
-   function openMemberProfile(i){
+  function openMemberProfile(i){
+  console.log('Opening profile for index:', i);
   const members = S.members.length > 0 ? S.members : [];
-  if (members.length === 0) return;
+  if (members.length === 0) {
+    console.log('No members found');
+    return;
+  }
   currentMemberIndex = i;
   profileEditMode = false;
   const m = members[i];
- document.getElementById('profileAvatar').textContent = m.emoji;
+  
+  const panel = document.getElementById('profilePanel');
+  if(!panel) {
+    console.log('Profile panel element not found!');
+    return;
+  }
+  
+  document.getElementById('profileAvatar').textContent = m.emoji;
   document.getElementById('profileName').textContent = m.name;
   document.getElementById('profileRoleLbl').textContent = m.role || 'Household member';
   document.getElementById('profileEditBtn').style.display = userRole === 'caregiver' ? 'none' : 'block';
   document.getElementById('profileSaveBtn').style.display = 'none';
   renderProfileView(m);
-  document.getElementById('profilePanel').classList.add('open');
   
-  // Prevent background scrolling
-  document.body.style.overflow = 'hidden';
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
+  // Force the panel to display
+  panel.style.display = 'flex';
+  panel.classList.add('open');
+  
+  console.log('Profile panel opened');
 }
 
 function toggleProfileEdit() {
@@ -2991,14 +3013,13 @@ function getMemberFields(m) {
 }
 
 function closeProfile(){
-  document.getElementById('profilePanel').classList.remove('open');
-  profileEditMode=false;
-  currentMemberIndex=-1;
-  
-  // Restore background scrolling
-  document.body.style.overflow = '';
-  document.body.style.position = '';
-  document.body.style.width = '';
+  const panel = document.getElementById('profilePanel');
+  if(panel) {
+    panel.classList.remove('open');
+    panel.style.display = 'none';
+  }
+  profileEditMode = false;
+  currentMemberIndex = -1;
 }
 function inferType(m) {
   const petEmojis=['🐕','🐈','🐾'];
