@@ -1,7 +1,32 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+// Simple in-memory rate limiting (upgrade to Redis for production)
+const rateLimits = new Map();
+
+function checkRateLimit(ip, limit = 5, windowMs = 60000) {
+  const now = Date.now();
+  const userLimits = rateLimits.get(ip) || [];
+  const recentRequests = userLimits.filter(time => now - time < windowMs);
+  
+  if (recentRequests.length >= limit) {
+    return false;
+  }
+  
+  recentRequests.push(now);
+  rateLimits.set(ip, recentRequests);
+  return true;
+}
+
 exports.handler = async (event) => {
+  // Rate limiting
+  const ip = event.headers['x-forwarded-for'] || event.headers['client-ip'];
+  if (!checkRateLimit(ip, 5, 60000)) { // 5 requests per minute
+    return {
+      statusCode: 429,
+      body: JSON.stringify({ error: 'Too many requests. Please try again later.' })
+    };
+  }
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
