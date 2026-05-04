@@ -2650,32 +2650,7 @@ async function handleInvite(){
     msg.textContent='Failed to send invite. Please try again.';
   }
 }
-  if(error){
-    msg.style.color='var(--red)';
-    msg.textContent='Something went wrong. Please try again.';
-  } else {
-    // Send email via Netlify function
-    const fname=S.familyName||'a family';
-    const inviterName=S.parentName||'Someone';
-    try{
-      await fetch('/.netlify/functions/send-invite',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          to:email,
-          familyName:fname,
-          inviterName:inviterName,
-          inviteLink:`https://withfolia.com/#invite-${btoa(email)}`
-        })
-      });
-    }catch(e){console.log('Email send failed:',e);}
-    
-    msg.style.color='var(--green)';
-    msg.textContent=`✓ Invite sent to ${email}. They'll get an email with a link to view your family's Folia.`;
-    document.getElementById('inviteEmail').value='';
-    loadInviteList();
-  }
-}
+ 
 
 async function loadInviteList(){
   const {data:{user}}=await sb.auth.getUser();
