@@ -672,7 +672,7 @@ footer .logo {
       </div>
       
       <div class="brief-actions">
-        <button class="btn btn-primary" onclick="shareBrief()">Share as Image →</button>
+       <button class="btn btn-primary" onclick="shareBrief()">Text My Sitter →</button>
         <button class="btn btn-secondary" onclick="window.print()">Download PDF</button>
         <button class="btn btn-save" onclick="saveToFolia()">Save to My Folia →</button>
       </div>
@@ -828,7 +828,6 @@ function fallbackBrief(name, children, allergies, emergency, notes) {
   return out;
 }
 
-// Generate Brief Image
 async function generateBriefImage(briefText, familyName) {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
@@ -842,44 +841,60 @@ async function generateBriefImage(briefText, familyName) {
     
     // Header
     ctx.fillStyle = '#2C2520';
-    ctx.fillRect(0, 0, canvas.width, 280);
+    ctx.fillRect(0, 0, canvas.width, 320);
     
     // Logo
     ctx.fillStyle = '#B8A490';
-    ctx.font = 'italic 48px Georgia';
-    ctx.fillText('Folia', 60, 100);
+    ctx.font = 'italic 52px serif';
+    ctx.fillText('Folia', 60, 110);
     
     // Title
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = '600 52px Georgia';
-    wrapText(ctx, `${familyName} — Sitter Brief`, 60, 175, 960, 60);
+    ctx.font = '600 56px serif';
+    const titleLines = wrapTextToLines(ctx, `${familyName} — Sitter Brief`, 960);
+    let titleY = 190;
+    titleLines.forEach(line => {
+      ctx.fillText(line, 60, titleY);
+      titleY += 65;
+    });
     
     // Date
     ctx.fillStyle = '#B8A490';
-    ctx.font = '300 26px sans-serif';
-    ctx.fillText('Generated today', 60, 235);
+    ctx.font = '300 28px sans-serif';
+    ctx.fillText('Generated today', 60, titleY + 20);
     
     // Content
     const sections = briefText.split(/\n(?=[A-Z\s]{3,}\n─)/);
-    let y = 340;
+    let y = 400;
+    const maxY = 1850; // Leave room at bottom
     
     sections.forEach(section => {
-      if (!section.trim()) return;
+      if (!section.trim() || y > maxY) return;
       const lines = section.split('\n');
       
       lines.forEach(line => {
+        if (y > maxY) return;
+        
         if (line.match(/^[A-Z\s&]{3,}$/)) {
-          y += 40;
+          // Section header
+          y += 45;
+          if (y > maxY) return;
           ctx.fillStyle = '#6B5D52';
-          ctx.font = '600 24px sans-serif';
+          ctx.font = '600 26px sans-serif';
           ctx.fillText(line, 60, y);
-          y += 10;
+          y += 15;
         } else if (!line.match(/^─+$/)) {
           if (line.trim()) {
-            y += 35;
+            y += 38;
+            if (y > maxY) return;
             ctx.fillStyle = '#6B5D52';
-            ctx.font = '300 28px sans-serif';
-            y = wrapText(ctx, line, 60, y, 960, 42);
+            ctx.font = '300 30px sans-serif';
+            const wrappedLines = wrapTextToLines(ctx, line, 960);
+            wrappedLines.forEach(wrappedLine => {
+              if (y > maxY) return;
+              ctx.fillText(wrappedLine, 60, y);
+              y += 44;
+            });
           }
         }
       });
@@ -889,6 +904,29 @@ async function generateBriefImage(briefText, familyName) {
   });
 }
 
+function wrapTextToLines(ctx, text, maxWidth) {
+  const words = text.split(' ');
+  const lines = [];
+  let currentLine = '';
+  
+  words.forEach(word => {
+    const testLine = currentLine + (currentLine ? ' ' : '') + word;
+    const metrics = ctx.measureText(testLine);
+    
+    if (metrics.width > maxWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  });
+  
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+  
+  return lines;
+}
 // Wrap Text Helper
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
   const words = text.split(' ');
