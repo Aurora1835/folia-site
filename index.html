@@ -1968,6 +1968,17 @@ if(briefAllergies && briefAllergies.toLowerCase() !== 'none'){
 // ════════════════════════════
 // DATABASE
 // ════════════════════════════
+
+// Sanitization function - prevents XSS attacks
+function sanitize(input) {
+  if (!input) return '';
+  return String(input)
+    .replace(/[<>]/g, '') // Remove < and >
+    .replace(/javascript:/gi, '') // Remove javascript: protocol
+    .replace(/on\w+\s*=/gi, '') // Remove event handlers like onclick=
+    .slice(0, 5000); // Limit length to 5000 characters
+}
+
 async function saveProfile(){
   const {data:{user}}=await sb.auth.getUser();
   if(!user)return;
@@ -1978,17 +1989,40 @@ async function saveProfile(){
 const profile={
     user_id:user.id,
     household_id:householdId,
-    family_name:S.familyName||'Your Family',
-    parent_name:S.parentName,
-    household:H,
-    members:S.members,
+    family_name:sanitize(S.familyName)||'Your Family',
+    parent_name:sanitize(S.parentName),
+    household:{
+      wifi:sanitize(H.wifi),
+      address:sanitize(H.address),
+      donot:sanitize(H.donot),
+      trusted:sanitize(H.trusted),
+      notes:sanitize(H.notes)
+    },
+  members:S.members.map(m => ({
+      emoji: m.emoji,
+      name: sanitize(m.name),
+      role: sanitize(m.role),
+      type: m.type,
+      allergies: sanitize(m.allergies),
+      medications: sanitize(m.medications),
+      school: sanitize(m.school),
+      pickup: sanitize(m.pickup),
+      activities: sanitize(m.activities),
+      doctor: sanitize(m.doctor),
+      bedtime: sanitize(m.bedtime),
+      routine: sanitize(m.routine),
+      notes: sanitize(m.notes),
+      phone: sanitize(m.phone),
+      schedule: sanitize(m.schedule),
+      vet: sanitize(m.vet)
+    })),
     connections:S.connections,
-    allergies:document.getElementById('allergies')?.value||'',
-    medications:document.getElementById('medications')?.value||'',
-    school:document.getElementById('school')?.value||'',
-    pickup:document.getElementById('pickup')?.value||'',
-    activities:document.getElementById('activities')?.value||'',
-    doctor:document.getElementById('doctor')?.value||'',
+    allergies:sanitize(document.getElementById('allergies')?.value)||'',
+    medications:sanitize(document.getElementById('medications')?.value)||'',
+    school:sanitize(document.getElementById('school')?.value)||'',
+    pickup:sanitize(document.getElementById('pickup')?.value)||'',
+    activities:sanitize(document.getElementById('activities')?.value)||'',
+    doctor:sanitize(document.getElementById('doctor')?.value)||'',
     updated_at:new Date().toISOString()
   };
  const {error}=await sb.from('family_profiles').upsert(profile,{onConflict:'user_id'});
@@ -2361,8 +2395,8 @@ function showAdd(){document.getElementById('addForm').classList.add('open');docu
 function cancelMember(){document.getElementById('addForm').classList.remove('open');document.getElementById('addBtn').style.display='flex';document.getElementById('newName').value='';document.getElementById('newRole').value='';}
 function selEmoji(el){document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');S.emoji=el.dataset.e;}
 function saveMember(){
-  const n=document.getElementById('newName').value.trim();
-  const r=document.getElementById('newRole').value.trim();
+  const n=sanitize(document.getElementById('newName').value.trim());
+  const r=sanitize(document.getElementById('newRole').value.trim());
   if(!n)return;
   const petEmojis=['🐕','🐈','🐾'];
   const kidEmojis=['👧','👧🏻','👧🏼','👧🏽','👧🏾','👧🏿','👦','👦🏻','👦🏼','👦🏽','👦🏾','👦🏿','👶','👶🏽','👶🏿'];
@@ -2908,11 +2942,11 @@ function editHousehold(){
 }
 
 async function saveHousehold(){
-  H.wifi = document.getElementById('he-wifi').value.trim();
-  H.address = document.getElementById('he-address').value.trim();
-  H.donot = document.getElementById('he-donot').value.trim();
-  H.trusted = document.getElementById('he-trusted').value.trim();
-  H.notes = document.getElementById('he-notes').value.trim();
+  H.wifi = sanitize(document.getElementById('he-wifi').value.trim());
+  H.address = sanitize(document.getElementById('he-address').value.trim());
+  H.donot = sanitize(document.getElementById('he-donot').value.trim());
+  H.trusted = sanitize(document.getElementById('he-trusted').value.trim());
+  H.notes = sanitize(document.getElementById('he-notes').value.trim());
   loadHouseholdDisplay();
   document.getElementById('householdView').style.display='block';
   document.getElementById('householdEdit').style.display='none';
@@ -3060,7 +3094,7 @@ async function saveProfileMember() {
   const fields = getMemberFields(m);
   fields.forEach(f => {
    const el = document.getElementById('pe-'+f.key);
-    if (el) m[f.key] = el.value.trim();
+    if (el) m[f.key] = sanitize(el.value.trim());
   });
   S.members[currentMemberIndex] = m;
   document.getElementById('profileName').textContent = m.name;
