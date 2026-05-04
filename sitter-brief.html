@@ -673,7 +673,7 @@ footer .logo {
       
       <div class="brief-actions">
        <button class="btn btn-primary" onclick="shareBrief()">Text My Sitter →</button>
-        <button class="btn btn-secondary" onclick="window.print()">Download PDF</button>
+        <button class="btn btn-secondary" onclick="printBrief()">Download PDF</button>
         <button class="btn btn-save" onclick="saveToFolia()">Save to My Folia →</button>
       </div>
       
@@ -954,6 +954,45 @@ async function shareBrief() {
     alert('Image is still generating, please wait...');
     return;
   }
+  // Share Brief
+async function shareBrief() {
+  if (!briefImageData) {
+    alert('Image is still generating, please wait...');
+    return;
+  }
+  
+  const response = await fetch(briefImageData);
+  const blob = await response.blob();
+  const file = new File([blob], 'sitter-brief.png', { type: 'image/png' });
+  
+  if (navigator.share && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        files: [file],
+        title: document.getElementById('briefTitle').textContent,
+        text: 'Here\'s our family\'s sitter brief from Folia'
+      });
+      return;
+    } catch(err) {
+      if (err.name !== 'AbortError') {
+        console.log('Share failed, downloading instead');
+      }
+    }
+  }
+  
+  // Fallback: download
+  const link = document.createElement('a');
+  link.download = 'sitter-brief.png';
+  link.href = briefImageData;
+  link.click();
+}
+
+// Print Brief
+function printBrief() {
+  setTimeout(() => {
+    window.print();
+  }, 500);
+}
   
   const response = await fetch(briefImageData);
   const blob = await response.blob();
