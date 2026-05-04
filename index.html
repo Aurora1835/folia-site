@@ -1826,7 +1826,7 @@ async function handleSignup(){
   const {data,error}=await sb.auth.signUp({email,password:pass,options:{data:{name}}});
   document.getElementById('signupLoading').classList.remove('show');
   if(error){document.getElementById('signupError').textContent=error.message;return;}
-  S.parentName=name;
+S.parentName=name;
   
   // Save initial profile data to Supabase immediately
   if(data?.user){
@@ -1836,6 +1836,36 @@ async function handleSignup(){
   }
   
   if(document.getElementById('signupLoading'))document.getElementById('signupLoading').classList.remove('show');
+  
+  // Check if they just signed up from an invite link
+  const pendingToken = sessionStorage.getItem('pendingInviteToken');
+  if(pendingToken){
+    sessionStorage.removeItem('pendingInviteToken');
+    
+    // Verify token and load household
+    try{
+      const response = await fetch('/.netlify/functions/accept-invite',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          token:pendingToken,
+          userEmail:email
+        })
+      });
+      
+      const result = await response.json();
+      
+      if(response.ok && result.householdId){
+        closeAuth();
+        openAppShell();
+        await loadHouseholdProfile(result.householdId);
+        return;
+      }
+    }catch(e){
+      console.error('Token verification error:',e);
+    }
+  }
+  
   closeAuth();
   openAppShell();
   if(S.familyName){
