@@ -1054,6 +1054,7 @@ nav {
   align-items: center;
   justify-content: center;
   padding: 24px;
+  overflow-y: auto;
 }
 
 .auth-overlay.open {
@@ -1068,8 +1069,10 @@ nav {
   max-width: 420px;
   width: 100%;
   animation: slideUp 0.3s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
+  margin: auto;
 }
-
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -2006,6 +2009,21 @@ function connectIntegration(id) {
 // BUILDING
 // ════════════════════════════════════════
 async function startBuilding() {
+  // Save household info to Home member before building
+  const homeMember = S.members.find(m => m.name === 'Home');
+  if (homeMember) {
+    const wifi = document.getElementById('wifiPassword')?.value.trim() || '';
+    const alarm = document.getElementById('alarmCode')?.value.trim() || '';
+    const houseNotes = document.getElementById('houseNotes')?.value.trim() || '';
+    
+    let notes = '';
+    if (wifi) notes += `Wifi: ${wifi}\n`;
+    if (alarm) notes += `Alarm Code: ${alarm}\n`;
+    if (houseNotes) notes += houseNotes;
+    
+    homeMember.notes = notes || 'Wifi password, alarm code, emergency contacts';
+  }
+  
   goToScreen(6);
   
   const steps = [
