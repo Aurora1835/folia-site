@@ -2285,7 +2285,7 @@ async function askQuestion() {
   // Build context from family data
   const familyContext = buildFamilyContext();
   
-  // Call Claude API via secure Netlify function
+// Call Claude API via secure Netlify function
   try {
     const response = await fetch('/.netlify/functions/claude', {
       method: 'POST',
@@ -2295,20 +2295,16 @@ async function askQuestion() {
       body: JSON.stringify({
         userId: S?.user?.id || 'anonymous',
         system: `You are Folia, a family information assistant. You help parents recall schedules, routines, and household information they have stored.
-
 IMPORTANT - FOLIA DOES NOT STORE MEDICAL INFORMATION:
 - Folia only stores schedules, routines, preferences, and household info
 - If asked medical questions, respond: "Folia doesn't store medical information. For health questions, please consult your doctor."
 - Never give medical advice or suggest treatments for any reason
-
 You may answer questions about:
 - Schedules, routines, pickup times, activities
 - Preferences, likes, dislikes, bedtime routines  
 - Contact information, wifi passwords, house details
 - What the user has explicitly entered in their family profiles
-
 Format responses naturally and conversationally. Keep them brief (2-4 sentences max).
-
 Family information available:
 ${familyContext}`,
         messages: [
@@ -2322,6 +2318,26 @@ ${familyContext}`,
     // Remove thinking indicator
     messages.removeChild(thinkingMsg);
     
+    // Check for rate limit
+    if (response.status === 429) {
+      const errorMsg = document.createElement('div');
+      errorMsg.style.cssText = 'background:var(--amber-lt); border:1px solid var(--amber); padding:12px 16px; border-radius:12px; margin-bottom:12px; max-width:80%;';
+      errorMsg.textContent = data.message || 'You have asked 10 questions this hour. Try again soon!';
+      messages.appendChild(errorMsg);
+      messages.scrollTop = messages.scrollHeight;
+      return;
+    }
+    
+    // Check for errors
+    if (!response.ok || data.error) {
+      const errorMsg = document.createElement('div');
+      errorMsg.style.cssText = 'background:var(--red-lt); border:1px solid var(--red); padding:12px 16px; border-radius:12px; margin-bottom:12px; max-width:80%;';
+      errorMsg.textContent = 'Sorry, I had trouble with that. Please try again.';
+      messages.appendChild(errorMsg);
+      messages.scrollTop = messages.scrollHeight;
+      return;
+    }
+    
     // Add Claude's response
     const botMsg = document.createElement('div');
     botMsg.style.cssText = 'background:var(--white); border:1px solid var(--sand); padding:12px 16px; border-radius:12px; margin-bottom:12px; max-width:80%;';
@@ -2329,17 +2345,17 @@ ${familyContext}`,
     messages.appendChild(botMsg);
     
   } catch(error) {
-    // Remove thinking indicator
-    messages.removeChild(thinkingMsg);
+    console.error('Ask Folia error:', error);
+    
+    // Remove thinking indicator if it still exists
+    if (thinkingMsg.parentNode) {
+      messages.removeChild(thinkingMsg);
+    }
     
     // Show error
     const errorMsg = document.createElement('div');
     errorMsg.style.cssText = 'background:var(--red-lt); border:1px solid var(--red); padding:12px 16px; border-radius:12px; margin-bottom:12px; max-width:80%;';
-    const errorText = await response.text();
-    const isRateLimit = errorText.includes('Rate limit') || response.status === 429;
-    errorMsg.textContent = isRateLimit 
-      ? 'You have asked 10 questions this hour. Try again soon!' 
-      : 'Sorry, I had trouble connecting. Please try again.';
+    errorMsg.textContent = 'Sorry, something went wrong. Please try again.';
     messages.appendChild(errorMsg);
   }
   
