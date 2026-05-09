@@ -212,28 +212,57 @@ footer .logo {
   <p class="footer-text">Built for families, by people who have them.</p>
 </footer>
 
-<!-- Hidden Klaviyo form submission -->
-<form id="klaviyoForm" action="https://manage.klapiyo.com/form/submit" method="POST">
-  <input type="hidden" name="list_fields[email]" id="emailField" value="">
-  <input type="hidden" name="g" value="">
-  <input type="hidden" name="$fields" value="email,early_access_yes">
-  <input type="hidden" name="early_access_yes" value="true">
-</form>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Get email from URL parameter (if passed)
+  // Get email from URL parameter
   const urlParams = new URLSearchParams(window.location.search);
   const email = urlParams.get('email') || '';
   
-  if (email) {
-    document.getElementById('emailField').value = email;
+  // Klaviyo configuration
+  const KLAVIYO_PUBLIC_KEY = 'TzgNfm';
+  const KLAVIYO_TAG = 'early_access_yes';
+  
+  // Function to tag user in Klaviyo
+  function tagUserInKlaviyo(userEmail, tagName) {
+    if (!userEmail) {
+      console.warn('No email provided for tagging');
+      return Promise.resolve();
+    }
+    
+    const encodedEmail = encodeURIComponent(userEmail);
+    const url = `https://a.klaviyo.com/api/v1/person/email/${encodedEmail}/add-tag`;
+    
+    const params = new URLSearchParams({
+      api_key: KLAVIYO_PUBLIC_KEY,
+      tag: tagName
+    });
+    
+    return fetch(url, {
+      method: 'POST',
+      body: params,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log(`Successfully tagged ${userEmail} with ${tagName}`);
+      } else {
+        console.warn(`Klaviyo tagging returned status ${response.status}`);
+      }
+    })
+    .catch(error => {
+      console.error('Klaviyo tagging error:', error);
+    });
   }
   
-  // Submit to Klaviyo
-  document.getElementById('klaviyoForm').submit();
+  // Tag user and then redirect
+  if (email) {
+    // Start tagging immediately
+    tagUserInKlaviyo(email, KLAVIYO_TAG);
+  }
   
-  // Countdown and redirect
+  // Countdown and redirect (happens regardless of tagging success)
   let secondsLeft = 3;
   const countdownEl = document.getElementById('countdown');
   
