@@ -99,7 +99,7 @@ exports.handler = async function(event) {
     const subText = await subRes.text();
     console.log('Subscription response status:', subRes.status);
     console.log('Subscription response body:', subText);
-    // Step 3: Track event
+    // Step 3: Track event that triggers the flow
     const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
       method: 'POST',
       headers: {
@@ -123,7 +123,10 @@ exports.handler = async function(event) {
                 attributes: { name: 'Sitter Brief Generated' }
               }
             },
-            properties: { family_name: name }
+            properties: { 
+              family_name: name,
+              flow_id: 'RwMbUN'
+            }
           }
         }
       })
