@@ -214,9 +214,13 @@ footer .logo {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Get email from URL parameter
+  // Get email and source from URL parameters
   const urlParams = new URLSearchParams(window.location.search);
   const email = urlParams.get('email') || '';
+  const source = urlParams.get('source') || 'direct';
+  
+  // Log for your records
+  console.log(`Early access signup: email=${email}, source=${source}`);
   
   // Klaviyo configuration
   const KLAVIYO_PUBLIC_KEY = 'TzgNfm';
