@@ -42,7 +42,7 @@ exports.handler = async function(event) {
   console.log('Sending to Klaviyo for:', email);
   try {
     // Step 1: Create or update profile
-    const profileRes = await fetch('https://a.klavioy.com/api/profiles/', {
+    const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',
       headers: {
         'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
