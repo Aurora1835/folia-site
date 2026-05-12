@@ -478,7 +478,7 @@ input:focus {
 <nav>
   <a href="/" class="logo">Folia</a>
   <div class="nav-links">
-    <a href="/sitter-brief" class="nav-link">Free Sitter Brief</a>
+    <a href="/sitter-brief" class="nav-link">Sitter Brief</a>
     <a href="/folia.html" class="btn-signin">Sign In</a>
   </div>
 </nav>
@@ -490,7 +490,7 @@ input:focus {
   
   <div class="cta-container">
    <a href="/sitter-brief" class="btn-primary">Text your sitter in two minutes. →</a>
-    <p class="helper-text">Free · Takes 2 minutes · No credit card</p>
+    <p class="helper-text">$5 one-time or $9/month · No signup required</p>
   </div>
 </div>
 
@@ -514,18 +514,6 @@ input:focus {
   </div>
 </div>
 
-<div class="coming-soon">
-  <div class="coming-soon-badge">Coming Soon</div>
-  <h2>Folia will remember<br>so you don't have to.</h2>
-  <p class="coming-soon-text">Soon, Folia will connect with your email, calendar, and grocery lists — learning your family's patterns so you can stop repeating yourself everywhere.</p>
-  
-  <div class="coming-features">
-    <div class="coming-chip">📧 Email integration</div>
-    <div class="coming-chip">📅 Calendar sync</div>
-    <div class="coming-chip">🛒 Grocery learning</div>
-  </div>
-</div>
-
 <footer>
   <a href="/" class="logo">Folia</a>
   <p class="footer-text">Built for families, by people who have them.</p>
@@ -533,70 +521,11 @@ input:focus {
   <div class="footer-links">
     <a href="/privacy.html" class="footer-link">Privacy Policy</a>
     <a href="/terms.html" class="footer-link">Terms of Service</a>
-    <a href="/sitter-brief" class="footer-link">Free Sitter Brief</a>
+    <a href="/sitter-brief" class="footer-link">Sitter Brief</a>
   </div>
   
   <p class="copyright">© 2025 Folia · withfolia.com</p>
 </footer>
-
-<!-- Sign Up Modal -->
-<div class="modal" id="signupModal">
-  <div class="modal-content">
-    <div class="modal-title">Start using Folia</div>
-    <div class="modal-subtitle">Create your account and stop repeating yourself.</div>
-    
-    <div class="field">
-      <label>Your Name</label>
-      <input type="text" id="signupName" placeholder="Sarah Johnson">
-    </div>
-    
-    <div class="field">
-      <label>Email</label>
-      <input type="email" id="signupEmail" placeholder="sarah@email.com">
-    </div>
-    
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="signupPassword" placeholder="At least 8 characters">
-    </div>
-    
-    <div class="error" id="signupError"></div>
-    <div class="loading" id="signupLoading">Creating your account...</div>
-    
-    <button class="btn-submit" onclick="handleSignup()">Create My Folia →</button>
-    
-    <div class="switch-auth">
-      Already have an account? <a href="#" onclick="showSignIn(); return false;">Sign in</a>
-    </div>
-  </div>
-</div>
-
-<!-- Sign In Modal -->
-<div class="modal" id="signinModal">
-  <div class="modal-content">
-    <div class="modal-title">Welcome back</div>
-    <div class="modal-subtitle">Sign in to your Folia.</div>
-    
-    <div class="field">
-      <label>Email</label>
-      <input type="email" id="signinEmail" placeholder="your@email.com">
-    </div>
-    
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="signinPassword" placeholder="Your password">
-    </div>
-    
-    <div class="error" id="signinError"></div>
-    <div class="loading" id="signinLoading">Signing you in...</div>
-    
-    <button class="btn-submit" onclick="handleSignIn()">Sign In →</button>
-    
-    <div class="switch-auth">
-      Don't have an account? <a href="#" onclick="showSignUp(); return false;">Create one</a>
-    </div>
-  </div>
-</div>
 
 
 
