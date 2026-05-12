@@ -6,6 +6,7 @@
 <title>Free Sitter Brief — Folia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 :root {
   --cream: #FAF8F3;
@@ -64,6 +65,12 @@ nav {
   letter-spacing: -0.5px;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
 .back-link {
   font-size: 14px;
   color: var(--bark);
@@ -72,6 +79,23 @@ nav {
   transition: opacity 0.3s;
 }
 .back-link:hover { opacity: 0.6; }
+
+/* ════════════════════════════════════════
+   NEW: LOGIN & PAYWALL BUTTONS IN NAV
+════════════════════════════════════════ */
+.nav-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--bark);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: color 0.3s;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+}
+.nav-btn:hover { color: var(--charcoal); }
 
 /* Hero Section */
 .hero {
@@ -490,6 +514,43 @@ textarea {
   margin-top: 12px;
 }
 
+/* ════════════════════════════════════════
+   NEW: UPGRADE PROMPT (for $5 users)
+════════════════════════════════════════ */
+.upgrade-cta {
+  padding: 32px 40px;
+  border-top: 1px solid var(--sand);
+  background: linear-gradient(135deg, #FDF3E3 0%, var(--cream) 100%);
+  display: none;
+}
+
+.upgrade-cta.active {
+  display: block;
+}
+
+.upgrade-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 24px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.upgrade-text {
+  font-size: 14px;
+  color: var(--bark);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.upgrade-note {
+  font-size: 12px;
+  color: var(--stone);
+  text-align: center;
+  margin-top: 12px;
+}
+
 /* Features */
 .features {
   background: var(--charcoal);
@@ -537,6 +598,192 @@ footer .logo {
   display: inline-block;
 }
 
+/* ════════════════════════════════════════
+   NEW: MODALS (Paywall + Login)
+════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44,37,32,0.8);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-card {
+  background: var(--white);
+  border: 1px solid var(--stone);
+  border-radius: 12px;
+  padding: 40px 36px;
+  max-width: 420px;
+  width: 100%;
+  animation: slideUp 0.3s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
+  margin: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  color: var(--stone);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: var(--charcoal);
+}
+
+.modal-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 32px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--charcoal);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: var(--stone);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.tier-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tier-btn {
+  padding: 20px;
+  border: 2px solid var(--sand);
+  border-radius: 8px;
+  background: var(--white);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.tier-btn:hover {
+  border-color: var(--terracotta);
+  background: var(--cream);
+}
+
+.tier-btn.selected {
+  border-color: var(--terracotta);
+  background: rgba(193,127,93,0.1);
+}
+
+.tier-price {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin-bottom: 4px;
+}
+
+.tier-desc {
+  font-size: 13px;
+  color: var(--bark);
+}
+
+/* Login form */
+.login-form {
+  display: none;
+}
+
+.login-form.active {
+  display: block;
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--bark);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--sand);
+  border-radius: 8px;
+  background: var(--cream);
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  color: var(--charcoal);
+  transition: all 0.3s;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--terracotta);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(193,127,93,0.1);
+}
+
+.form-error {
+  font-size: 13px;
+  color: #8B3A3A;
+  text-align: center;
+  margin-bottom: 16px;
+  min-height: 20px;
+}
+
+.form-loading {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  font-size: 13px;
+  color: var(--stone);
+  text-align: center;
+}
+
+.form-loading.show {
+  display: flex;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--sand);
+  border-top-color: var(--terracotta);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .container {
@@ -561,13 +808,14 @@ footer .logo {
   .brief-header,
   .brief-body,
   .brief-actions,
-  .save-cta {
+  .save-cta,
+  .upgrade-cta {
     padding: 32px 24px;
   }
 }
 
 @media print {
-  nav, .brief-actions, .save-cta, .features, footer { display: none !important; }
+  nav, .brief-actions, .save-cta, .upgrade-cta, .features, footer { display: none !important; }
   body { background: white !important; }
   .brief { box-shadow: none !important; border: none !important; }
   .brief-body { max-height: none !important; overflow: visible !important; }
@@ -578,7 +826,12 @@ footer .logo {
 
 <nav>
   <a href="/" class="logo">Folia</a>
-  <a href="/" class="back-link">← Back to withfolia.com</a>
+  <div class="nav-right">
+    <a href="/" class="back-link">← Back to withfolia.com</a>
+    <!-- NEW: Login button for returning users -->
+    <button class="nav-btn" id="navLoginBtn" onclick="showLoginModal()" style="display: none;">Sign In</button>
+    <button class="nav-btn" id="navSignOutBtn" onclick="handleSignOut()" style="display: none;">Sign Out</button>
+  </div>
 </nav>
 
 <div class="hero">
@@ -672,13 +925,21 @@ footer .logo {
         <button class="btn btn-save" onclick="saveToFolia()">Save to My Folia →</button>
       </div>
       
+      <!-- NEW: Upgrade CTA for $5 users -->
+      <div class="upgrade-cta" id="upgradeCta">
+        <div class="upgrade-title">Upgrade to save forever.</div>
+        <div class="upgrade-text">$9/month gets you unlimited briefs for all caregiver types, pre-filled forms, and instant regeneration anytime.</div>
+        <button class="btn btn-primary" onclick="upgradeNow()">Upgrade to $9/Month →</button>
+        <div class="upgrade-note">Or continue with one-time $5 brief above</div>
+      </div>
+      
       <div class="save-cta">
         <div class="save-title">Save this to your Folia.</div>
         <div class="save-text">Next time you need this, it generates itself. Your family's info lives in one place — and you only have to say it once.</div>
         <button class="btn btn-save" onclick="saveToFolia()">Create My Folia →</button>
         <div class="save-note">$5 one-time or $9/month to save & regenerate</div>
       </div>
-    </div>
+    </brief>
     
   </div>
 </div>
@@ -700,12 +961,258 @@ footer .logo {
   <p>© 2025 Folia · withfolia.com · Built for families, by people who have them.</p>
 </footer>
 
+<!-- ════════════════════════════════════════
+     NEW: PAYWALL MODAL
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="paywallModal" onclick="if(event.target===this) closePaywall()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closePaywall()">×</button>
+    
+    <div class="modal-title">Choose your plan</div>
+    <div class="modal-subtitle">Both work great. Pick what's right for you.</div>
+    
+    <div class="tier-buttons">
+      <button class="tier-btn selected" id="tier5Btn" onclick="selectTier(5)">
+        <div class="tier-price">$5</div>
+        <div class="tier-desc">One-time. Perfect for trying it out.</div>
+      </button>
+      
+      <button class="tier-btn" id="tier9Btn" onclick="selectTier(9)">
+        <div class="tier-price">$9/month</div>
+        <div class="tier-desc">Unlimited briefs. Save everything. Edit anytime.</div>
+      </button>
+    </div>
+    
+    <button class="btn btn-primary" onclick="proceedToPayment()" id="proceedBtn">Continue to Payment →</button>
+    <button class="btn btn-secondary" onclick="closePaywall()">Cancel</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     NEW: LOGIN MODAL
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this) closeLoginModal()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeLoginModal()">×</button>
+    
+    <div class="modal-title">Welcome back</div>
+    <div class="modal-subtitle">Sign in to your Folia account</div>
+    
+    <div class="login-form active">
+      <div class="form-field">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" id="loginEmail" placeholder="your@email.com" autocomplete="email">
+      </div>
+      
+      <div class="form-field">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="loginPassword" placeholder="Your password" autocomplete="current-password">
+      </div>
+      
+      <button class="btn btn-primary" onclick="handleLogin()">Sign In →</button>
+      <div class="form-loading" id="loginLoading"><div class="spinner"></div> Signing in…</div>
+      <div class="form-error" id="loginError"></div>
+    </div>
+  </div>
+</div>
+
 <script>
-// Global state
+// ════════════════════════════════════════
+// SUPABASE CONFIG
+// ════════════════════════════════════════
+const SUPABASE_URL = 'https://fbjkeivlabzwpgghxkjh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiamtlaXZsYWJ6d3BnZ2h4a2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTk1NzksImV4cCI6MjA5MDUzNTU3OX0.5zUaWA80VhnrlUBk7-yknfUmCzQtWtqP6B3IOErm3kQ';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ════════════════════════════════════════
+// PAYWALL TOGGLE - CHANGE TO TRUE WHEN ATTORNEY APPROVES
+// ════════════════════════════════════════
+const PAYWALL_ENABLED = false;
+
+// ════════════════════════════════════════
+// STRIPE CONFIG
+// ════════════════════════════════════════
+const STRIPE_LINKS = {
+  5: 'https://buy.stripe.com/bJe9AM7X6dJfeqAe3R53O03',
+  9: 'https://buy.stripe.com/4gM5kwa5e7kR0zK8Jx53O02'
+};
+
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
 let briefImageData = null;
+let currentUser = null;
+let currentTier = 5; // Default tier in paywall
+let isLoggedIn = false;
+
 const TODAY = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-// Generate Brief
+// ════════════════════════════════════════
+// INIT - Check for session & Stripe redirect
+// ════════════════════════════════════════
+window.addEventListener('load', async () => {
+  // Check for Supabase session (logged in user)
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      currentUser = session.user;
+      isLoggedIn = true;
+      showSignOutBtn();
+      await prefillFromSupabase();
+    }
+  } catch(e) {
+    console.error('Session check error:', e);
+  }
+  
+  // Check for Stripe redirect params
+  const params = new URLSearchParams(window.location.search);
+  const stripeSessionId = params.get('session_id');
+  const stripeTier = params.get('tier');
+  
+  if (stripeSessionId && stripeTier) {
+    // Store Stripe session for later use
+    sessionStorage.setItem('stripeSessionId', stripeSessionId);
+    sessionStorage.setItem('stripeTier', stripeTier);
+    
+    // Clean up URL (remove query params)
+    window.history.replaceState({}, document.title, '/sitter-brief');
+  }
+});
+
+// ════════════════════════════════════════
+// NAVIGATION - Login/Logout buttons
+// ════════════════════════════════════════
+function showSignOutBtn() {
+  document.getElementById('navSignOutBtn').style.display = 'inline-block';
+  document.getElementById('navLoginBtn').style.display = 'none';
+}
+
+function showLoginBtn() {
+  document.getElementById('navLoginBtn').style.display = 'inline-block';
+  document.getElementById('navSignOutBtn').style.display = 'none';
+}
+
+async function handleSignOut() {
+  if (confirm('Sign out of your Folia account?')) {
+    await sb.auth.signOut();
+    currentUser = null;
+    isLoggedIn = false;
+    showLoginBtn();
+    clearForm();
+    window.location.href = '/sitter-brief';
+  }
+}
+
+// ════════════════════════════════════════
+// PREFILL FROM SUPABASE (if logged in)
+// ════════════════════════════════════════
+async function prefillFromSupabase() {
+  try {
+    const { data, error } = await sb
+      .from('family_profiles')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .single();
+    
+    if (error || !data) return;
+    
+    // Prefill form with saved data
+    document.getElementById('familyName').value = data.family_name || '';
+    document.getElementById('familyEmail').value = currentUser.email || '';
+    document.getElementById('children').value = data.members
+      ?.filter(m => !['🏠', '🐕', '🐈'].includes(m.emoji))
+      .map(m => `${m.name} age ${m.role?.match(/\d+/) || '?'}`)
+      .join(', ') || '';
+    document.getElementById('emergency').value = data.emergency_phone || '';
+    
+    // Store full data for regeneration
+    window.savedFamilyData = data;
+  } catch(e) {
+    console.error('Prefill error:', e);
+  }
+}
+
+function clearForm() {
+  document.getElementById('familyName').value = '';
+  document.getElementById('familyEmail').value = '';
+  document.getElementById('children').value = '';
+  document.getElementById('parents').value = '';
+  document.getElementById('emergency').value = '';
+  document.getElementById('notes').value = '';
+  window.briefData = null;
+  window.savedFamilyData = null;
+}
+
+// ════════════════════════════════════════
+// PAYWALL MODAL
+// ════════════════════════════════════════
+function showPaywall() {
+  document.getElementById('paywallModal').classList.add('open');
+}
+
+function closePaywall() {
+  document.getElementById('paywallModal').classList.remove('open');
+}
+
+function selectTier(tier) {
+  currentTier = tier;
+  document.getElementById('tier5Btn').classList.toggle('selected', tier === 5);
+  document.getElementById('tier9Btn').classList.toggle('selected', tier === 9);
+}
+
+function proceedToPayment() {
+  if (currentTier === 5 || currentTier === 9) {
+    closePaywall();
+    window.location.href = STRIPE_LINKS[currentTier];
+  }
+}
+
+// ════════════════════════════════════════
+// LOGIN MODAL
+// ════════════════════════════════════════
+function showLoginModal() {
+  document.getElementById('loginModal').classList.add('open');
+  document.getElementById('loginEmail').focus();
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('open');
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('loginError').textContent = '';
+}
+
+async function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  
+  if (!email || !password) {
+    document.getElementById('loginError').textContent = 'Please enter your email and password.';
+    return;
+  }
+  
+  document.getElementById('loginLoading').classList.add('show');
+  document.getElementById('loginError').textContent = '';
+  
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  
+  document.getElementById('loginLoading').classList.remove('show');
+  
+  if (error) {
+    document.getElementById('loginError').textContent = error.message;
+    return;
+  }
+  
+  currentUser = data.user;
+  isLoggedIn = true;
+  closeLoginModal();
+  showSignOutBtn();
+  await prefillFromSupabase();
+}
+
+// ════════════════════════════════════════
+// GENERATE BRIEF
+// ════════════════════════════════════════
 async function generateBrief() {
   const familyName = document.getElementById('familyName').value.trim();
   const email = document.getElementById('familyEmail').value.trim();
@@ -731,18 +1238,17 @@ async function generateBrief() {
   document.getElementById('briefTitle').textContent = `${familyName} — Sitter Brief`;
   document.getElementById('briefDate').textContent = `Generated ${TODAY}`;
   
-  // Check if testing locally (Netlify functions won't work)
+  // Check if testing locally
   const isLocal = window.location.hostname === '' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
   
   if (isLocal) {
-    // Skip AI generation when testing locally, use fallback
     console.log('Local testing mode - using fallback brief');
     const briefText = fallbackBrief(familyName, children, emergency, notes);
     showBrief(briefText);
     return;
   }
   
-  // Build prompt (only runs when deployed)
+  // Build prompt
   const prompt = `Create a warm, practical sitter brief for ${familyName}. Remember: no markdown formatting whatsoever. No #, **, *, or bullet points. Plain text only with ALL CAPS headers and dash lines.
 
 Details provided:
@@ -808,6 +1314,17 @@ async function showBrief(text) {
   document.getElementById('generating').classList.remove('active');
   document.getElementById('briefBody').textContent = text;
   document.getElementById('brief').classList.add('active');
+  
+  // Check if this was a Stripe payment
+  const stripeTier = sessionStorage.getItem('stripeTier');
+  const stripeSessionId = sessionStorage.getItem('stripeSessionId');
+  
+  // Only show upgrade CTA if paywall is enabled AND tier is $5
+  if (PAYWALL_ENABLED && stripeTier === '5') {
+    document.getElementById('upgradeCta').classList.add('active');
+  } else {
+    document.getElementById('upgradeCta').classList.remove('active');
+  }
   
   // Generate image version
   const familyName = window.briefData?.familyName || 'Your Family';
@@ -879,7 +1396,6 @@ async function generateBriefImage(briefText, familyName) {
         if (y > maxY) return;
         
         if (line.match(/^[A-Z\s&]{3,}$/)) {
-          // Section header
           y += 45;
           if (y > maxY) return;
           ctx.fillStyle = '#6B5D52';
@@ -931,7 +1447,9 @@ function wrapTextToLines(ctx, text, maxWidth) {
   return lines;
 }
 
-// Share Brief - FIXED (removed duplicate)
+// ════════════════════════════════════════
+// SHARE & PRINT
+// ════════════════════════════════════════
 async function shareBrief() {
   if (!briefImageData) {
     alert('Image is still generating, please wait...');
@@ -964,32 +1482,21 @@ async function shareBrief() {
   link.click();
 }
 
-// Print Brief
 function printBrief() {
-  // Ensure brief is visible and fully rendered before printing
   const brief = document.getElementById('brief');
   if (!brief || !brief.classList.contains('active')) {
     alert('Please generate a brief first');
     return;
   }
   
-  // Add a longer delay to ensure styles are loaded
   setTimeout(() => {
     window.print();
   }, 1000);
 }
 
-// Save to Folia - FIXED (works locally and in production)
 // ════════════════════════════════════════
-// STRIPE PAYWALL CONFIG
+// SAVE TO FOLIA (routing based on tier)
 // ════════════════════════════════════════
-// TO ENABLE PAYWALL: Change false to true
-// TO DISABLE PAYWALL: Change true to false
-const PAYWALL_ENABLED = false;
-
-// Your Stripe Payment Link (keep this private after launch)
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/00w9AM4KUgVrfuE7Ft53O00';
-
 function saveToFolia() {
   const data = window.briefData;
   
@@ -999,43 +1506,85 @@ function saveToFolia() {
   }
   
   // ════════════════════════════════════════
-  // PAYWALL CHECK
+  // PAYWALL CHECK - If disabled, skip straight to free beta path
   // ════════════════════════════════════════
-  if (PAYWALL_ENABLED) {
-    // Store brief data in sessionStorage so it's available after payment
+  if (!PAYWALL_ENABLED) {
+    // Free beta path: bypass paywall, go to folia.html
     sessionStorage.setItem('sitterBriefData', JSON.stringify(data));
     
-    // Redirect to Stripe checkout
-    // After payment, Stripe will redirect back to your success URL
-    window.location.href = STRIPE_PAYMENT_LINK;
+    const params = new URLSearchParams();
+    params.set('source', 'sitter-brief');
+    params.set('familyName', data.familyName);
+    params.set('email', data.email);
+    if (data.children) params.set('children', data.children);
+    if (data.parents) params.set('parents', data.parents);
+    if (data.emergency) params.set('emergency', data.emergency);
+    if (data.notes) params.set('notes', data.notes);
+    
+    window.location.href = '/folia.html?' + params.toString();
     return;
   }
   
   // ════════════════════════════════════════
-  // FREE BETA PATH (Current behavior)
+  // PAYWALL ENABLED - Check if this was a Stripe payment
   // ════════════════════════════════════════
-  // Build URL with all data
-  const params = new URLSearchParams();
-  params.set('source', 'sitter-brief');
-  params.set('familyName', data.familyName);
-  params.set('email', data.email);
-  if (data.children) params.set('children', data.children);
-  if (data.parents) params.set('parents', data.parents);
-  if (data.emergency) params.set('emergency', data.emergency);
-  if (data.notes) params.set('notes', data.notes);
+  const stripeTier = sessionStorage.getItem('stripeTier');
+  const stripeSessionId = sessionStorage.getItem('stripeSessionId');
   
-  // Redirect to main Folia app
-  // Use full URL when deployed, relative when local testing
-  const isLocal = window.location.hostname === '' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
-  
-  if (isLocal) {
-    // When testing locally, open the folia file in same directory
-    window.location.href = 'folia.html?' + params.toString();
-  } else {
-    // When deployed, use root-relative path
+  // $9 tier: MUST create account
+  if (stripeTier === '9') {
+    // Store brief data in sessionStorage so it's available after signup
+    sessionStorage.setItem('sitterBriefData', JSON.stringify(data));
+    sessionStorage.setItem('paymentTier', '9');
+    
+    // Go to signup on folia.html
+    const params = new URLSearchParams();
+    params.set('source', 'sitter-brief');
+    params.set('tier', '9');
+    params.set('familyName', data.familyName);
+    params.set('email', data.email);
+    if (data.children) params.set('children', data.children);
+    if (data.parents) params.set('parents', data.parents);
+    if (data.emergency) params.set('emergency', data.emergency);
+    if (data.notes) params.set('notes', data.notes);
+    
     window.location.href = '/folia.html?' + params.toString();
+    return;
   }
+  
+  // $5 tier: optional signup (or just free beta path)
+  if (stripeTier === '5') {
+    // Store brief data in sessionStorage
+    sessionStorage.setItem('sitterBriefData', JSON.stringify(data));
+    sessionStorage.setItem('paymentTier', '5');
+    
+    // Go to signup on folia.html
+    const params = new URLSearchParams();
+    params.set('source', 'sitter-brief');
+    params.set('tier', '5');
+    params.set('familyName', data.familyName);
+    params.set('email', data.email);
+    if (data.children) params.set('children', data.children);
+    if (data.parents) params.set('parents', data.parents);
+    if (data.emergency) params.set('emergency', data.emergency);
+    if (data.notes) params.set('notes', data.notes);
+    
+    window.location.href = '/folia.html?' + params.toString();
+    return;
+  }
+  
+  // No payment yet: show paywall
+  showPaywall();
 }
+
+// ════════════════════════════════════════
+// UPGRADE NOW (for $5 users)
+// ════════════════════════════════════════
+function upgradeNow() {
+  currentTier = 9;
+  showPaywall();
+}
+
 </script>
 
 </body>
