@@ -839,7 +839,7 @@ async function startBuilding() {
 // ════════════════════════════════════════
 // DASHBOARD
 // ════════════════════════════════════════
-function openDashboard(firstTime = false) {
+function openDashboard(firstTime = false, subscription = null) {
   showScreen('dashboard');
   document.getElementById('signOutBtn').style.display = 'inline';
 
@@ -849,6 +849,11 @@ function openDashboard(firstTime = false) {
   // Show bookmark banner on first time
   if (firstTime) {
     document.getElementById('foliaBanner').classList.add('show');
+  }
+
+  // Show upgrade banner if no active subscription
+  if (!subscription) {
+    showUpgradeBanner();
   }
 
   renderFamilyMembers();
@@ -1303,10 +1308,12 @@ async function loadProfile(userId) {
     S.emergencyPhone = data.emergency_phone || '';
     if (data.parent_email) S.parentEmail = data.parent_email;
     else if (S.user?.email) S.parentEmail = S.user.email;
-    openDashboard(false);
+    
+    // Check subscription status
+    const subscription = await checkSubscription(userId);
+    openDashboard(false, subscription);
   } catch(e) { console.error('loadProfile error:', e); goToScreen(0); }
 }
-
 async function checkAndAcceptInvite(userEmail, userId) {
   try {
     const { data: invite } = await sb.from('household_members').select('*').eq('email', userEmail.toLowerCase()).eq('status', 'pending').single();
@@ -1343,7 +1350,87 @@ function prefillFromSitterBrief(data) {
   }
   renderMembers();
 }
+// ════════════════════════════════════════
+// CHECK SUBSCRIPTION STATUS
+// ════════════════════════════════════════
+async function checkSubscription(userId) {
+  try {
+    const { data, error } = await sb
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .single();
 
+    if (error || !data) return null;
+
+    // For $9/month, verify with Stripe that subscription is still active
+    if (data.tier === 9) {
+      const isActive = await verifySubscriptionWithStripe(data.stripe_session_id);
+      if (!isActive) {
+        // Subscription was cancelled, mark as cancelled
+        await sb.from('subscriptions').update({ status: 'cancelled' }).eq('id', data.id);
+        return null;
+      }
+    }
+
+    return data;
+  } catch (err) {
+    console.error('Check subscription error:', err);
+    return null;
+  }
+}
+
+// ════════════════════════════════════════
+// VERIFY SUBSCRIPTION WITH STRIPE
+// ════════════════════════════════════════
+async function verifySubscriptionWithStripe(sessionId) {
+  try {
+    const res = await fetch('/.netlify/functions/verify-stripe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId })
+    });
+
+    const data = await res.json();
+    return data.valid;
+  } catch (err) {
+    console.error('Stripe verification error:', err);
+    return false;
+  }
+}
+
+// ════════════════════════════════════════
+// UPGRADE BANNER
+// ════════════════════════════════════════
+function showUpgradeBanner() {
+  const banner = document.createElement('div');
+  banner.style.cssText = `
+    background: linear-gradient(135deg, #FDF3E3 0%, var(--cream) 100%);
+    border: 1px solid #A0722A;
+    border-radius: 12px;
+    padding: 24px 32px;
+    margin-bottom: 24px;
+    text-align: center;
+  `;
+  banner.innerHTML = `
+    <div style="font-family: 'Crimson Pro', serif; font-size: 24px; font-weight: 600; font-style: italic; color: var(--charcoal); margin-bottom: 8px;">Ready to save and share?</div>
+    <div style="font-size: 14px; color: var(--bark); line-height: 1.6; margin-bottom: 16px;">
+      Upgrade to $9/month to save your family's info, generate unlimited briefs for all caregiver types, and edit anytime.
+    </div>
+    <button class="btn-hero" onclick="upgradeSubscription()" style="max-width: 300px; margin: 0 auto; display: block;">Upgrade to $9/Month →</button>
+  `;
+
+  const dashboardHeader = document.querySelector('.dashboard-header');
+  if (dashboardHeader && dashboardHeader.parentNode) {
+    dashboardHeader.parentNode.insertBefore(banner, dashboardHeader.nextSibling);
+  }
+}
+
+function upgradeSubscription() {
+  // Redirect to Stripe payment link for $9/month
+  window.location.href = 'https://buy.stripe.com/4gM5kwa5e7kR0zK8Jx53O02';
+}
 async function handleSignOut() { await sb.auth.signOut(); window.location.href = '/'; }
 
 // ════════════════════════════════════════
