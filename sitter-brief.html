@@ -1049,6 +1049,99 @@ let isLoggedIn = false;
 const TODAY = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
 // ════════════════════════════════════════
+// VERIFY STRIPE PAYMENT
+// ════════════════════════════════════════
+async function verifyStripePayment(sessionId) {
+  try {
+    const res = await fetch('/.netlify/functions/verify-stripe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId })
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('Verification error:', err);
+    return { valid: false, error: err.message };
+  }
+}
+
+// ════════════════════════════════════════
+// SAVE SUBSCRIPTION TO SUPABASE
+// ════════════════════════════════════════
+async function saveSubscription(userId, tier, sessionId, customerEmail) {
+  try {
+    const { error } = await sb.from('subscriptions').insert({
+      user_id: userId,
+      tier: tier,
+      stripe_session_id: sessionId,
+      customer_email: customerEmail,
+      status: 'active'
+    });
+
+    if (error) {
+      console.error('Subscription save error:', error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('Save subscription error:', err);
+    return false;
+  }
+}
+
+// ════════════════════════════════════════
+// CHECK IF USER HAS ACTIVE SUBSCRIPTION
+// ════════════════════════════════════════
+async function checkActiveSubscription(userId) {
+  try {
+    const { data, error } = await sb
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .single();
+
+    if (error || !data) return null;
+
+    // For $9/month, verify with Stripe that subscription is still active
+    if (data.tier === 9) {
+      const verified = await verifyActiveSubscriptionWithStripe(data.stripe_session_id);
+      if (!verified) {
+        // Subscription was cancelled, update status
+        await sb.from('subscriptions').update({ status: 'cancelled' }).eq('id', data.id);
+        return null;
+      }
+    }
+
+    return data;
+  } catch (err) {
+    console.error('Check subscription error:', err);
+    return null;
+  }
+}
+
+// ════════════════════════════════════════
+// VERIFY $9/MONTH SUBSCRIPTION WITH STRIPE
+// ════════════════════════════════════════
+async function verifyActiveSubscriptionWithStripe(sessionId) {
+  try {
+    const res = await fetch('/.netlify/functions/verify-stripe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId })
+    });
+
+    const data = await res.json();
+    return data.valid;
+  } catch (err) {
+    console.error('Stripe verification error:', err);
+    return false;
+  }
+}
+
+// ════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════
 window.addEventListener('load', async () => {
@@ -1069,23 +1162,51 @@ window.addEventListener('load', async () => {
   const stripeTier = params.get('tier');
   
   if (stripeSessionId && stripeTier) {
+    // Verify payment with Stripe before saving anything
+    const verification = await verifyStripePayment(stripeSessionId);
+
+    if (!verification.valid) {
+      console.warn('Payment verification failed:', verification.reason);
+      // Clear URL params (fraud attempt or failed payment)
+      window.history.replaceState({}, document.title, '/sitter-brief');
+      alert('Payment could not be verified. Please try again.');
+      return;
+    }
+
+    // Payment verified. Save to sessionStorage
     sessionStorage.setItem('stripeSessionId', stripeSessionId);
     sessionStorage.setItem('stripeTier', stripeTier);
+    sessionStorage.setItem('stripeCustomerEmail', verification.customer_email || '');
+
+    // If user is logged in, save subscription to Supabase
+    if (currentUser) {
+      const saved = await saveSubscription(
+        currentUser.id,
+        verification.tier,
+        stripeSessionId,
+        verification.customer_email
+      );
+
+      if (saved) {
+        console.log('Subscription saved to Supabase');
+      }
+    }
 
     // ════════════════════════════════════════
-    // GA EVENT: payment_complete
-    // Fires when user returns from Stripe with a session_id
+    // GA EVENT: payment_verified
+    // Fires when Stripe payment is verified
     // ════════════════════════════════════════
-    gtag('event', 'payment_complete', {
-      tier: stripeTier,
-      value: stripeTier === '9' ? 9 : 5,
-      currency: 'USD'
+    gtag('event', 'payment_verified', {
+      tier: verification.tier,
+      value: verification.tier === 9 ? 9 : 5,
+      currency: 'USD',
+      session_id: stripeSessionId
     });
 
+    // Clean URL
     window.history.replaceState({}, document.title, '/sitter-brief');
   }
 });
-
 // ════════════════════════════════════════
 // NAVIGATION
 // ════════════════════════════════════════
