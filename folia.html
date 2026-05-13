@@ -6,6 +6,19 @@
 <title>Folia — Your family. A living record.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- ════════════════════════════════════════
+     GOOGLE ANALYTICS 4
+     Measurement ID: G-K7GWVDTDNB
+════════════════════════════════════════ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7GWVDTDNB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7GWVDTDNB');
+</script>
+
 <style>
 /* ════════════════════════════════════════
    DESIGN SYSTEM - Matching Sitter Brief
@@ -125,7 +138,7 @@ nav {
 }
 
 /* ════════════════════════════════════════
-   SCREENS (Onboarding & Dashboard)
+   SCREENS
 ════════════════════════════════════════ */
 .screen {
   display: none;
@@ -453,7 +466,7 @@ nav {
 }
 
 /* ════════════════════════════════════════
-   CHIPS (for selections)
+   CHIPS
 ════════════════════════════════════════ */
 .chip-grid {
   display: flex;
@@ -504,7 +517,7 @@ nav {
 }
 
 /* ════════════════════════════════════════
-   BUILDING/LOADING STATES
+   LOADING STATES
 ════════════════════════════════════════ */
 .loading-state {
   display: flex;
@@ -635,7 +648,7 @@ nav {
 }
 
 /* ════════════════════════════════════════
-   DASHBOARD STYLES
+   DASHBOARD
 ════════════════════════════════════════ */
 .dashboard-header {
   background: var(--charcoal);
@@ -689,7 +702,7 @@ nav {
   50% { opacity: 0.3; }
 }
 
-/* Tabs (Mobile Bottom Nav) */
+/* Tabs */
 .tab-bar {
   position: fixed;
   bottom: 0;
@@ -912,7 +925,7 @@ nav {
 }
 
 /* ════════════════════════════════════════
-   UTILITY CLASSES
+   UTILITY
 ════════════════════════════════════════ */
 .text-center { text-align: center; }
 .mb-small { margin-bottom: 16px; }
@@ -949,9 +962,7 @@ nav {
 
 <div class="app-container">
   
-  <!-- ═══════════════════════════════════
-       SCREEN 0: WELCOME
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 0: WELCOME -->
   <div class="screen active" id="s0">
     <div class="loading-state">
       <div class="loading-icon">🏡</div>
@@ -962,9 +973,7 @@ nav {
     </div>
   </div>
   
-  <!-- ═══════════════════════════════════
-       SCREEN 1: FAMILY NAME
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 1: FAMILY NAME -->
   <div class="screen" id="s1">
     <div class="progress-bar">
       <div class="progress-fill" style="width: 14%"></div>
@@ -993,9 +1002,7 @@ nav {
     <button class="btn btn-secondary" onclick="goToScreen(0)">← Back</button>
   </div>
   
-  <!-- ═══════════════════════════════════
-       SCREEN 2: MEMBERS
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 2: MEMBERS -->
   <div class="screen" id="s2">
     <div class="progress-bar">
       <div class="progress-fill" style="width: 28%"></div>
@@ -1059,9 +1066,7 @@ nav {
     <button class="btn btn-secondary" onclick="goToScreen(1)">← Back</button>
   </div>
   
-  <!-- ═══════════════════════════════════
-       SCREEN 3: SCHEDULES
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 3: SCHEDULES -->
   <div class="screen" id="s3">
     <div class="progress-bar">
       <div class="progress-fill" style="width: 42%"></div>
@@ -1097,9 +1102,7 @@ nav {
     <button class="btn btn-secondary" onclick="goToScreen(2)">← Back</button>
   </div>
   
-  <!-- ═══════════════════════════════════
-       SCREEN 4: EMERGENCY CONTACTS
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 4: EMERGENCY CONTACTS -->
   <div class="screen" id="s4">
     <div class="progress-bar">
       <div class="progress-fill" style="width: 66%"></div>
@@ -1123,9 +1126,7 @@ nav {
     <button class="btn btn-secondary" onclick="goToScreen(3)">← Back</button>
   </div>
   
-  <!-- ═══════════════════════════════════
-       SCREEN 5: HOUSEHOLD INFO
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 5: HOUSEHOLD INFO -->
   <div class="screen" id="s5">
     <div class="progress-bar">
       <div class="progress-fill" style="width: 83%"></div>
@@ -1154,9 +1155,7 @@ nav {
     <button class="btn btn-secondary" onclick="goToScreen(4)">← Back</button>
   </div>
   
-  <!-- ═══════════════════════════════════
-       SCREEN 6: BUILDING
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 6: BUILDING -->
   <div class="screen" id="s6">
     <div class="progress-bar">
       <div class="progress-fill" style="width: 100%"></div>
@@ -1206,9 +1205,7 @@ nav {
     </div>
   </div>
   
-  <!-- ═══════════════════════════════════
-       SCREEN 7: PREVIEW
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 7: PREVIEW -->
   <div class="screen" id="s7">
     <div class="progress-bar">
       <div class="progress-fill" style="width: 100%"></div>
@@ -1239,9 +1236,7 @@ nav {
     <button class="btn btn-secondary" onclick="goToScreen(5)">← Edit Something</button>
   </div>
   
-  <!-- ═══════════════════════════════════
-       SCREEN 8: SUCCESS
-  ═══════════════════════════════════ -->
+  <!-- SCREEN 8: SUCCESS -->
   <div class="screen" id="s8">
     <div class="loading-state">
       <div class="loading-icon" style="font-size:80px; animation:none;">🏡</div>
@@ -1259,9 +1254,7 @@ nav {
     </div>
   </div>
   
-  <!-- ═══════════════════════════════════
-       DASHBOARD: HOME
-  ═══════════════════════════════════ -->
+  <!-- DASHBOARD: HOME -->
   <div class="screen" id="dashHome">
     <div class="dashboard-header">
       <div>
@@ -1291,9 +1284,7 @@ nav {
     <div id="foliaFeed"></div>
   </div>
   
-  <!-- ═══════════════════════════════════
-       DASHBOARD: FAMILY
-  ═══════════════════════════════════ -->
+  <!-- DASHBOARD: FAMILY -->
   <div class="screen" id="dashFamily">
     <div class="dashboard-header">
       <div>
@@ -1359,9 +1350,7 @@ nav {
     </div>
   </div>
   
-  <!-- ═══════════════════════════════════
-       DASHBOARD: ASK
-  ═══════════════════════════════════ -->
+  <!-- DASHBOARD: ASK -->
   <div class="screen" id="dashAsk">
     <div class="dashboard-header">
       <div>
@@ -1484,7 +1473,6 @@ let currentScreen = 0;
 // NAVIGATION
 // ════════════════════════════════════════
 function goToScreen(n) {
-  // Save current screen data
   if (currentScreen === 1) {
     S.familyName = document.getElementById('familyName').value.trim();
     S.parentName = document.getElementById('parentName').value.trim();
@@ -1503,27 +1491,21 @@ function goToScreen(n) {
     }
   }
   
-  // Save schedule data before leaving schedule screen
   if (currentScreen === 3) {
     saveScheduleData(activeScheduleIndex);
   }
   
-  // Save emergency contact data before leaving screen 4
   if (currentScreen === 4) {
     S.emergencyName = document.getElementById('emergencyName')?.value?.trim() || '';
     S.emergencyPhone = document.getElementById('emergencyPhone')?.value?.trim() || '';
   }
   
-  // Hide current screen
   document.getElementById(`s${currentScreen}`).classList.remove('active');
   
-  // Show new screen
   currentScreen = n;
   document.getElementById(`s${n}`).classList.add('active');
   
-  // Render dynamic content
   if (n === 2) {
-    // Add Home member if it doesn't exist
     if (!S.members.find(m => m.name === 'Home')) {
       S.members.unshift({
         emoji: '🏠',
@@ -1539,7 +1521,6 @@ function goToScreen(n) {
   if (n === 3) renderScheduleTabs();
   if (n === 7) renderPreview();
   
-  // Scroll to top
   window.scrollTo(0, 0);
 }
 
@@ -1617,7 +1598,7 @@ function renderMembers() {
 }
 
 // ════════════════════════════════════════
-// SCHEDULE TABS WITH DATA PERSISTENCE
+// SCHEDULE TABS
 // ════════════════════════════════════════
 let activeScheduleIndex = 0;
 
@@ -1633,23 +1614,17 @@ function renderScheduleTabs() {
     tabs.appendChild(chip);
   });
   
-  // Load first member's data
   loadScheduleData(0);
 }
 
 function switchScheduleTab(index) {
-  // Save current member's data before switching
   saveScheduleData(activeScheduleIndex);
-  
-  // Switch active tab
   activeScheduleIndex = index;
   
-  // Update UI
   document.querySelectorAll('#scheduleTabs .chip').forEach((c, i) => {
     c.classList.toggle('selected', i === index);
   });
   
-  // Load new member's data
   loadScheduleData(index);
 }
 
@@ -1677,7 +1652,6 @@ function loadScheduleData(index) {
 // BUILDING
 // ════════════════════════════════════════
 async function startBuilding() {
-  // Save household info to Home member before building
   const homeMember = S.members.find(m => m.name === 'Home');
   if (homeMember) {
     const wifi = document.getElementById('wifiPassword')?.value.trim() || '';
@@ -1751,7 +1725,6 @@ function renderPreview() {
     container.appendChild(div);
   });
   
-  // Connected sources
   const sources = document.getElementById('connectedSources');
   sources.innerHTML = '';
   
@@ -1766,7 +1739,6 @@ function renderPreview() {
     });
   }
   
-  // Generate insight
   document.getElementById('firstInsight').textContent = 'Generating your first insight…';
   setTimeout(() => {
     const insights = [
@@ -1777,7 +1749,6 @@ function renderPreview() {
     document.getElementById('firstInsight').textContent = insights[Math.floor(Math.random() * insights.length)];
   }, 2000);
   
-  // Update success message
   const fname = S.familyName ? `the ${S.familyName}` : 'your family';
   document.getElementById('successMsg').textContent = `Your family's info is all in one place for ${fname} — ready to store, share, and organize.`;
   
@@ -1790,21 +1761,17 @@ function renderPreview() {
 // DASHBOARD
 // ════════════════════════════════════════
 function openDashboard() {
-  // Show sign out button
   const signOutBtn = document.getElementById('signOutBtn');
   if (signOutBtn) signOutBtn.style.display = 'inline';
   
-  // Show dashboard
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('dashHome').classList.add('active');
   currentScreen = 'dashHome';
   
-  // Pre-populate Family tab so it's ready when user clicks
   setTimeout(() => {
     renderFamilyMembers();
   }, 100);
   
-  // Populate Folia feed after a delay
   setTimeout(() => {
     populateFoliaFeed();
   }, 1000);
@@ -1943,7 +1910,15 @@ async function handleSignup() {
   S.parentName = name;
   S.parentEmail = email;
   closeAuth();
-  
+
+  // ════════════════════════════════════════
+  // GA EVENT: signup_complete
+  // Fires when a new account is created successfully
+  // ════════════════════════════════════════
+  gtag('event', 'signup_complete', {
+    method: 'email'
+  });
+
   // Check for sitter brief data
   const sitterData = sessionStorage.getItem('sitterBriefData');
   if (sitterData) {
@@ -1998,7 +1973,6 @@ async function loadProfile(userId) {
     const { data, error } = await sb.from('family_profiles').select('*').eq('user_id', userId).single();
     
     if (error || !data) {
-      // Check for invite
       const { data: { user } } = await sb.auth.getUser();
       if (user?.email) {
         const householdId = await checkAndAcceptInvite(user.email, userId);
@@ -2007,12 +1981,10 @@ async function loadProfile(userId) {
           if (loaded) return;
         }
       }
-      // New user
       goToScreen(0);
       return;
     }
     
-    // Load existing profile
     S.familyName = data.family_name || '';
     S.parentName = data.parent_name || '';
     S.members = data.members || [];
@@ -2072,7 +2044,6 @@ async function loadHouseholdProfile(householdId) {
   return true;
 }
 
-// Prefill from sitter brief
 function prefillFromSitterBrief(data) {
   if (data.familyName) {
     S.familyName = data.familyName;
@@ -2106,7 +2077,7 @@ function prefillFromSitterBrief(data) {
 }
 
 // ════════════════════════════════════════
-// FAMILY EDITING FUNCTIONS
+// FAMILY EDITING
 // ════════════════════════════════════════
 let editingMemberIndex = null;
 let editingMemberEmoji = '👩';
@@ -2206,14 +2177,11 @@ async function saveEditedMember() {
   };
   
   if (editingMemberIndex === null) {
-    // Adding new member
     S.members.push(memberData);
   } else {
-    // Editing existing member
     S.members[editingMemberIndex] = memberData;
   }
   
-  // Save to Supabase
   await saveProfileToSupabase();
   
   closeEditMember();
@@ -2266,7 +2234,6 @@ async function askQuestion() {
   
   const messages = document.getElementById('chatMessages');
   
-  // Add user message
   const userMsg = document.createElement('div');
   userMsg.style.cssText = 'background:var(--charcoal); color:var(--white); padding:12px 16px; border-radius:12px; margin-bottom:12px; max-width:80%; margin-left:auto;';
   userMsg.textContent = question;
@@ -2275,7 +2242,6 @@ async function askQuestion() {
   input.value = '';
   messages.scrollTop = messages.scrollHeight;
   
-  // TEMPORARILY DISABLED - Rate limiting not working yet
   setTimeout(() => {
     const botMsg = document.createElement('div');
     botMsg.style.cssText = 'background:var(--amber-lt); border:1px solid var(--amber); padding:12px 16px; border-radius:12px; margin-bottom:12px; max-width:80%;';
@@ -2284,6 +2250,7 @@ async function askQuestion() {
     messages.scrollTop = messages.scrollHeight;
   }, 500);
 }
+
 function buildFamilyContext() {
   let context = `Family Name: ${S.familyName || 'Not provided'}\n\n`;
   
@@ -2318,7 +2285,6 @@ ${S.emergencyName || 'Not provided'} - ${S.emergencyPhone || 'Not provided'}
 ---
 Generated from Folia · withfolia.com`;
 
-  // Try to share via Web Share API
   if (navigator.share) {
     try {
       await navigator.share({
@@ -2333,7 +2299,6 @@ Generated from Folia · withfolia.com`;
     }
   }
   
-  // Fallback: copy to clipboard
   try {
     await navigator.clipboard.writeText(emergencyText);
     alert('✅ Emergency info copied to clipboard!');
@@ -2343,11 +2308,6 @@ Generated from Folia · withfolia.com`;
 }
 
 async function generateSitterBrief() {
-  const children = S.members
-    .filter(m => !['🏠'].includes(m.emoji))
-    .map(m => `${m.name} (${m.role})`)
-    .join(', ');
-  
   const briefText = `SITTER BRIEF - ${S.familyName || 'Family'}
 ${'─'.repeat(50)}
 
@@ -2369,7 +2329,6 @@ ${S.members.find(m => m.name === 'Home')?.notes || 'Not provided'}
 ${'─'.repeat(50)}
 Generated from Folia · withfolia.com`;
 
-  // Try to share via Web Share API
   if (navigator.share) {
     try {
       await navigator.share({
@@ -2384,7 +2343,6 @@ Generated from Folia · withfolia.com`;
     }
   }
   
-  // Fallback: copy to clipboard
   try {
     await navigator.clipboard.writeText(briefText);
     alert('✅ Sitter brief copied to clipboard!');
@@ -2397,10 +2355,8 @@ Generated from Folia · withfolia.com`;
 // INIT
 // ════════════════════════════════════════
 window.addEventListener('load', async () => {
-  // Check for sitter-brief data in URL OR sessionStorage
   const params = new URLSearchParams(window.location.search);
   
-  // First check URL params (direct from sitter-brief, free flow)
   if (params.get('source') === 'sitter-brief') {
     const sitterData = {
       familyName: params.get('familyName') || '',
@@ -2412,12 +2368,6 @@ window.addEventListener('load', async () => {
       notes: params.get('notes') || ''
     };
     sessionStorage.setItem('sitterBriefData', JSON.stringify(sitterData));
-  }
-  
-  // Then check sessionStorage (after Stripe payment redirect)
-  const storedData = sessionStorage.getItem('sitterBriefData');
-  if (storedData) {
-    // Data exists - will be used after signup to prefill
   }
   
   try {

@@ -7,6 +7,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+<!-- ════════════════════════════════════════
+     GOOGLE ANALYTICS 4
+     Measurement ID: G-K7GWVDTDNB
+════════════════════════════════════════ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7GWVDTDNB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7GWVDTDNB');
+</script>
+
 <style>
 :root {
   --cream: #FAF8F3;
@@ -80,9 +93,6 @@ nav {
 }
 .back-link:hover { opacity: 0.6; }
 
-/* ════════════════════════════════════════
-   NEW: LOGIN & PAYWALL BUTTONS IN NAV
-════════════════════════════════════════ */
 .nav-btn {
   background: none;
   border: none;
@@ -514,9 +524,7 @@ textarea {
   margin-top: 12px;
 }
 
-/* ════════════════════════════════════════
-   NEW: UPGRADE PROMPT (for $5 users)
-════════════════════════════════════════ */
+/* Upgrade CTA */
 .upgrade-cta {
   padding: 32px 40px;
   border-top: 1px solid var(--sand);
@@ -598,9 +606,7 @@ footer .logo {
   display: inline-block;
 }
 
-/* ════════════════════════════════════════
-   NEW: MODALS (Paywall + Login)
-════════════════════════════════════════ */
+/* Modals */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -828,7 +834,6 @@ footer .logo {
   <a href="/" class="logo">Folia</a>
   <div class="nav-right">
     <a href="/" class="back-link">← Back to withfolia.com</a>
-    <!-- NEW: Login button for returning users -->
     <button class="nav-btn" id="navLoginBtn" onclick="showLoginModal()" style="display: none;">Sign In</button>
     <button class="nav-btn" id="navSignOutBtn" onclick="handleSignOut()" style="display: none;">Sign Out</button>
   </div>
@@ -925,7 +930,7 @@ footer .logo {
         <button class="btn btn-save" onclick="saveToFolia()">Save to My Folia →</button>
       </div>
       
-      <!-- NEW: Upgrade CTA for $5 users -->
+      <!-- Upgrade CTA for $5 users -->
       <div class="upgrade-cta" id="upgradeCta">
         <div class="upgrade-title">Upgrade to save forever.</div>
         <div class="upgrade-text">$9/month gets you unlimited briefs for all caregiver types, pre-filled forms, and instant regeneration anytime.</div>
@@ -939,7 +944,7 @@ footer .logo {
         <button class="btn btn-save" onclick="saveToFolia()">Create My Folia →</button>
         <div class="save-note">$5 one-time or $9/month to save & regenerate</div>
       </div>
-    </brief>
+    </div>
     
   </div>
 </div>
@@ -961,9 +966,7 @@ footer .logo {
   <p>© 2025 Folia · withfolia.com · Built for families, by people who have them.</p>
 </footer>
 
-<!-- ════════════════════════════════════════
-     NEW: PAYWALL MODAL
-════════════════════════════════════════ -->
+<!-- PAYWALL MODAL -->
 <div class="modal-overlay" id="paywallModal" onclick="if(event.target===this) closePaywall()">
   <div class="modal-card">
     <button class="modal-close" onclick="closePaywall()">×</button>
@@ -988,9 +991,7 @@ footer .logo {
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     NEW: LOGIN MODAL
-════════════════════════════════════════ -->
+<!-- LOGIN MODAL -->
 <div class="modal-overlay" id="loginModal" onclick="if(event.target===this) closeLoginModal()">
   <div class="modal-card">
     <button class="modal-close" onclick="closeLoginModal()">×</button>
@@ -1025,7 +1026,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ════════════════════════════════════════
-// PAYWALL TOGGLE - CHANGE TO TRUE WHEN ATTORNEY APPROVES
+// PAYWALL TOGGLE
 // ════════════════════════════════════════
 const PAYWALL_ENABLED = false;
 
@@ -1042,16 +1043,15 @@ const STRIPE_LINKS = {
 // ════════════════════════════════════════
 let briefImageData = null;
 let currentUser = null;
-let currentTier = 5; // Default tier in paywall
+let currentTier = 5;
 let isLoggedIn = false;
 
 const TODAY = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
 // ════════════════════════════════════════
-// INIT - Check for session & Stripe redirect
+// INIT
 // ════════════════════════════════════════
 window.addEventListener('load', async () => {
-  // Check for Supabase session (logged in user)
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
@@ -1064,23 +1064,30 @@ window.addEventListener('load', async () => {
     console.error('Session check error:', e);
   }
   
-  // Check for Stripe redirect params
   const params = new URLSearchParams(window.location.search);
   const stripeSessionId = params.get('session_id');
   const stripeTier = params.get('tier');
   
   if (stripeSessionId && stripeTier) {
-    // Store Stripe session for later use
     sessionStorage.setItem('stripeSessionId', stripeSessionId);
     sessionStorage.setItem('stripeTier', stripeTier);
-    
-    // Clean up URL (remove query params)
+
+    // ════════════════════════════════════════
+    // GA EVENT: payment_complete
+    // Fires when user returns from Stripe with a session_id
+    // ════════════════════════════════════════
+    gtag('event', 'payment_complete', {
+      tier: stripeTier,
+      value: stripeTier === '9' ? 9 : 5,
+      currency: 'USD'
+    });
+
     window.history.replaceState({}, document.title, '/sitter-brief');
   }
 });
 
 // ════════════════════════════════════════
-// NAVIGATION - Login/Logout buttons
+// NAVIGATION
 // ════════════════════════════════════════
 function showSignOutBtn() {
   document.getElementById('navSignOutBtn').style.display = 'inline-block';
@@ -1104,7 +1111,7 @@ async function handleSignOut() {
 }
 
 // ════════════════════════════════════════
-// PREFILL FROM SUPABASE (if logged in)
+// PREFILL FROM SUPABASE
 // ════════════════════════════════════════
 async function prefillFromSupabase() {
   try {
@@ -1116,7 +1123,6 @@ async function prefillFromSupabase() {
     
     if (error || !data) return;
     
-    // Prefill form with saved data
     document.getElementById('familyName').value = data.family_name || '';
     document.getElementById('familyEmail').value = currentUser.email || '';
     document.getElementById('children').value = data.members
@@ -1125,7 +1131,6 @@ async function prefillFromSupabase() {
       .join(', ') || '';
     document.getElementById('emergency').value = data.emergency_phone || '';
     
-    // Store full data for regeneration
     window.savedFamilyData = data;
   } catch(e) {
     console.error('Prefill error:', e);
@@ -1226,19 +1231,15 @@ async function generateBrief() {
     return;
   }
   
-  // Show generating state
   document.getElementById('placeholder').style.display = 'none';
   document.getElementById('generating').classList.add('active');
   document.getElementById('brief').classList.remove('active');
   
-  // Store data for later use
   window.briefData = { familyName, email, children, parents, emergency, notes };
   
-  // Set header info
   document.getElementById('briefTitle').textContent = `${familyName} — Sitter Brief`;
   document.getElementById('briefDate').textContent = `Generated ${TODAY}`;
   
-  // Check if testing locally
   const isLocal = window.location.hostname === '' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
   
   if (isLocal) {
@@ -1248,7 +1249,6 @@ async function generateBrief() {
     return;
   }
   
-  // Build prompt
   const prompt = `Create a warm, practical sitter brief for ${familyName}. Remember: no markdown formatting whatsoever. No #, **, *, or bullet points. Plain text only with ALL CAPS headers and dash lines.
 
 Details provided:
@@ -1292,7 +1292,6 @@ Write as if the family wrote it themselves.`;
     
     showBrief(briefText);
     
-    // Send to Klaviyo
     if (email) {
       try {
         fetch('/.netlify/functions/klaviyo', {
@@ -1309,34 +1308,42 @@ Write as if the family wrote it themselves.`;
   }
 }
 
-// Show Brief
+// ════════════════════════════════════════
+// SHOW BRIEF
+// ════════════════════════════════════════
 async function showBrief(text) {
   document.getElementById('generating').classList.remove('active');
   document.getElementById('briefBody').textContent = text;
   document.getElementById('brief').classList.add('active');
-  
-  // Check if this was a Stripe payment
+
+  // ════════════════════════════════════════
+  // GA EVENT: brief_completed
+  // Fires every time a brief is successfully shown
+  // ════════════════════════════════════════
   const stripeTier = sessionStorage.getItem('stripeTier');
-  const stripeSessionId = sessionStorage.getItem('stripeSessionId');
-  
-  // Only show upgrade CTA if paywall is enabled AND tier is $5
+  gtag('event', 'brief_completed', {
+    family_name: window.briefData?.familyName || 'unknown',
+    paid: !!stripeTier,
+    tier: stripeTier || 'free'
+  });
+
   if (PAYWALL_ENABLED && stripeTier === '5') {
     document.getElementById('upgradeCta').classList.add('active');
   } else {
     document.getElementById('upgradeCta').classList.remove('active');
   }
   
-  // Generate image version
   const familyName = window.briefData?.familyName || 'Your Family';
   briefImageData = await generateBriefImage(text, familyName);
   
-  // Scroll to output on mobile
   if (window.innerWidth <= 900) {
     document.getElementById('brief').scrollIntoView({ behavior: 'smooth' });
   }
 }
 
-// Fallback Brief
+// ════════════════════════════════════════
+// FALLBACK BRIEF
+// ════════════════════════════════════════
 function fallbackBrief(name, children, emergency, notes) {
   const dash = '─'.repeat(42);
   let out = `WELCOME & OVERVIEW\n${dash}\nWelcome, and thank you for being here!\n\n`;
@@ -1347,7 +1354,9 @@ function fallbackBrief(name, children, emergency, notes) {
   return out;
 }
 
-// Generate Brief Image
+// ════════════════════════════════════════
+// GENERATE BRIEF IMAGE
+// ════════════════════════════════════════
 async function generateBriefImage(briefText, familyName) {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
@@ -1355,69 +1364,109 @@ async function generateBriefImage(briefText, familyName) {
     canvas.height = 1920;
     const ctx = canvas.getContext('2d');
     
-    // Background
-    ctx.fillStyle = '#FAF8F3';
+    const colors = {
+      cream: '#FAF8F3',
+      sand: '#EDE8DC',
+      stone: '#B8A490',
+      bark: '#6B5D52',
+      charcoal: '#2C2520',
+      terracotta: '#C17F5D',
+      white: '#FFFFFF',
+      sage: '#8B9B82'
+    };
+    
+    ctx.fillStyle = colors.cream;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Header
-    ctx.fillStyle = '#2C2520';
-    ctx.fillRect(0, 0, canvas.width, 320);
+    ctx.fillStyle = colors.charcoal;
+    ctx.fillRect(0, 0, canvas.width, 380);
     
-    // Logo
-    ctx.fillStyle = '#B8A490';
-    ctx.font = 'italic 52px serif';
-    ctx.fillText('Folia', 60, 110);
+    ctx.fillStyle = colors.terracotta;
+    ctx.fillRect(0, 365, canvas.width, 15);
     
-    // Title
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = '600 56px serif';
-    const titleLines = wrapTextToLines(ctx, `${familyName} — Sitter Brief`, 960);
-    let titleY = 190;
-    titleLines.forEach(line => {
-      ctx.fillText(line, 60, titleY);
-      titleY += 65;
+    ctx.fillStyle = colors.terracotta;
+    ctx.font = 'italic 24px serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Made with', 60, 70);
+    
+    ctx.fillStyle = colors.white;
+    ctx.font = 'italic 600 64px serif';
+    ctx.fillText('Folia', 60, 140);
+    
+    ctx.fillStyle = colors.white;
+    ctx.font = '600 72px serif';
+    ctx.textAlign = 'left';
+    const familyNameLines = wrapTextToLines(ctx, familyName, 900);
+    let familyY = 240;
+    familyNameLines.forEach(line => {
+      ctx.fillText(line, 60, familyY);
+      familyY += 85;
     });
     
-    // Date
-    ctx.fillStyle = '#B8A490';
+    ctx.fillStyle = colors.stone;
     ctx.font = '300 28px sans-serif';
-    ctx.fillText('Generated today', 60, titleY + 20);
+    ctx.fillText('Sitter Brief', 60, familyY + 30);
     
-    // Content
     const sections = briefText.split(/\n(?=[A-Z\s]{3,}\n─)/);
-    let y = 400;
-    const maxY = 1850;
+    let y = 420;
+    const maxY = 1780;
+    const lineHeight = 42;
+    const sectionHeaderSize = 28;
+    const bodySize = 30;
     
-    sections.forEach(section => {
+    sections.forEach((section, sectionIndex) => {
       if (!section.trim() || y > maxY) return;
       const lines = section.split('\n');
+      
+      if (sectionIndex > 0) {
+        y += 20;
+      }
       
       lines.forEach(line => {
         if (y > maxY) return;
         
         if (line.match(/^[A-Z\s&]{3,}$/)) {
-          y += 45;
+          y += 30;
           if (y > maxY) return;
-          ctx.fillStyle = '#6B5D52';
-          ctx.font = '600 26px sans-serif';
-          ctx.fillText(line, 60, y);
-          y += 15;
-        } else if (!line.match(/^─+$/)) {
+          
+          ctx.fillStyle = colors.sand;
+          ctx.fillRect(40, y - 22, canvas.width - 80, 36);
+          
+          ctx.fillStyle = colors.charcoal;
+          ctx.font = 'bold 600 ' + sectionHeaderSize + 'px sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText(line, 60, y + 6);
+          
+          y += lineHeight - 10;
+        } 
+        else if (!line.match(/^─+$/)) {
           if (line.trim()) {
-            y += 38;
+            y += 10;
             if (y > maxY) return;
-            ctx.fillStyle = '#6B5D52';
-            ctx.font = '300 30px sans-serif';
-            const wrappedLines = wrapTextToLines(ctx, line, 960);
-            wrappedLines.forEach(wrappedLine => {
+            
+            ctx.fillStyle = colors.bark;
+            ctx.font = '300 ' + bodySize + 'px sans-serif';
+            ctx.textAlign = 'left';
+            
+            const wrappedLines = wrapTextToLines(ctx, line, 920);
+            wrappedLines.forEach((wrappedLine) => {
               if (y > maxY) return;
               ctx.fillText(wrappedLine, 60, y);
-              y += 44;
+              y += lineHeight;
             });
           }
         }
       });
     });
+    
+    const footerY = 1850;
+    ctx.fillStyle = colors.sand;
+    ctx.fillRect(0, footerY - 20, canvas.width, 70);
+    
+    ctx.fillStyle = colors.bark;
+    ctx.font = '300 24px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Made with Folia · withfolia.com', canvas.width / 2, footerY + 20);
     
     resolve(canvas.toDataURL('image/png'));
   });
@@ -1475,7 +1524,6 @@ async function shareBrief() {
     }
   }
   
-  // Fallback: download
   const link = document.createElement('a');
   link.download = 'sitter-brief.png';
   link.href = briefImageData;
@@ -1495,7 +1543,7 @@ function printBrief() {
 }
 
 // ════════════════════════════════════════
-// SAVE TO FOLIA (routing based on tier)
+// SAVE TO FOLIA
 // ════════════════════════════════════════
 function saveToFolia() {
   const data = window.briefData;
@@ -1505,11 +1553,7 @@ function saveToFolia() {
     return;
   }
   
-  // ════════════════════════════════════════
-  // PAYWALL CHECK - If disabled, skip straight to free beta path
-  // ════════════════════════════════════════
   if (!PAYWALL_ENABLED) {
-    // Free beta path: bypass paywall, go to folia.html
     sessionStorage.setItem('sitterBriefData', JSON.stringify(data));
     
     const params = new URLSearchParams();
@@ -1525,19 +1569,13 @@ function saveToFolia() {
     return;
   }
   
-  // ════════════════════════════════════════
-  // PAYWALL ENABLED - Check if this was a Stripe payment
-  // ════════════════════════════════════════
   const stripeTier = sessionStorage.getItem('stripeTier');
   const stripeSessionId = sessionStorage.getItem('stripeSessionId');
   
-  // $9 tier: MUST create account
   if (stripeTier === '9') {
-    // Store brief data in sessionStorage so it's available after signup
     sessionStorage.setItem('sitterBriefData', JSON.stringify(data));
     sessionStorage.setItem('paymentTier', '9');
     
-    // Go to signup on folia.html
     const params = new URLSearchParams();
     params.set('source', 'sitter-brief');
     params.set('tier', '9');
@@ -1552,13 +1590,10 @@ function saveToFolia() {
     return;
   }
   
-  // $5 tier: optional signup (or just free beta path)
   if (stripeTier === '5') {
-    // Store brief data in sessionStorage
     sessionStorage.setItem('sitterBriefData', JSON.stringify(data));
     sessionStorage.setItem('paymentTier', '5');
     
-    // Go to signup on folia.html
     const params = new URLSearchParams();
     params.set('source', 'sitter-brief');
     params.set('tier', '5');
@@ -1573,12 +1608,11 @@ function saveToFolia() {
     return;
   }
   
-  // No payment yet: show paywall
   showPaywall();
 }
 
 // ════════════════════════════════════════
-// UPGRADE NOW (for $5 users)
+// UPGRADE
 // ════════════════════════════════════════
 function upgradeNow() {
   currentTier = 9;
