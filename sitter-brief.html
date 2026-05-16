@@ -1152,10 +1152,10 @@ window.addEventListener('load', async () => {
         // Clear the saved data (we only need it once)
         localStorage.removeItem('pendingBriefData');
         
-        // Auto-generate brief after a short delay (gives page time to render)
-        setTimeout(() => {
-          generateBrief();
-        }, 300);
+       // Auto-generate brief after a short delay (gives page time to render)
+setTimeout(async () => {
+  await generateBrief();
+}, 300);
       } catch (err) {
         console.error('Error restoring form data:', err);
       }
