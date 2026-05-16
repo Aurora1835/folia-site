@@ -1077,6 +1077,8 @@ async function saveSubscription(userId, tier, sessionId, customerEmail) {
 // INIT
 // ════════════════════════════════════════
 window.addEventListener('load', async () => {
+  console.log('=== LOAD EVENT FIRED ===');
+  
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
@@ -1093,9 +1095,13 @@ window.addEventListener('load', async () => {
   const stripeSessionId = params.get('session_id');
   const stripeTier = params.get('tier');
   
+  console.log('URL Params:', { stripeSessionId, stripeTier });
+  
   if (stripeSessionId && stripeTier) {
-    // Verify payment with Stripe before saving anything
+    console.log('Stripe params found, verifying payment...');
+    
     const verification = await verifyStripePayment(stripeSessionId);
+    console.log('Verification result:', verification);
 
     if (!verification.valid) {
       console.warn('Payment verification failed:', verification.reason);
@@ -1104,12 +1110,11 @@ window.addEventListener('load', async () => {
       return;
     }
 
-    // Payment verified. Save to sessionStorage
     sessionStorage.setItem('stripeSessionId', stripeSessionId);
     sessionStorage.setItem('stripeTier', stripeTier);
     sessionStorage.setItem('stripeCustomerEmail', verification.customer_email || '');
+    console.log('SessionStorage set. stripeTier =', stripeTier);
 
-    // If user is logged in, save subscription to Supabase
     if (currentUser) {
       const saved = await saveSubscription(
         currentUser.id,
@@ -1123,13 +1128,55 @@ window.addEventListener('load', async () => {
       }
     }
 
-    // GA EVENT: payment_verified
     gtag('event', 'payment_verified', {
       tier: verification.tier,
       value: verification.tier === 9 ? 9 : 5,
       currency: 'USD',
       session_id: stripeSessionId
     });
+
+    window.history.replaceState({}, document.title, '/sitter-brief');
+
+    // ════════════════════════════════════════
+    // RESTORE FORM DATA and AUTO-GENERATE BRIEF
+    // ════════════════════════════════════════
+    console.log('Checking for pendingBriefData in localStorage...');
+    const pendingBriefData = localStorage.getItem('pendingBriefData');
+    console.log('pendingBriefData:', pendingBriefData);
+    
+    if (pendingBriefData) {
+      try {
+        const formData = JSON.parse(pendingBriefData);
+        console.log('Parsed formData:', formData);
+        
+        // Restore form fields
+        document.getElementById('familyName').value = formData.familyName || '';
+        document.getElementById('familyEmail').value = formData.familyEmail || '';
+        document.getElementById('children').value = formData.children || '';
+        document.getElementById('parents').value = formData.parents || '';
+        document.getElementById('emergency').value = formData.emergency || '';
+        document.getElementById('notes').value = formData.notes || '';
+        
+        console.log('Form fields restored. familyName:', document.getElementById('familyName').value);
+        
+        localStorage.removeItem('pendingBriefData');
+        
+        // Auto-generate brief after a short delay
+        console.log('Setting timeout for auto-generate (300ms)...');
+        setTimeout(() => {
+          console.log('TIMEOUT FIRED - Calling generateBrief()');
+          generateBrief();
+        }, 300);
+      } catch (err) {
+        console.error('Error restoring form data:', err);
+      }
+    } else {
+      console.warn('No pendingBriefData found in localStorage!');
+    }
+  } else {
+    console.log('No Stripe params found, normal page load');
+  }
+});
 
     // Clean URL
     window.history.replaceState({}, document.title, '/sitter-brief');
