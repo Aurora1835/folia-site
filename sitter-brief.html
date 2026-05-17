@@ -1254,34 +1254,14 @@ async function proceedToPayment() {
       notes: document.getElementById('notes').value.trim()
     };
     
-    // Save to BOTH localStorage and sessionStorage (belt and suspenders)
+    // Save form data for after payment
     localStorage.setItem('pendingBriefData', JSON.stringify(formData));
     sessionStorage.setItem('pendingBriefData', JSON.stringify(formData));
     
     closePaywall();
     
-    // Create Stripe Checkout Session via Netlify function
-    try {
-      const response = await fetch('/.netlify/functions/create-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier: currentTier })
-      });
-      
-      const data = await response.json();
-      
-      if (data.url) {
-        // Redirect to Stripe Checkout
-        window.location.href = data.url;
-      } else {
-        alert('Failed to create checkout session. Please try again.');
-        showPaywall();
-      }
-    } catch (error) {
-      console.error('Checkout error:', error);
-      alert('Payment system error. Please try again.');
-      showPaywall();
-    }
+    // Redirect to pre-made Stripe checkout link
+    window.location.href = STRIPE_LINKS[currentTier];
   }
 }
 
