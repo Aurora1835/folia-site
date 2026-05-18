@@ -1141,7 +1141,7 @@ window.addEventListener('load', async () => {
       // ════════════════════════════════════════
       // RESTORE FORM DATA FROM sessionStorage
       // ════════════════════════════════════════
-      const savedFormData = sessionStorage.getItem('briefFormData');
+   const savedFormData = localStorage.getItem('briefFormData');
       console.log('📝 Saved form data:', savedFormData ? 'found' : 'NOT FOUND');
       
       if (savedFormData) {
@@ -1295,7 +1295,7 @@ async function proceedToPayment() {
     console.log('💾 Saving form data to sessionStorage:', formData);
     
     // CRITICAL: Save form data BEFORE redirecting
-    sessionStorage.setItem('briefFormData', JSON.stringify(formData));
+   localStorage.setItem('briefFormData', JSON.stringify(formData));
     
     closePaywall();
     
