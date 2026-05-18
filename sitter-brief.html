@@ -1293,7 +1293,15 @@ async function proceedToPayment() {
     };
     
     console.log('💾 Saving form data to sessionStorage:', formData);
-    
+    console.log('FORM VALUES AT SAVE TIME:', {
+  familyName: document.getElementById('familyName').value,
+  familyEmail: document.getElementById('familyEmail').value,
+  children: document.getElementById('children').value,
+  parents: document.getElementById('parents').value,
+  emergency: document.getElementById('emergency').value,
+  notes: document.getElementById('notes').value
+});
+
     // CRITICAL: Save form data BEFORE redirecting
    localStorage.setItem('briefFormData', JSON.stringify(formData));
     
