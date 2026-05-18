@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sitter Brief Generator — Folia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7GWVDTDNB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7GWVDTDNB');
+</script>
+
+<style>
+:root {
+  --cream: #FAF8F3;
+  --sand: #EDE8DC;
+  --stone: #B8A490;
+  --bark: #6B5D52;
+  --charcoal: #2C2520;
+  --sage: #8B9B82;
+  --sage-lt: #E8EDE5;
+  --terracotta: #C17F5D;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Work Sans', sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03' /%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+nav {
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--stone);
+  background: rgba(250,248,243,0.95);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo { font-family: 'Crimson Pro', serif; font-size: 28px; font-weight: 600; font-style: italic; color: var(--bark); text-decoration: none; letter-spacing: -0.5px; }
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.back-link { font-size: 14px; color: var(--bark); text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.3s; }
+.back-link:hover { opacity: 0.6; }
+.nav-btn { background: none; border: none; font-size: 13px; color: var(--bark); text-decoration: none; letter-spacing: 0.5px; cursor: pointer; transition: color 0.3s; font-family: 'Work Sans', sans-serif; font-weight: 500; }
+.nav-btn:hover { color: var(--charcoal); }
+
+.hero { padding: 80px 48px 60px; max-width: 600px; margin: 0 auto; text-align: center; }
+.badge { display: inline-block; padding: 6px 16px; background: var(--sage-lt); color: var(--sage); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; border-radius: 20px; margin-bottom: 24px; }
+h1 { font-family: 'Crimson Pro', serif; font-size: clamp(40px, 5vw, 64px); font-weight: 400; line-height: 1.1; margin-bottom: 20px; color: var(--charcoal); }
+h1 em { font-style: italic; font-weight: 600; color: var(--terracotta); }
+.subtitle { font-size: 18px; color: var(--bark); font-weight: 300; max-width: 500px; margin: 0 auto 60px; line-height: 1.7; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 48px 100px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.input-section { position: sticky; top: 120px; }
+.input-card { background: var(--white); border: 1px solid var(--stone); border-radius: 12px; padding: 40px; box-shadow: 0 4px 24px rgba(44,37,32,0.06); }
+.field { margin-bottom: 24px; }
+label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--bark); margin-bottom: 8px; }
+.optional { color: var(--stone); font-size: 11px; font-weight: 400; letter-spacing: 1px; text-transform: lowercase; }
+input, textarea { width: 100%; padding: 14px 18px; border: 2px solid var(--sand); border-radius: 8px; background: var(--cream); font-family: 'Work Sans', sans-serif; font-size: 15px; color: var(--charcoal); transition: all 0.3s; outline: none; }
+input:focus, textarea:focus { border-color: var(--terracotta); background: var(--white); box-shadow: 0 0 0 4px rgba(193,127,93,0.1); }
+textarea { resize: vertical; min-height: 100px; line-height: 1.6; font-size: 14px; }
+.btn-generate { width: 100%; padding: 18px; background: var(--charcoal); color: var(--white); border: none; border-radius: 8px; font-family: 'Work Sans', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-top: 8px; }
+.btn-generate:hover { background: var(--terracotta); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(193,127,93,0.3); }
+.btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.output-section { min-height: 600px; }
+.placeholder { background: var(--white); border: 2px dashed var(--stone); border-radius: 12px; padding: 80px 40px; text-align: center; min-height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.placeholder-icon { font-size: 64px; margin-bottom: 24px; opacity: 0.3; }
+.placeholder-title { font-family: 'Crimson Pro', serif; font-size: 28px; font-weight: 400; font-style: italic; color: var(--stone); margin-bottom: 12px; }
+.placeholder-text { font-size: 15px; color: var(--stone); font-weight: 300; }
+
+.generating { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px; text-align: center; min-height: 600px; }
+.generating.active { display: flex; }
+.gen-icon { font-size: 56px; margin-bottom: 32px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.gen-title { font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 400; color: var(--charcoal); margin-bottom: 12px; }
+.gen-subtitle { font-size: 16px; color: var(--bark); font-weight: 300; margin-bottom: 32px; }
+.dots { display: flex; gap: 8px; }
+.dots span { width: 10px; height: 10px; background: var(--terracotta); border-radius: 50%; animation: pulse 1.4s ease-in-out infinite; }
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse { 0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
+
+.brief { display: none; background: var(--white); border: 1px solid var(--stone); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(44,37,32,0.08); }
+.brief.active { display: block; animation: slideUp 0.5s ease-out; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.brief-header { background: var(--charcoal); padding: 40px; }
+.brief-logo { font-family: 'Crimson Pro', serif; font-size: 18px; font-weight: 600; font-style: italic; color: var(--stone); margin-bottom: 8px; }
+.brief-title { font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 600; color: var(--white); line-height: 1.2; margin-bottom: 8px; }
+.brief-date { font-size: 13px; color: var(--stone); letter-spacing: 0.5px; }
+.brief-body { padding: 40px; font-size: 15px; color: var(--bark); line-height: 1.85; white-space: pre-wrap; max-height: 600px; overflow-y: auto; }
+.brief-disclaimer { padding: 24px 40px; border-top: 1px solid var(--sand); background: var(--sage-lt); }
+.disclaimer-text { font-size: 11px; color: var(--bark); line-height: 1.6; text-align: center; }
+.disclaimer-text strong { color: var(--charcoal); font-weight: 600; }
+.brief-actions { padding: 32px 40px; border-top: 1px solid var(--sand); display: flex; flex-direction: column; gap: 12px; }
+
+.btn { padding: 16px 24px; border-radius: 8px; font-family: 'Work Sans', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.5px; text-align: center; cursor: pointer; transition: all 0.3s; border: none; text-decoration: none; display: block; }
+.btn-primary { background: var(--terracotta); color: var(--white); }
+.btn-primary:hover { background: var(--bark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(107,93,82,0.3); }
+.btn-secondary { background: transparent; color: var(--bark); border: 2px solid var(--sand); }
+.btn-secondary:hover { border-color: var(--stone); background: var(--sand); }
+.btn-save { background: var(--charcoal); color: var(--white); }
+.btn-save:hover { background: var(--terracotta); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(193,127,93,0.3); }
+
+.features { background: var(--charcoal); padding: 60px 48px; text-align: center; }
+.features-title { font-family: 'Crimson Pro', serif; font-size: 24px; font-weight: 400; font-style: italic; color: var(--stone); margin-bottom: 32px; }
+.features-grid { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.feature-chip { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 12px 24px; font-size: 14px; color: var(--stone); }
+
+footer { padding: 40px 48px; border-top: 1px solid var(--stone); text-align: center; font-size: 13px; color: var(--stone); }
+footer .logo { font-size: 20px; margin-bottom: 12px; display: inline-block; }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(44,37,32,0.8); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 24px; overflow-y: auto; }
+.modal-overlay.open { display: flex; }
+.modal-card { background: var(--white); border: 1px solid var(--stone); border-radius: 12px; padding: 40px 36px; max-width: 420px; width: 100%; animation: slideUp 0.3s ease-out; max-height: 90vh; overflow-y: auto; margin: auto; }
+.modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border: none; background: transparent; font-size: 24px; color: var(--stone); cursor: pointer; transition: color 0.2s; }
+.modal-close:hover { color: var(--charcoal); }
+.modal-title { font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 600; font-style: italic; color: var(--charcoal); text-align: center; margin-bottom: 8px; }
+.modal-subtitle { font-size: 14px; color: var(--stone); text-align: center; margin-bottom: 32px; }
+.tier-buttons { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.tier-btn { padding: 20px; border: 2px solid var(--sand); border-radius: 8px; background: var(--white); cursor: pointer; transition: all 0.2s; text-align: left; font-family: 'Work Sans', sans-serif; }
+.tier-btn:hover { border-color: var(--terracotta); background: var(--cream); }
+.tier-btn.selected { border-color: var(--terracotta); background: rgba(193,127,93,0.1); }
+.tier-price { font-size: 24px; font-weight: 600; color: var(--charcoal); margin-bottom: 4px; }
+.tier-desc { font-size: 13px; color: var(--bark); }
+
+@media (max-width: 900px) {
+  .container { grid-template-columns: 1fr; gap: 40px; padding: 0 24px 80px; }
+  .input-section { position: static; }
+  .hero { padding: 60px 24px 40px; }
+  nav { padding: 20px 24px; }
+  .input-card, .brief-header, .brief-body, .brief-actions { padding: 32px 24px; }
+}
+
+@media print {
+  nav, .brief-actions, .features, footer { display: none !important; }
+  body { background: white !important; }
+  .brief { box-shadow: none !important; border: none !important; }
+  .brief-body { max-height: none !important; overflow: visible !important; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Folia</a>
+  <div class="nav-right">
+    <a href="/" class="back-link">← Back to withfolia.com</a>
+    <button class="nav-btn" id="navLoginBtn" onclick="showLoginModal()" style="display: none;">Sign In</button>
+    <button class="nav-btn" id="navSignOutBtn" onclick="handleSignOut()" style="display: none;">Sign Out</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="badge">$5 One-Time · $9/Month</div>
+  <h1>Text your sitter<br><em>everything she needs,</em><br>in two minutes.</h1>
+  <p class="subtitle">No sign-up. No data stored. Download, text, done.</p>
+</div>
+
+<div class="container">
+  <div class="input-section">
+    <div class="input-card">
+      <div class="field"><label>Family Name</label><input type="text" id="familyName" placeholder="e.g. The Ashfords"></div>
+      <div class="field"><label>Your Email</label><input type="email" id="familyEmail" placeholder="your@email.com"></div>
+      <div class="field"><label>Children — Names & Ages</label><input type="text" id="children" placeholder="e.g. Nora age 11, Ben age 7"></div>
+      <div class="field"><label>Parents / Caregivers <span class="optional">(optional)</span></label><input type="text" id="parents" placeholder="e.g. Mom: Sarah · Dad: Mike"></div>
+      <div class="field"><label>Emergency Contact</label><input type="text" id="emergency" placeholder="Name and phone number"></div>
+      <div class="field"><label>Anything Else the Sitter Should Know <span class="optional">(optional)</span></label><textarea id="notes" placeholder="Bedtime routines, pet info, house rules, wifi password…"></textarea></div>
+      <button class="btn-generate" id="generateBtn" onclick="generateBrief()">Generate My Brief →</button>
+    </div>
+  </div>
+  
+  <div class="output-section">
+    <div class="placeholder" id="placeholder">
+      <div class="placeholder-icon">📋</div>
+      <div class="placeholder-title">Your sitter brief will appear here</div>
+      <div class="placeholder-text">Fill in your details and click Generate</div>
+    </div>
+    
+    <div class="generating" id="generating">
+      <div class="gen-icon" id="genIcon">✨</div>
+      <div class="gen-title" id="genTitle">Creating your brief...</div>
+      <div class="gen-subtitle" id="genSubtitle">Folia is putting together everything your sitter needs to know.</div>
+      <div class="dots" id="genDots"><span></span><span></span><span></span></div>
+    </div>
+    
+    <div class="brief" id="brief">
+      <div class="brief-header">
+        <div class="brief-logo">Folia</div>
+        <div class="brief-title" id="briefTitle">Sitter Brief</div>
+        <div class="brief-date" id="briefDate"></div>
+      </div>
+      <div class="brief-body" id="briefBody"></div>
+      <div class="brief-disclaimer">
+        <div class="disclaimer-text"><strong>Disclaimer:</strong> This brief is provided for organizational purposes. Parents/guardians are responsible for ensuring all information is current and accurate. For medical questions or emergencies, call 911 and contact the parents immediately.</div>
+      </div>
+      <div class="brief-actions">
+        <button class="btn btn-primary" onclick="shareBrief()">Text My Sitter →</button>
+        <button class="btn btn-secondary" onclick="printBrief()">Download PDF</button>
+        <button class="btn btn-save" onclick="saveToFolia()">Save to My Folia →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="features-title">What your sitter brief will include</div>
+  <div class="features-grid">
+    <div class="feature-chip">👶 Children's profiles</div>
+    <div class="feature-chip">⏰ Schedules & routines</div>
+    <div class="feature-chip">📞 Emergency contacts</div>
+    <div class="feature-chip">🐾 Pet care</div>
+    <div class="feature-chip">🏠 House rules</div>
+    <div class="feature-chip">📶 Wifi & essentials</div>
+  </div>
+</div>
+
+<footer>
+  <a href="/" class="logo">Folia</a>
+  <p>© 2025 Folia · withfolia.com · Built for families, by people who have them.</p>
+</footer>
+
+<div class="modal-overlay" id="paywallModal" onclick="if(event.target===this) closePaywall()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closePaywall()">×</button>
+    <div class="modal-title">Use it once or save it?</div>
+    <div class="modal-subtitle">Both work perfectly. Pick what fits you.</div>
+    <div class="tier-buttons">
+      <button class="tier-btn selected" id="tier5Btn" onclick="selectTier(5)">
+        <div class="tier-price">$5</div>
+        <div class="tier-desc">One brief — Download & share with your sitter. That's it.</div>
+      </button>
+      <button class="tier-btn" id="tier9Btn" onclick="selectTier(9)">
+        <div class="tier-price">$9/month</div>
+        <div class="tier-desc">Save & reuse — Your family's info is saved. Generate new briefs anytime. Update information whenever you need to.</div>
+      </button>
+    </div>
+    <button class="btn btn-primary" onclick="proceedToPayment()">Continue to Payment →</button>
+    <button class="btn btn-secondary" onclick="closePaywall()">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="upgradeModal" onclick="if(event.target===this) closeUpgradeModal()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeUpgradeModal()">×</button>
+    <div class="modal-title">Want to save this?</div>
+    <div class="modal-subtitle">Your family's info, always in your pocket.</div>
+    <div style="background: var(--sage-lt); border: 1px solid var(--sage); border-radius: 8px; padding: 20px; margin-bottom: 24px; font-size: 14px; color: var(--bark); line-height: 1.6;">
+      <strong>With $9/month:</strong><br>
+      ✓ Save your family's complete profile<br>
+      ✓ Generate unlimited briefs anytime<br>
+      ✓ Edit & update information instantly<br>
+      ✓ No re-entering data next time
+    </div>
+    <button class="btn btn-primary" onclick="upgradeFrom5()">Upgrade to $9/Month →</button>
+    <button class="btn btn-secondary" onclick="closeUpgradeModal()">Not Now</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fbjkeivlabzwpgghxkjh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiamtlaXZsYWJ6d3BnZ2h4a2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTk1NzksImV4cCI6MjA5MDUzNTU3OX0.5zUaWA80VhnrlUBk7-yknfUmCzQtWtqP6B3IOErm3kQ';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const PAYWALL_ENABLED = true;
+const STRIPE_LINKS = {
+  5: 'https://buy.stripe.com/test_00w9AM4KUgVrfuE7Ft53O00',
+  9: 'https://buy.stripe.com/test_bJedR23GQ0Wtcis9NB53O01'
+};
+
+let briefImageData = null;
+let currentUser = null;
+let currentTier = 5;
+let isLoggedIn = false;
+const TODAY = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+async function verifyStripePayment(sessionId) {
+  try {
+    const res = await fetch('/.netlify/functions/verify-stripe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId })
+    });
+    const data = await res.json();
+    console.log('✅ Verification result:', data);
+    return data;
+  } catch (err) {
+    console.error('❌ Verification error:', err);
+    return { valid: false, error: err.message };
+  }
+}
+
+async function saveSubscription(userId, tier, sessionId, customerEmail) {
+  try {
+    const { error } = await sb.from('subscriptions').insert({
+      user_id: userId,
+      tier: tier,
+      stripe_session_id: sessionId,
+      customer_email: customerEmail,
+      status: 'active'
+    });
+    if (error) {
+      console.error('Subscription save error:', error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('Save subscription error:', err);
+    return false;
+  }
+}
+
+window.addEventListener('load', async () => {
+  console.log('🔥 WINDOW LOAD FIRED');
+  console.log('📍 Current URL:', window.location.href);
+  
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      currentUser = session.user;
+      isLoggedIn = true;
+      showSignOutBtn();
+    }
+  } catch(e) {
+    console.error('Session check error:', e);
+  }
+  
+  const params = new URLSearchParams(window.location.search);
+  const stripeSessionId = params.get('session_id');
+  console.log('🔎 Looking for session_id in URL:', stripeSessionId ? '✅ FOUND: ' + stripeSessionId : '❌ NOT FOUND');
+  
+  if (stripeSessionId) {
+    console.log('🔙 Returning from Stripe with session_id:', stripeSessionId);
+    const verification = await verifyStripePayment(stripeSessionId);
+    
+    if (verification.valid) {
+      const stripeTier = String(verification.tier);
+      console.log('✅ Payment valid! Tier:', stripeTier);
+      sessionStorage.setItem('stripeTier', stripeTier);
+      sessionStorage.setItem('stripeSessionId', stripeSessionId);
+      sessionStorage.setItem('stripeCustomerEmail', verification.customer_email || '');
+      
+      if (currentUser) {
+        const saved = await saveSubscription(currentUser.id, stripeTier, stripeSessionId, verification.customer_email);
+        if (saved) console.log('✅ Subscription saved to Supabase');
+      }
+      
+      gtag('event', 'payment_verified', {
+        tier: stripeTier,
+        value: stripeTier === '9' ? 9 : 5,
+        currency: 'USD',
+        session_id: stripeSessionId
+      });
+      
+      window.history.replaceState({}, document.title, '/sitter-brief');
+      
+      const savedFormData = sessionStorage.getItem('briefFormData');
+      console.log('📝 Looking for saved form data in sessionStorage:', savedFormData ? '✅ FOUND' : '❌ NOT FOUND');
+      
+      if (savedFormData) {
+        try {
+          const formData = JSON.parse(savedFormData);
+          console.log('📝 Form data:', formData);
+          
+          document.getElementById('familyName').value = formData.familyName || '';
+          document.getElementById('familyEmail').value = formData.familyEmail || '';
+          document.getElementById('children').value = formData.children || '';
+          document.getElementById('parents').value = formData.parents || '';
+          document.getElementById('emergency').value = formData.emergency || '';
+          document.getElementById('notes').value = formData.notes || '';
+          
+          showConfirmationScreen(stripeTier);
+          
+          setTimeout(() => {
+            console.log('🚀 Auto-generating brief with restored form data');
+            generateBrief(formData);
+          }, 2000);
+          
+        } catch (err) {
+          console.error('❌ Error parsing form data:', err);
+          alert('Error restoring your information. Please fill the form again.');
+        }
+      } else {
+        console.error('❌ Form data was not saved to sessionStorage before redirect');
+        alert('Form data was not saved. Please fill it out again.');
+      }
+    } else {
+      alert('Payment could not be verified. Please try again.');
+    }
+  } else {
+    console.log('ℹ️  No session_id in URL - user likely just loaded the page normally');
+  }
+});
+
+function showSignOutBtn() {
+  document.getElementById('navSignOutBtn').style.display = 'inline-block';
+  document.getElementById('navLoginBtn').style.display = 'none';
+}
+
+function showPaywall() {
+  document.getElementById('paywallModal').classList.add('open');
+}
+
+function closePaywall() {
+  document.getElementById('paywallModal').classList.remove('open');
+}
+
+function selectTier(tier) {
+  currentTier = tier;
+  document.getElementById('tier5Btn').classList.toggle('selected', tier === 5);
+  document.getElementById('tier9Btn').classList.toggle('selected', tier === 9);
+}
+
+async function proceedToPayment() {
+  if (currentTier === 5 || currentTier === 9) {
+    const formData = {
+      familyName: document.getElementById('familyName').value.trim(),
+      familyEmail: document.getElementById('familyEmail').value.trim(),
+      children: document.getElementById('children').value.trim(),
+      parents: document.getElementById('parents').value.trim(),
+      emergency: document.getElementById('emergency').value.trim(),
+      notes: document.getElementById('notes').value.trim()
+    };
+    
+    console.log('FORM VALUES AT SAVE TIME:', formData);
+    sessionStorage.setItem('briefFormData', JSON.stringify(formData));
+    console.log('✅ Form data saved to sessionStorage');
+    
+    closePaywall();
+    console.log('🌐 Redirecting to Stripe:', STRIPE_LINKS[currentTier]);
+    
+    window.location.href = STRIPE_LINKS[currentTier];
+  }
+}
+
+function showConfirmationScreen(tier) {
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('genIcon').textContent = '✓';
+  document.getElementById('genTitle').textContent = 'Payment confirmed!';
+  document.getElementById('genSubtitle').textContent = tier === '9' ? 'Setting up your Folia account...' : 'Your brief is generating...';
+  document.getElementById('genDots').style.display = 'none';
+  document.getElementById('generating').classList.add('active');
+}
+
+function showUpgradeModal() {
+  document.getElementById('upgradeModal').classList.add('open');
+}
+
+function closeUpgradeModal() {
+  document.getElementById('upgradeModal').classList.remove('open');
+}
+
+function upgradeFrom5() {
+  closeUpgradeModal();
+  window.location.href = STRIPE_LINKS[9];
+}
+
+async function generateBrief(dataOverride = null) {
+  const stripeTier = sessionStorage.getItem('stripeTier');
+  
+  if (PAYWALL_ENABLED && !stripeTier) {
+    console.log('💳 No payment made yet - showing paywall');
+    showPaywall();
+    return;
+  }
+  
+  let familyName, email, children, parents, emergency, notes;
+  
+  if (dataOverride) {
+    console.log('📄 Using override data from payment redirect');
+    familyName = dataOverride.familyName || '';
+    email = dataOverride.familyEmail || '';
+    children = dataOverride.children || '';
+    parents = dataOverride.parents || '';
+    emergency = dataOverride.emergency || '';
+    notes = dataOverride.notes || '';
+  } else {
+    console.log('📄 Using form input data');
+    familyName = document.getElementById('familyName').value.trim();
+    email = document.getElementById('familyEmail').value.trim();
+    children = document.getElementById('children').value.trim();
+    parents = document.getElementById('parents').value.trim();
+    emergency = document.getElementById('emergency').value.trim();
+    notes = document.getElementById('notes').value.trim();
+    
+    if (!familyName || !email) {
+      alert('Please enter your family name and email to continue.');
+      return;
+    }
+  }
+  
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('generating').classList.add('active');
+  window.briefData = { familyName, email, children, parents, emergency, notes };
+  
+  document.getElementById('briefTitle').textContent = `${familyName} — Sitter Brief`;
+  document.getElementById('briefDate').textContent = `Generated ${TODAY}`;
+  
+  const prompt = `Create a warm, practical sitter brief for ${familyName}. No markdown. Plain text only with ALL CAPS headers.
+Details: Children: ${children || 'not specified'} | Emergency: ${emergency || 'not provided'} | Notes: ${notes || 'none'}
+Include sections: WELCOME & OVERVIEW, THE CHILDREN, EMERGENCY CONTACTS, A NOTE FROM US`;
+
+  try {
+    const res = await fetch('/.netlify/functions/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        system: 'You are helping create a sitter brief. NEVER give medical advice. Use only provided details.',
+        prompt: prompt
+      })
+    });
+    
+    const data = await res.json();
+    const briefText = data.content?.map(b => b.text || '').join('') || fallbackBrief(familyName, children, emergency, notes);
+    
+    showBrief(briefText);
+    
+    if (email) {
+      try {
+        fetch('/.netlify/functions/send-brief', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: email,
+            subject: `Your ${familyName} Sitter Brief from Folia`,
+            text: briefText,
+            family_name: familyName
+          })
+        }).catch(err => console.log('📧 Email send (silent):', err));
+      } catch(err) { }
+    }
+    
+  } catch(err) {
+    console.error('❌ Error generating brief:', err);
+    showBrief(fallbackBrief(familyName, children, emergency, notes));
+  }
+}
+
+function fallbackBrief(name, children, emergency, notes) {
+  const dash = '─'.repeat(42);
+  let out = `WELCOME & OVERVIEW\n${dash}\nWelcome, and thank you for being here!\n\n`;
+  if (children) out += `THE CHILDREN\n${dash}\n${children}\n\n`;
+  if (emergency) out += `EMERGENCY CONTACTS\n${dash}\n${emergency}\n\n`;
+  if (notes) out += `THE HOUSE\n${dash}\n${notes}\n\n`;
+  out += `A NOTE FROM US\n${dash}\nThank you so much for being here.\n\nWith warmest thanks,\n${name}`;
+  return out;
+}
+
+async function showBrief(text) {
+  document.getElementById('generating').classList.remove('active');
+  document.getElementById('briefBody').textContent = text;
+  document.getElementById('brief').classList.add('active');
+
+  const stripeTier = sessionStorage.getItem('stripeTier');
+  
+  gtag('event', 'brief_completed', {
+    family_name: window.briefData?.familyName || 'unknown',
+    paid: !!stripeTier,
+    tier: stripeTier || 'none'
+  });
+
+  if (stripeTier === '9') {
+    console.log('🔄 $9 user - redirecting to folia.html in 2 seconds');
+    if (window.briefData) {
+      sessionStorage.setItem('briefData', JSON.stringify({
+        familyName: window.briefData.familyName,
+        parentEmail: window.briefData.email,
+        children: window.briefData.children,
+        parents: window.briefData.parents,
+        emergency: window.briefData.emergency,
+        notes: window.briefData.notes
+      }));
+    }
+    
+    setTimeout(() => {
+      window.location.href = '/folia.html?source=sitter-brief&tier=9';
+    }, 2000);
+    return;
+  }
+  
+  if (stripeTier === '5') {
+    setTimeout(() => {
+      showUpgradeModal();
+    }, 5000);
+  }
+  
+  if (window.innerWidth <= 900) {
+    document.getElementById('brief').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+async function shareBrief() {
+  alert('Share feature coming soon!');
+}
+
+function printBrief() {
+  window.print();
+}
+
+function saveToFolia() {
+  const stripeTier = sessionStorage.getItem('stripeTier');
+  
+  if (stripeTier === '5') {
+    showUpgradeModal();
+    return;
+  }
+  
+  if (stripeTier === '9') {
+    window.location.href = '/folia.html?source=sitter-brief&tier=9';
+    return;
+  }
+  
+  alert('Please generate a brief first');
+}
+</script>
+
+</body>
+</html>
