@@ -1291,26 +1291,44 @@ Bedtime: 8 PM for both kids
 
 <script>
 // ════════════════════════════════════════
-// SUPABASE CONFIG
+// SUPABASE CONFIG (via init function)
 // ════════════════════════════════════════
+let sb = null;
+let SUPABASE_URL = '';
+let SUPABASE_ANON_KEY = '';
 
-const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY || "";
-     
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+async function initSupabase() {
+  try {
+    const res = await fetch('/.netlify/functions/init');
+    const { supabaseUrl, supabaseAnonKey } = await res.json();
+    SUPABASE_URL = supabaseUrl;
+    SUPABASE_ANON_KEY = supabaseAnonKey;
+    
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      console.error('❌ Supabase credentials not loaded from Netlify env');
+      return false;
+    }
+    
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('✅ Supabase initialized');
+    return true;
+  } catch (err) {
+    console.error('❌ Failed to initialize Supabase:', err);
+    return false;
+  }
+}
 
 // ════════════════════════════════════════
-// PAYWALL TOGGLE — NOW ENABLED FOR TICKET 2
+// CONSTANTS
 // ════════════════════════════════════════
 const PAYWALL_ENABLED = true;
 
-// ════════════════════════════════════════
-// STRIPE CONFIG
-// ════════════════════════════════════════
 const STRIPE_LINKS = {
   5: 'https://buy.stripe.com/bJe9AM7X6dJfeqAe3R53O03',
   9: 'https://buy.stripe.com/4gM5kwa5e7kR0zK8Jx53O02'
 };
+
+const TODAY = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
 // ════════════════════════════════════════
 // STATE
@@ -1321,12 +1339,18 @@ let currentTier = 5;
 let isLoggedIn = false;
 let currentFamilyId = null;
 
-const TODAY = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
 // ════════════════════════════════════════
-// INIT
+// MAIN INIT
 // ════════════════════════════════════════
 window.addEventListener('load', async () => {
+  // Initialize Supabase first
+  const supabaseReady = await initSupabase();
+  if (!supabaseReady) {
+    console.error('Cannot proceed without Supabase');
+    return;
+  }
+
+  // Check for existing session
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
@@ -1340,7 +1364,7 @@ window.addEventListener('load', async () => {
   }
   
   // ════════════════════════════════════════
-  // HANDLE STRIPE REDIRECT (TICKET 2)
+  // HANDLE STRIPE REDIRECT
   // ════════════════════════════════════════
   const params = new URLSearchParams(window.location.search);
   const stripeSessionId = params.get('session_id');
@@ -1348,79 +1372,84 @@ window.addEventListener('load', async () => {
   if (stripeSessionId) {
     console.log('🔙 Returning from Stripe with session_id:', stripeSessionId);
     
-    // 1. Verify payment with Stripe
+    // 1. Verify payment
     const verification = await verifyStripePayment(stripeSessionId);
     
-    if (verification.valid) {
-      const stripeTier = String(verification.tier);
-      console.log('✅ Payment valid! Tier:', stripeTier);
-      
-      // 2. Save tier to sessionStorage
-      sessionStorage.setItem('stripeTier', stripeTier);
-      sessionStorage.setItem('stripeSessionId', stripeSessionId);
-
-      // ════════════════════════════════════════
-      // GA EVENT: payment_complete
-      // ════════════════════════════════════════
-      gtag('event', 'payment_complete', {
-        tier: stripeTier,
-        value: stripeTier === '9' ? 9 : 5,
-        currency: 'USD'
-      });
-      
-      // 3. Get family_id from URL (passed by Stripe)
-      const familyId = params.get('client_reference_id');
-      console.log('📝 Family ID from URL:', familyId);
-      
-      if (familyId) {
-        // 4. Retrieve form data from Supabase
-        try {
-          const { data, error } = await sb.from('family_drafts')
-            .select('*')
-            .eq('id', familyId)
-            .single();
-          
-          if (error) throw error;
-          
-          console.log('✅ Form data retrieved from Supabase:', data);
-          
-          // 5. Populate form fields with retrieved data
-          document.getElementById('familyName').value = data.family_name || '';
-          document.getElementById('familyEmail').value = data.parent_email || '';
-          document.getElementById('children').value = data.children || '';
-          document.getElementById('parents').value = data.parents || '';
-          document.getElementById('emergency').value = data.emergency || '';
-          document.getElementById('notes').value = data.notes || '';
-          
-          // 6. Show confirmation screen
-          showConfirmationScreen();
-          
-          // 7. Auto-generate brief after 2 seconds
-          setTimeout(() => {
-            console.log('🚀 Auto-generating brief with retrieved data');
-            generateBrief();
-          }, 2000);
-          
-        } catch (err) {
-          console.error('❌ Error retrieving family data:', err);
-          alert('Error retrieving your information. Please fill the form again.');
-        }
-      } else {
-        alert('Payment received but family ID not found. Please fill the form again.');
-      }
-      
-      // 8. Clean up URL
-      window.history.replaceState({}, document.title, '/sitter-brief');
-      
-    } else {
+    if (!verification.valid) {
       console.log('❌ Payment verification failed');
       alert('Payment could not be verified. Please try again.');
+      window.history.replaceState({}, document.title, '/sitter-brief');
+      return;
+    }
+    
+    const stripeTier = String(verification.tier);
+    console.log('✅ Payment valid! Tier:', stripeTier);
+    sessionStorage.setItem('stripeTier', stripeTier);
+    sessionStorage.setItem('stripeSessionId', stripeSessionId);
+    
+    // GA event
+    gtag('event', 'payment_complete', {
+      tier: stripeTier,
+      value: stripeTier === '9' ? 9 : 5,
+      currency: 'USD'
+    });
+    
+    // 2. Get family_id from URL
+    const familyId = params.get('client_reference_id');
+    if (!familyId) {
+      alert('Payment received but family ID not found. Please refresh and try again.');
+      window.history.replaceState({}, document.title, '/sitter-brief');
+      return;
+    }
+    
+    // 3. Retrieve form data from Supabase
+    try {
+      const { data, error } = await sb.from('family_drafts')
+        .select('*')
+        .eq('id', familyId)
+        .single();
+      
+      if (error) throw error;
+      
+      console.log('✅ Form data retrieved from Supabase');
+      
+      // Populate form fields
+      document.getElementById('familyName').value = data.family_name || '';
+      document.getElementById('familyEmail').value = data.parent_email || '';
+      document.getElementById('children').value = data.children || '';
+      document.getElementById('parents').value = data.parents || '';
+      document.getElementById('emergency').value = data.emergency || '';
+      document.getElementById('notes').value = data.notes || '';
+      
+      // Store in memory
+      window.briefData = {
+        familyName: data.family_name,
+        email: data.parent_email,
+        children: data.children,
+        parents: data.parents,
+        emergency: data.emergency,
+        notes: data.notes
+      };
+      
+      // Show confirmation screen
+      showConfirmationScreen();
+      
+      // Generate brief after 2 seconds
+      setTimeout(() => {
+        console.log('🚀 Auto-generating brief');
+        startGeneratingBrief(data.family_name, data.parent_email, data.children, data.parents, data.emergency, data.notes);
+      }, 2000);
+      
+    } catch (err) {
+      console.error('❌ Error retrieving family data:', err);
+      alert('Error retrieving your information. Please fill the form again.');
+      window.history.replaceState({}, document.title, '/sitter-brief');
     }
   }
 });
 
 // ════════════════════════════════════════
-// VERIFY STRIPE PAYMENT (NEW)
+// VERIFY STRIPE PAYMENT
 // ════════════════════════════════════════
 async function verifyStripePayment(sessionId) {
   try {
@@ -1439,7 +1468,7 @@ async function verifyStripePayment(sessionId) {
 }
 
 // ════════════════════════════════════════
-// SHOW CONFIRMATION SCREEN (NEW)
+// SHOW CONFIRMATION SCREEN
 // ════════════════════════════════════════
 function showConfirmationScreen() {
   document.getElementById('placeholder').style.display = 'none';
@@ -1529,11 +1558,13 @@ function selectTier(tier) {
 
 function proceedToPayment() {
   if (currentTier === 5 || currentTier === 9) {
+    if (!currentFamilyId) {
+      alert('Error: Family ID not found. Please generate again.');
+      return;
+    }
+    
     closePaywall();
-    
-    // Build Stripe URL with family_id as client_reference_id
     const stripeLink = STRIPE_LINKS[currentTier] + `?client_reference_id=${currentFamilyId}`;
-    
     console.log('🌐 Redirecting to Stripe:', stripeLink);
     window.location.href = stripeLink;
   }
@@ -1583,7 +1614,7 @@ async function handleLogin() {
 }
 
 // ════════════════════════════════════════
-// GENERATE BRIEF (UPDATED FOR TICKET 2)
+// GENERATE BRIEF
 // ════════════════════════════════════════
 async function generateBrief() {
   const familyName = document.getElementById('familyName').value.trim();
@@ -1598,9 +1629,7 @@ async function generateBrief() {
     return;
   }
   
-  // ════════════════════════════════════════
-  // SAVE TO SUPABASE IMMEDIATELY (NEW)
-  // ════════════════════════════════════════
+  // SAVE TO SUPABASE IMMEDIATELY (before paywall)
   if (PAYWALL_ENABLED && !sessionStorage.getItem('stripeTier')) {
     try {
       const { data, error } = await sb.from('family_drafts').insert([{
@@ -1614,7 +1643,6 @@ async function generateBrief() {
       
       if (error) throw error;
       
-      // Store family_id in memory for proceedToPayment() to use
       currentFamilyId = data[0].id;
       console.log('✅ Family draft saved to Supabase:', currentFamilyId);
       
@@ -1623,20 +1651,18 @@ async function generateBrief() {
       alert('Error preparing payment. Please try again.');
       return;
     }
-  }
-  
-  // Show paywall if enabled and no payment made yet
-  if (PAYWALL_ENABLED && !sessionStorage.getItem('stripeTier')) {
+    
+    // Show paywall
     showPaywall();
     return;
   }
   
-  // If payment exists or paywall disabled, generate brief
+  // If already paid or paywall disabled, generate
   startGeneratingBrief(familyName, email, children, parents, emergency, notes);
 }
 
 // ════════════════════════════════════════
-// START GENERATING BRIEF (NEW)
+// START GENERATING BRIEF
 // ════════════════════════════════════════
 async function startGeneratingBrief(familyName, email, children, parents, emergency, notes) {
   document.getElementById('placeholder').style.display = 'none';
@@ -1708,16 +1734,13 @@ Write as if the family wrote it themselves.`;
 }
 
 // ════════════════════════════════════════
-// SHOW BRIEF (UPDATED FOR TICKET 2)
+// SHOW BRIEF
 // ════════════════════════════════════════
 async function showBrief(text) {
   document.getElementById('generating').classList.remove('active');
   document.getElementById('briefBody').textContent = text;
   document.getElementById('brief').classList.add('active');
 
-  // ════════════════════════════════════════
-  // GA EVENT: brief_completed
-  // ════════════════════════════════════════
   const stripeTier = sessionStorage.getItem('stripeTier');
   gtag('event', 'brief_completed', {
     family_name: window.briefData?.familyName || 'unknown',
@@ -1736,9 +1759,7 @@ async function showBrief(text) {
   
   briefImageData = await generateBriefImage(text, familyName);
   
-  // ════════════════════════════════════════
-  // SEND EMAIL BACKUP (NEW - FIRE AND FORGET)
-  // ════════════════════════════════════════
+  // SEND EMAIL BACKUP (fire and forget)
   if (email) {
     sendEmailBackup(email, familyName, text);
   }
@@ -1749,7 +1770,7 @@ async function showBrief(text) {
 }
 
 // ════════════════════════════════════════
-// SEND EMAIL BACKUP (NEW)
+// SEND EMAIL BACKUP
 // ════════════════════════════════════════
 function sendEmailBackup(email, familyName, briefText) {
   try {
@@ -1764,12 +1785,10 @@ function sendEmailBackup(email, familyName, briefText) {
       })
     }).then(res => {
       if (res.ok) {
-        // Show email confirmation message
         showEmailConfirmation(email);
       }
     }).catch(err => {
       console.error('Email send error (silent):', err);
-      // Silent fail — don't block brief display
     });
   } catch(err) {
     console.error('Email send error (silent):', err);
@@ -1777,14 +1796,13 @@ function sendEmailBackup(email, familyName, briefText) {
 }
 
 // ════════════════════════════════════════
-// SHOW EMAIL CONFIRMATION (NEW)
+// SHOW EMAIL CONFIRMATION
 // ════════════════════════════════════════
 function showEmailConfirmation(email) {
   const confirmEl = document.getElementById('emailConfirmation');
   document.getElementById('emailAddress').textContent = email;
   confirmEl.classList.add('active');
   
-  // Fade out after 5 seconds
   setTimeout(() => {
     confirmEl.classList.add('fade-out');
   }, 4000);
@@ -2019,7 +2037,6 @@ function saveToFolia() {
   }
   
   const stripeTier = sessionStorage.getItem('stripeTier');
-  const stripeSessionId = sessionStorage.getItem('stripeSessionId');
   
   if (stripeTier === '9') {
     sessionStorage.setItem('sitterBriefData', JSON.stringify(data));
