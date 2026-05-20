@@ -1293,8 +1293,10 @@ Bedtime: 8 PM for both kids
 // ════════════════════════════════════════
 // SUPABASE CONFIG
 // ════════════════════════════════════════
-const SUPABASE_URL = 'https://fbjkeivlabzwpgghxkjh.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiamtlaXZsYWJ6d3BnZ2h4a2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTk1NzksImV4cCI6MjA5MDUzNTU3OX0.5zUaWA80VhnrlUBk7-yknfUmCzQtWtqP6B3IOErm3kQ';
+
+const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL || "https://fbjkeivlabzwpgghxkjh.supabase.co";
+const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiamtlaXZsYWJ6d3BnZ2h4a2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NTk1NzksImV4cCI6MjA5MDUzNTU3OX0.5zUaWA80VhnrlUBk7-yknfUmCzQtWtqP6B3IOErm3kQ";
+     
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ════════════════════════════════════════
