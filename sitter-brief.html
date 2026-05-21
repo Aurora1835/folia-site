@@ -1107,8 +1107,8 @@ footer .logo {
 // Frontend uses REACT_APP_SUPABASE_ANON_KEY (safe to expose)
 // Backend functions use SUPABASE_SERVICE_ROLE_KEY (secret, never exposed)
 
-const SUPABASE_URL = window.SUPABASE_URL || 'https://missing.supabase.co';
-const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'missing-key';
+const SUPABASE_URL = window.REACT_APP_SUPABASE_URL || 'https://missing.supabase.co';
+const SUPABASE_ANON_KEY = window.REACT_APP_SUPABASE_ANON_KEY || 'missing-key';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ════════════════════════════════════════
