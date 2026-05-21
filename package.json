@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.3",
     "@sendgrid/mail": "^7.7.0",
     "@supabase/supabase-js": "^2.39.0",
     "crypto": "^1.0.1",
