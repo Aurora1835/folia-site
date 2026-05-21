@@ -1,7 +1,4 @@
 {
-  "scripts": {
-    "build": "node build.js"
-  },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.24.3",
     "@sendgrid/mail": "^7.7.0",
