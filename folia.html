@@ -979,9 +979,11 @@ function proceedToStripe() {
   };
   localStorage.setItem('foliaOnboardingData', JSON.stringify(dataToSave));
   console.log('✅ Onboarding data saved to localStorage');
-
-  // Send them to Stripe
-  window.location.href = STRIPE_LINK_9;
+  
+  // Give localStorage time to persist before redirect
+  setTimeout(() => {
+    window.location.href = STRIPE_LINK_9;
+  }, 100);
 }
 
 // ════════════════════════════════════════
