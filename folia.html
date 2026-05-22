@@ -965,22 +965,20 @@ function closePaywall() {
 }
 
 function proceedToStripe() {
-  // Save ALL onboarding data to localStorage before leaving
   const dataToSave = {
-    familyName: S.familyName,
-    parentName: S.parentName,
-    parentEmail: S.parentEmail,
+    familyName: document.getElementById('familyName').value.trim(),
+    parentName: document.getElementById('parentName').value.trim(),
+    parentEmail: document.getElementById('parentEmail').value.trim(),
     members: S.members,
-    emergencyName: S.emergencyName,
-    emergencyPhone: S.emergencyPhone,
-    wifiPassword: S.wifiPassword,
-    alarmCode: S.alarmCode,
-    houseNotes: S.houseNotes
+    emergencyName: document.getElementById('emergencyName').value.trim(),
+    emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+    wifiPassword: document.getElementById('wifiPassword').value.trim(),
+    alarmCode: document.getElementById('alarmCode').value.trim(),
+    houseNotes: document.getElementById('houseNotes').value.trim()
   };
   localStorage.setItem('foliaOnboardingData', JSON.stringify(dataToSave));
   console.log('✅ Onboarding data saved to localStorage');
   
-  // Give localStorage time to persist before redirect
   setTimeout(() => {
     window.location.href = STRIPE_LINK_9;
   }, 100);
