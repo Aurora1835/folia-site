@@ -921,9 +921,9 @@ function saveMember() {
     emoji: S.currentEmoji,
     name,
     role: document.getElementById('newRole').value.trim() || 'Family member',
-    bedtime: document.getElementById('newBedtime').value.trim(),
-    likes: document.getElementById('newLikes').value.trim(),
-    notes: document.getElementById('newNotes').value.trim()
+    dailyRoutine: document.getElementById('newBedtime').value.trim(),
+    personalityPreferences: document.getElementById('newLikes').value.trim(),
+    importantNotes: document.getElementById('newNotes').value.trim()
   });
   cancelMember();
   renderMembersOnboarding();
@@ -1357,9 +1357,9 @@ function openEditMember(index) {
   document.getElementById('editMemberTitle').textContent = `Edit ${m.name}`;
   document.getElementById('editName').value = m.name || '';
   document.getElementById('editRole').value = m.role || '';
-  document.getElementById('editBedtime').value = m.bedtime || '';
-  document.getElementById('editLikes').value = m.likes || '';
-  document.getElementById('editNotes').value = m.notes || '';
+document.getElementById('editBedtime').value = m.dailyRoutine || '';
+document.getElementById('editLikes').value = m.personalityPreferences || '';
+document.getElementById('editNotes').value = m.importantNotes || '';
   document.querySelectorAll('#editMemberOverlay .emoji-option').forEach(e => e.classList.toggle('selected', e.dataset.e === editingMemberEmoji));
   document.getElementById('editMemberOverlay').classList.add('open');
 }
@@ -1376,9 +1376,9 @@ async function saveEditedMember() {
   const memberData = {
     emoji: editingMemberEmoji, name,
     role: document.getElementById('editRole').value.trim(),
-    bedtime: document.getElementById('editBedtime').value.trim(),
-    likes: document.getElementById('editLikes').value.trim(),
-    notes: document.getElementById('editNotes').value.trim()
+    dailyRoutine: document.getElementById('editBedtime').value.trim(),
+    personalityPreferences: document.getElementById('editLikes').value.trim(),
+    importantNotes: document.getElementById('editNotes').value.trim()
   };
   if (editingMemberIndex === null) { S.members.push(memberData); }
   else { S.members[editingMemberIndex] = memberData; }
