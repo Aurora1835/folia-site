@@ -1030,18 +1030,25 @@ async function createAccountAndSave() {
     homeMember.notes = combined || homeMember.notes;
   }
 
-  // Step 3: Save profile to Supabase
-  if (S.user) {
-    try {
-      await sb.from('family_profiles').upsert({
-        user_id: S.user.id,
-        family_name: S.familyName,
-        parent_name: S.parentName,
-        members: S.members,
-        emergency_name: S.emergencyName,
-        emergency_phone: S.emergencyPhone,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'user_id' });
+// Step 3: Save profile to Supabase
+if (S.user) {
+  try {
+    const householdData = {
+      emergencyName: S.emergencyName,
+      emergencyPhone: S.emergencyPhone,
+      wifiPassword: S.wifiPassword,
+      alarmCode: S.alarmCode,
+      houseNotes: S.houseNotes
+    };
+
+    await sb.from('family_profiles').upsert({
+      user_id: S.user.id,
+      family_name: S.familyName,
+      parent_name: S.parentName,
+      members: S.members,
+      household: householdData,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id' });
       console.log('✅ Profile saved to Supabase');
     } catch(err) {
       console.error('Profile save error:', err);
