@@ -676,7 +676,7 @@ nav {
       <div class="field"><label class="field-label">Password</label><input type="password" class="field-input" id="loginPassword" placeholder="Your password" autocomplete="current-password"></div>
       <button class="btn btn-primary" onclick="handleLogin()">Sign In →</button>
       <div class="auth-loading" id="loginLoading"><div class="spinner"></div> Signing in…</div>
-      <div class="auth-error" id="loginError"></div>
+      <div class="auth-error" id="loginError"></div><button class="btn btn-secondary" style="color:var(--stone);border:none;" onclick="showPasswordReset()">Forgot password?</button>
     </div>
     <div class="auth-form" id="signupForm">
       <div class="field"><label class="field-label">Email</label><input type="email" class="field-input" id="signupEmail" placeholder="your@email.com" autocomplete="email"></div>
@@ -687,7 +687,30 @@ nav {
     </div>
   </div>
 </div>
+<!-- ═══════════════════════════════════════
+     PASSWORD RESET MODAL
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="passwordResetModal" onclick="if(event.target===this) closePasswordReset()">
+  <div class="auth-card">
+    <div class="auth-logo">Folia</div>
+    <div class="auth-tagline">Reset your password</div>
+    
+    <div class="auth-form active">
+      <div class="field">
+        <label class="field-label">Email</label>
+        <input type="email" class="field-input" id="resetEmail" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <button class="btn btn-primary" onclick="handlePasswordReset()">Send Reset Link →</button>
+      <div class="auth-loading" id="resetLoading"><div class="spinner"></div> Sending…</div>
+      <div class="auth-error" id="resetError"></div>
+      <div class="auth-error" style="color:var(--green);margin-top:12px;" id="resetSuccess"></div>
+    </div>
 
+    <button class="btn btn-secondary mt-small" onclick="closePasswordReset()">← Back to Sign In</button>
+  </div>
+</div>
+  
+  
 <!-- ═══════════════════════════════════════
      EDIT MEMBER MODAL
 ════════════════════════════════════════ -->
@@ -984,8 +1007,10 @@ function proceedToStripe() {
 // ════════════════════════════════════════
 async function createAccountAndSave() {
   showScreen('s5');
-  runBuildAnimation();
+runBuildAnimation();
 
+// NEW: Store temp password to display on screen
+window.tempPasswordForDisplay = tempPassword;
   // Step 1: Create Supabase account with their email
   // We generate a temporary password — they can reset later
   const tempPassword = 'Folia_' + Math.random().toString(36).slice(2, 10) + '!';
@@ -1069,9 +1094,25 @@ if (S.user) {
   localStorage.removeItem('foliaOnboardingData');
 
   // Step 6: Open dashboard
+setTimeout(() => {
+  openDashboard(true, true);
+  
+  // Show temp password for 5 seconds
   setTimeout(() => {
-    openDashboard(true, true); // firstTime=true, paymentSuccess=true
-  }, 5500);
+    const banner = document.createElement('div');
+    banner.className = 'success-banner';
+    banner.style.cssText = 'background:#FDF3E3;border:1px solid #A0722A;margin-bottom:20px;';
+    banner.innerHTML = `
+      <div style="font-size:13px;font-weight:600;color:#A0722A;margin-bottom:8px;">📝 Your temporary password:</div>
+      <div style="font-size:14px;color:var(--bark);font-family:monospace;background:var(--cream);padding:8px;border-radius:6px;margin-bottom:8px;">${window.tempPasswordForDisplay}</div>
+      <div style="font-size:12px;color:var(--stone);line-height:1.5;">Save this somewhere safe. You can reset it anytime using "Forgot password?"</div>
+    `;
+    document.querySelector('.app-container').insertBefore(banner, document.querySelector('.app-container').firstChild);
+    
+    // Auto-hide after 10 seconds
+    setTimeout(() => banner.style.opacity = '0.5', 6000);
+  }, 500);
+}, 5500);
 }
 
 function runBuildAnimation() {
@@ -1484,7 +1525,51 @@ async function handleSignup() {
   document.getElementById('signOutBtn').style.display = 'inline';
   goToScreen(1);
 }
+// ════════════════════════════════════════
+// PASSWORD RESET
+// ════════════════════════════════════════
+function showPasswordReset() {
+  closeAuthModal();
+  document.getElementById('passwordResetModal').classList.add('open');
+  document.getElementById('resetEmail').value = '';
+  document.getElementById('resetError').textContent = '';
+  document.getElementById('resetSuccess').textContent = '';
+}
 
+function closePasswordReset() {
+  document.getElementById('passwordResetModal').classList.remove('open');
+  document.getElementById('resetEmail').value = '';
+  document.getElementById('resetError').textContent = '';
+  document.getElementById('resetSuccess').textContent = '';
+}
+
+async function handlePasswordReset() {
+  const email = document.getElementById('resetEmail').value.trim();
+  if (!email) {
+    document.getElementById('resetError').textContent = 'Please enter your email.';
+    return;
+  }
+  document.getElementById('resetLoading').classList.add('show');
+  document.getElementById('resetError').textContent = '';
+  document.getElementById('resetSuccess').textContent = '';
+
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/folia.html`
+  });
+
+  document.getElementById('resetLoading').classList.remove('show');
+
+  if (error) {
+    document.getElementById('resetError').textContent = error.message;
+    return;
+  }
+
+  document.getElementById('resetSuccess').textContent = '✅ Check your email for a reset link!';
+  setTimeout(() => {
+    closePasswordReset();
+    showAuthModal('login');
+  }, 2000);
+}
 async function handleSignOut() {
   await sb.auth.signOut();
   window.location.href = '/';
