@@ -755,15 +755,23 @@ const TODAY = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '
 // INIT — runs on every page load
 // ════════════════════════════════════════
 window.addEventListener('load', async () => {
+  // CHECK: Is user already logged in? (MUST BE FIRST)
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      S.user = session.user;
+      document.getElementById('signOutBtn').style.display = 'inline';
+      await loadProfile(session.user.id);
+      return;
+    }
+  } catch(e) { console.error('Session check error:', e); }
 
   // CHECK: Did user just come back from Stripe?
   const params = new URLSearchParams(window.location.search);
   const paymentSuccess = params.get('payment') === 'success';
-
   if (paymentSuccess) {
     // Clean the URL immediately so refresh doesn't retrigger
     window.history.replaceState({}, document.title, '/folia.html');
-
     // Restore their data from localStorage
     const saved = localStorage.getItem('foliaOnboardingData');
     if (saved) {
@@ -780,23 +788,10 @@ window.addEventListener('load', async () => {
         S.houseNotes = d.houseNotes || '';
       } catch(e) { console.error('Could not restore onboarding data:', e); }
     }
-
     // Create account + save profile, then show dashboard
     await createAccountAndSave();
     return;
   }
-
-  // CHECK: Is user already logged in?
-  try {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session) {
-      S.user = session.user;
-      document.getElementById('signOutBtn').style.display = 'inline';
-      await loadProfile(session.user.id);
-      return;
-    }
-  } catch(e) { console.error('Session check error:', e); }
-
   // Nobody logged in, no payment — show welcome screen
   showScreen('s0');
 });
