@@ -1139,16 +1139,15 @@ async function startGeneratingBrief() {
 
   // ── Get all non-Home members (kids, parents, everyone except the house itself)
   const allPeople = S.members
-    .filter(m => m.name !== 'Home' && !['🐕','🐈'].includes(m.emoji));
+  .filter(m => m.name !== 'Home' && !['🐕','🐈'].includes(m.emoji));
 
-  // ── Build detailed info for each person
-  const peopleDetails = allPeople.map(m => {
-    let details = `${m.emoji} ${m.name} (${m.role || 'Family member'})`;
-    if (m.bedtime) details += `\n  Routine: ${m.bedtime}`;
-    if (m.likes) details += `\n  Personality: ${m.likes}`;
-    if (m.notes) details += `\n  Notes: ${m.notes}`;
-    return details;
-  }).join('\n');
+const peopleDetails = allPeople.map(m => {
+  let details = `${m.emoji} ${m.name} (${m.role || 'Family member'})`;
+  if (m.dailyRoutine) details += `\n  Routine: ${m.dailyRoutine}`;
+  if (m.personalityPreferences) details += `\n  Personality: ${m.personalityPreferences}`;
+  if (m.importantNotes) details += `\n  Notes: ${m.importantNotes}`;
+  return details;
+}).join('\n');
 
   // ── Pets with their details
   const petDetails = S.members
