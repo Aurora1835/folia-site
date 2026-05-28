@@ -1006,16 +1006,18 @@ function proceedToStripe() {
 // POST-PAYMENT: CREATE ACCOUNT + SAVE
 // ════════════════════════════════════════
 async function createAccountAndSave() {
-  showScreen('s5');
-runBuildAnimation();
-
-// NEW: Store temp password to display on screen
-window.tempPasswordForDisplay = tempPassword;
-  // Step 1: Create Supabase account with their email
-  // We generate a temporary password — they can reset later
+  // Generate temp password FIRST
   const tempPassword = 'Folia_' + Math.random().toString(36).slice(2, 10) + '!';
+  
+  showScreen('s5');
+  runBuildAnimation();
 
+  // NEW: Store temp password to display on screen
+  window.tempPasswordForDisplay = tempPassword;
+
+  // Step 1: Create Supabase account with their email
   try {
+
     // Try signup first
     const { data: signupData, error: signupError } = await sb.auth.signUp({
       email: S.parentEmail,
