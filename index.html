@@ -537,6 +537,64 @@ input:focus {
   </div>
   
   <p class="copyright">© 2026 Folia · withfolia.com</p>
+     <!-- EMAIL CAPTURE -->
+<div style="background: var(--sand); padding: 80px 48px; text-align: center;">
+  <p style="font-family: 'Crimson Pro', serif; font-size: clamp(28px, 4vw, 42px); font-weight: 400; font-style: italic; color: var(--charcoal); margin-bottom: 12px;">New briefs dropping soon.</p>
+  <p style="font-size: 16px; color: var(--bark); font-weight: 300; margin-bottom: 32px;">Nanny, grandparents, pet sitter — be the first to know.</p>
+  
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; max-width: 480px; margin: 0 auto;">
+    <input 
+      id="waitlist-email" 
+      type="email" 
+      placeholder="your@email.com" 
+      style="flex: 1; min-width: 220px; padding: 14px 16px; border: 2px solid var(--stone); border-radius: 8px; background: var(--white); font-family: 'Work Sans', sans-serif; font-size: 15px; color: var(--charcoal);"
+    >
+    <button 
+      onclick="joinWaitlist()" 
+      style="padding: 14px 28px; background: var(--charcoal); color: var(--white); border: none; border-radius: 8px; font-family: 'Work Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap;"
+    >
+      Keep me posted →
+    </button>
+  </div>
+  <p id="waitlist-msg" style="margin-top: 16px; font-size: 14px; color: var(--sage); min-height: 20px;"></p>
+</div>
+<!-- END EMAIL CAPTURE -->
+
+<script>
+async function joinWaitlist() {
+  const email = document.getElementById('waitlist-email').value.trim();
+  const msg = document.getElementById('waitlist-msg');
+
+  if (!email || !email.includes('@')) {
+    msg.style.color = 'var(--terracotta)';
+    msg.textContent = 'Please enter a valid email address.';
+    return;
+  }
+
+  msg.style.color = 'var(--stone)';
+  msg.textContent = 'Adding you...';
+
+  try {
+    const response = await fetch('/.netlify/functions/klaviyo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, listId: 'Vy6Enu', source: 'index_waitlist' })
+    });
+
+    if (response.ok) {
+      msg.style.color = 'var(--sage)';
+      msg.textContent = 'You\'re on the list. We\'ll be in touch.';
+      document.getElementById('waitlist-email').value = '';
+    } else {
+      msg.style.color = 'var(--terracotta)';
+      msg.textContent = 'Something went wrong. Try again in a sec.';
+    }
+  } catch (err) {
+    msg.style.color = 'var(--terracotta)';
+    msg.textContent = 'Something went wrong. Try again in a sec.';
+  }
+}
+</script>
 </footer>
 
 </body>
