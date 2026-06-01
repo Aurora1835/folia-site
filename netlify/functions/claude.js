@@ -76,7 +76,11 @@ exports.handler = async function(event, context) {
   } catch(e) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
   }
-
+const authHeader = event.headers['authorization'] || '';
+const token = authHeader.replace('Bearer ', '').trim();
+if (!token || token.length < 20) {
+  return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }) };
+}
   // Check rate limit
   const userId = body.userId || 'anonymous';
   const rateLimit = await checkRateLimit(userId);
