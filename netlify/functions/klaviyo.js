@@ -30,17 +30,21 @@ exports.handler = async function(event) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
   }
 
-  const { email, name, listId, source } = body;
-  const resolvedListId = listId || process.env.KLAVIYO_LIST_ID;
+  const { email, name, source } = body;
+  const resolvedListId = process.env.KLAVIYO_LIST_ID;
 
-  console.log('Klaviyo function called for:', email, '| source:', source, '| list:', resolvedListId);
+  console.log('Klaviyo function called for:', email, '| source:', source);
 
   if (!resolvedListId) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'No list ID provided' }) };
+    return { statusCode: 500, body: JSON.stringify({ error: 'No list ID configured' }) };
+  }
+
+  if (!email) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'No email provided' }) };
   }
 
   try {
-    // Step 1: Create or update profile
+    // Step 1: Create or update profile in Klaviyo
     const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',
       headers: {
@@ -64,11 +68,11 @@ exports.handler = async function(event) {
     console.log('Profile ID:', profileId);
 
     if (!profileId) {
-      return { statusCode: 500, body: JSON.stringify({ error: 'No profile ID' }) };
+      return { statusCode: 500, body: JSON.stringify({ error: 'Could not create or find Klaviyo profile' }) };
     }
 
-    // Step 2: Subscribe to list
-    const subRes = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
+    // Step 2: Add profile to list
+    await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
       method: 'POST',
       headers: {
         'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
@@ -95,43 +99,42 @@ exports.handler = async function(event) {
       })
     });
 
-    console.log('Subscription response status:', subRes.status);
+    // Step 3: Fire the right event based on source
+    const eventName = source === 'post_payment' ? 'Folia Payment Complete' : 'Sitter Brief Generated';
 
-    // Step 3: Fire event only for brief generation, not waitlist signups
-    if (source !== 'index_waitlist') {
-      const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
-          'Content-Type': 'application/json',
-          'revision': '2024-02-15'
-        },
-        body: JSON.stringify({
-          data: {
-            type: 'event',
-            attributes: {
-              profile: {
-                data: {
-                  type: 'profile',
-                  attributes: { email: email }
-                }
-              },
-              metric: {
-                data: {
-                  type: 'metric',
-                  attributes: { name: 'Sitter Brief Generated' }
-                }
-              },
-              properties: {
-                family_name: name,
-                flow_id: 'UMjZXb'
+    const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+        'Content-Type': 'application/json',
+        'revision': '2024-02-15'
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'event',
+          attributes: {
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: { email: email }
               }
+            },
+            metric: {
+              data: {
+                type: 'metric',
+                attributes: { name: eventName }
+              }
+            },
+            properties: {
+              family_name: name,
+              source: source
             }
           }
-        })
-      });
-      console.log('Event response status:', eventRes.status);
-    }
+        }
+      })
+    });
+
+    console.log('Event fired:', eventName, '| status:', eventRes.status);
 
     return {
       statusCode: 200,
@@ -140,7 +143,7 @@ exports.handler = async function(event) {
     };
 
   } catch(e) {
-    console.log('Error:', e.message);
+    console.error('Klaviyo error:', e.message);
     return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
 };
