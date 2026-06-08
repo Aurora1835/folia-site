@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Folia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7GWVDTDNB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7GWVDTDNB');
+</script>
+
+<style>
+:root {
+  --cream: #FAF8F3;
+  --sand: #EDE8DC;
+  --stone: #B8A490;
+  --bark: #6B5D52;
+  --charcoal: #2C2520;
+  --sage: #8B9B82;
+  --sage-lt: #E8EDE5;
+  --terracotta: #C17F5D;
+  --white: #FFFFFF;
+  --red: #8B3A3A;
+  --red-lt: #FDEAEA;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Work Sans', sans-serif;
+  background: var(--cream);
+  color: var(--bark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03' /%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9000;
+}
+
+nav {
+  position: sticky; top: 0; z-index: 1000;
+  padding: 20px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(250,248,243,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--stone);
+}
+
+.logo {
+  font-family: 'Crimson Pro', serif;
+  font-size: 28px; font-weight: 600; font-style: italic;
+  color: var(--charcoal); letter-spacing: -0.5px;
+  text-decoration: none;
+}
+
+.back-link {
+  font-size: 13px; color: var(--stone);
+  text-decoration: none; letter-spacing: 0.4px; transition: color 0.2s;
+}
+.back-link:hover { color: var(--charcoal); }
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 72px 40px 100px;
+}
+
+.doc-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--stone); margin-bottom: 16px;
+}
+
+.doc-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 400; line-height: 1.1;
+  color: var(--charcoal); margin-bottom: 12px;
+}
+
+.doc-date {
+  font-size: 13px; color: var(--stone);
+  font-weight: 300; margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--sand);
+}
+
+.doc-intro {
+  font-size: 15px; font-weight: 400;
+  color: var(--bark); line-height: 1.8;
+  margin-bottom: 48px;
+  padding: 24px 28px;
+  background: var(--sage-lt);
+  border-left: 3px solid var(--sage);
+}
+
+h2 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 24px; font-weight: 600;
+  color: var(--charcoal); margin: 48px 0 16px;
+  padding-top: 8px;
+}
+
+h2:first-of-type { margin-top: 0; }
+
+p {
+  font-size: 15px; font-weight: 300;
+  color: var(--bark); line-height: 1.85;
+  margin-bottom: 14px;
+}
+
+strong { font-weight: 600; color: var(--charcoal); }
+
+.alert-box {
+  background: var(--red-lt);
+  border: 1px solid #E8B4B4;
+  border-left: 3px solid var(--red);
+  border-radius: 0 8px 8px 0;
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+
+.alert-box p { color: #5C2020; margin-bottom: 0; }
+.alert-box strong { color: #3D0D0D; }
+
+.arbitration-callout {
+  background: var(--sand);
+  border: 1px solid var(--stone);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 24px 0;
+}
+
+.arbitration-callout p {
+  font-size: 13px;
+  color: var(--charcoal);
+  font-weight: 500;
+  margin-bottom: 0;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+}
+
+ul {
+  margin: 12px 0 16px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+ul li {
+  font-size: 15px; font-weight: 300;
+  color: var(--bark); line-height: 1.8;
+  padding: 4px 0 4px 20px;
+  position: relative;
+}
+
+ul li::before {
+  content: '·';
+  position: absolute; left: 6px;
+  color: var(--terracotta); font-weight: 600;
+}
+
+table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 24px; font-size: 14px;
+}
+
+th {
+  background: var(--charcoal); color: var(--white);
+  padding: 12px 16px; text-align: left;
+  font-weight: 500; font-size: 12px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+
+td {
+  padding: 12px 16px; border-bottom: 1px solid var(--sand);
+  color: var(--bark); font-weight: 300; vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: var(--cream); }
+
+.section-rule {
+  border: none;
+  border-top: 1px solid var(--sand);
+  margin: 48px 0;
+}
+
+footer {
+  padding: 28px 48px;
+  border-top: 1px solid var(--stone);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream);
+}
+
+.footer-logo {
+  font-family: 'Crimson Pro', serif;
+  font-size: 20px; font-weight: 600; font-style: italic;
+  color: var(--stone); text-decoration: none;
+}
+
+footer p { font-size: 12px; color: var(--stone); }
+footer a { color: var(--stone); text-decoration: none; }
+footer a:hover { color: var(--bark); }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .container { padding: 48px 24px 80px; }
+  footer { flex-direction: column; gap: 10px; text-align: center; padding: 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Folia</a>
+  <a href="/" class="back-link">← Back to withfolia.com</a>
+</nav>
+
+<div class="container">
+
+  <div class="doc-eyebrow">Legal</div>
+  <h1 class="doc-title">Terms of Service</h1>
+  <div class="doc-date">Last updated: June 4, 2026 &nbsp;·&nbsp; Effective: June 4, 2026</div>
+
+  <div class="doc-intro">
+    Please read these Terms of Service carefully before using Folia. By creating an account or using any part of the Folia service, you agree to be bound by these terms.
+  </div>
+
+  <h2>1. Who We Are</h2>
+  <p>Folia ("Folia," "we," "us," or "our") is a family information management service operated by AJS Family, LLC d/b/a Folia, located in California. Our website is withfolia.com. You can reach us at hello@withfolia.com.</p>
+
+  <h2>2. What Folia Is — and Is Not</h2>
+  <p>Folia is a service that helps users complete forms and generate family, caregiver, and related briefing materials and PDF outputs for personal informational use.</p>
+
+  <div class="alert-box">
+    <p><strong>Important medical disclaimer:</strong> Folia is not a medical device, a healthcare provider, or a substitute for professional medical advice, diagnosis, or treatment. Information submitted to or generated through Folia — including allergies, medications, care instructions, emergency details, and health notes — is provided by users or generated from user inputs, is not reviewed, validated, or verified by Folia, and may be incomplete, inaccurate, or outdated. You are solely responsible for reviewing, confirming, and updating any information before sharing, relying on, printing, or using it. Always verify critical health information directly with a qualified healthcare provider. In an emergency, call 911.</p>
+  </div>
+
+  <p>Folia does not provide medical, legal, financial, childcare, or any other professional advice. Nothing in the service, including any generated brief, PDF, summary, suggestion, or optional note, should be construed as such.</p>
+
+  <h2>3. Eligibility</h2>
+  <p>You must be at least 18 years old to create a Folia account. By using Folia, you represent that you are 18 or older and have the legal capacity to enter into these Terms. If you are creating an account on behalf of a family or household, you represent that you have the authority to do so.</p>
+
+  <h2>4. Your Account</h2>
+  <p>You are responsible for maintaining the confidentiality of your account credentials, for all activity that occurs under your account, and for ensuring that information associated with your account remains accurate, complete, and up to date. You agree to notify us immediately at hello@withfolia.com if you suspect any unauthorized use of your account.</p>
+  <p>You may not share your account with others or create accounts for people other than yourself without their explicit consent. Each household should have one primary account, with additional members invited through Folia's sharing features.</p>
+
+  <h2>5. Your Data</h2>
+  <p><strong>You own your data.</strong> The information you enter into Folia — including form responses, family details, care information, notes, and other content you submit, as well as the resulting generated outputs — belongs to you or your licensors. We do not claim ownership of your data.</p>
+  <p>By using Folia, you grant us a limited license to host, store, process, reproduce, format, generate, and display your data solely for the purpose of operating, improving, and providing the service to you, including creating briefs, summaries, and PDF outputs. We do not sell your data. We may share your data with third-party service providers that help us operate the service, such as Supabase (database hosting and backend infrastructure), Stripe (payment processing), Anthropic (AI-powered brief generation), Klaviyo (transactional and marketing email communications), and Google Analytics (aggregated website and service analytics), or as otherwise required by law.</p>
+  <p>You are solely responsible for the accuracy, completeness, legality, and timeliness of the information you enter into Folia, including information entered for individual family member profiles, and for reviewing and updating that information as circumstances change. Before sharing, printing, or relying on any generated brief or output, you are responsible for reviewing all profile-level information to confirm that it is correctly associated with the intended individual. No caregiver should act on any brief without you first verbally confirming all critical details with them, including but not limited to pick-up and drop-off locations, emergency contacts, and any care instructions.</p>
+  <p>Folia includes certain optional dedicated fields — such as a wifi password field — provided solely as a convenience for caregiving purposes. Use of those fields is entirely optional. Folia strongly recommends against entering sensitive personal information in any optional notes, free-text fields, or other fields, including but not limited to health or medical details, financial account information, passwords, alarm codes, access codes, or other security credentials, regardless of whether a dedicated field exists for such information. If you choose to include any such information in any field, you do so entirely at your own risk and discretion. Folia stores and processes what you provide and does not independently verify, fact-check, monitor, or validate any information you enter or generate through the service.</p>
+
+  <h2>6. Acceptable Use</h2>
+  <p>You agree to use Folia only for lawful purposes and in accordance with these Terms. You agree not to:</p>
+  <ul>
+    <li>Use Folia to store or share illegal content of any kind</li>
+    <li>Attempt to access another user's account without authorization</li>
+    <li>Use Folia to harass, threaten, or harm any person</li>
+    <li>Attempt to reverse engineer, copy, or replicate the Folia service</li>
+    <li>Use automated tools to access or scrape the service</li>
+    <li>Use Folia in any way that could damage, disable, or impair the service</li>
+  </ul>
+
+  <h2>7. Subscription and Payment</h2>
+  <p>Certain Folia features or offerings may be provided for a fee. If you purchase a paid subscription or other paid offering, payments will be processed by Stripe, our third-party payment processor. Folia does not store full payment card numbers on its own servers. By providing a payment method, you authorize us and Stripe to charge the applicable fees, taxes, and any recurring charges disclosed to you at the time of purchase until you cancel, if applicable.</p>
+  <p>If you purchase a subscription, you may cancel it at any time, and the cancellation will take effect at the end of your current billing period unless otherwise stated at the time of purchase. Except as required by law or expressly stated by us, fees are non-refundable.</p>
+  <p>We reserve the right to change our pricing, plans, or available features at any time. If we make a material change affecting an existing paid subscription, we will provide notice before the change takes effect, and continued use after the effective date will constitute acceptance of the updated pricing to the extent permitted by law.</p>
+
+  <h2>8. Generated Briefs, PDFs, and AI Features</h2>
+  <p>Folia may allow you to submit information through forms and generate briefs, summaries, optional notes, and PDF outputs, including with the assistance of Anthropic, our third-party AI service provider. By using these features, you instruct us to process your inputs and generate outputs on your behalf.</p>
+  <p>If you use Folia's brief generator or other AI-powered features, the content you submit may be transmitted, together with related processing instructions, to Anthropic, our AI service provider, solely to generate your requested brief, summary, or other output. Anthropic provides this service under its commercial API terms. Under Anthropic's current API terms, Anthropic does not use inputs or outputs from API services to train its AI models by default. Folia does not independently use your submitted content to train any AI model. Because Anthropic's terms are subject to change, we encourage you to review Anthropic's privacy practices at anthropic.com if you have questions about how your content is handled at the API level.</p>
+  <p>AI-assisted outputs may contain errors, omissions, formatting issues, or outdated information and are provided for convenience only. Optional notes, suggestions, and similar content are informational drafts only, may not reflect your actual circumstances, and must be independently reviewed and edited by you before use or sharing. You should review and update your briefs regularly and instruct any caregiver to verify all details directly with you before providing care.</p>
+  <p>At Step 1 of the brief generator flow, you may be offered the option to receive a welcome email and occasional tips from Folia by checking an opt-in box. That checkbox is unchecked by default and selecting it is entirely voluntary. Only users who affirmatively check that box will be added to Folia's marketing communications list. You may unsubscribe from marketing communications at any time by following the unsubscribe instructions in any such email.</p>
+
+  <h2>9. Sharing Features</h2>
+  <p>Folia may allow you to share forms, briefs, PDFs, and related information with other people you invite or designate. By sharing information through the service, you are responsible for that decision and for confirming that the shared information is accurate, complete, correctly attributed to the intended individual, and appropriate for the recipient and purpose.</p>
+  <p>When entering and sharing information about minor household members, we strongly recommend: (i) entering only the minimum information necessary to generate a useful and accurate brief; (ii) avoiding entry of specific home addresses, school names or addresses, health or medical information, or other sensitive identifying details about minors in any notes or free-text fields; (iii) reviewing each generated brief in its entirety before sharing to confirm it does not contain sensitive information about a minor beyond what is necessary for the specific caregiving engagement; and (iv) sharing generated briefs only directly and privately with the specific authorized caregiver, and never distributing or posting a brief containing information about a minor in any public, group, or uncontrolled channel.</p>
+  <p>Please share only with people you trust. Folia is not responsible for how recipients use information you choose to share with them.</p>
+
+  <h2>10. Limitation of Liability</h2>
+  <p><strong>To the fullest extent permitted by applicable law, AJS Family, LLC d/b/a Folia and its owners, managers, officers, employees, contractors, agents, and affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the service.</strong></p>
+  <p>This includes but is not limited to damages arising from: (i) inaccurate, incomplete, or outdated information entered by you; (ii) a caregiver's reliance on a brief that has not been updated to reflect current information; (iii) any discrepancy between information contained in a generated brief and actual household conditions; (iv) any misassignment, co-mingling, or incorrect attribution of data between household member profiles, whether caused by user error, software error, or any other cause; (v) any error, omission, or distortion in AI-generated output that does not accurately reflect the information you submitted; (vi) a caregiver's failure to independently verify information directly with you before providing care; (vii) any brief shared with or accessed by an unintended third party as a result of your actions; or (viii) loss of data, service interruptions, output errors, or unauthorized access to your account.</p>
+  <p>Our total liability to you for any claim arising from these Terms or your use of Folia shall not exceed the amount you paid us for the service in the three months preceding the claim, or $50, whichever is greater.</p>
+  <p>Some jurisdictions do not allow limitation of liability for certain types of damages. In those jurisdictions, our liability is limited to the maximum extent permitted by law.</p>
+
+  <h2>11. Disclaimer of Warranties</h2>
+  <p>Folia is provided "as is" and "as available" without warranties of any kind, either express or implied. We do not warrant that the service will be uninterrupted, error-free, secure, or that information stored in or generated through the service will be accurate, complete, reliable, or current.</p>
+
+  <h2>12. Indemnification</h2>
+  <p>You agree to indemnify and hold harmless AJS Family, LLC d/b/a Folia and its owners, managers, officers, employees, contractors, agents, and affiliates from any claims, damages, losses, liabilities, and expenses (including reasonable legal fees) arising from your use of the service, your content, your generated outputs, your violation of these Terms, or your violation of any rights of another person.</p>
+
+  <h2>13. Privacy</h2>
+  <p>Your use of Folia is also governed by our Privacy Policy, which is incorporated into these Terms by reference. Please review our Privacy Policy at <a href="/privacy.html" style="color:var(--terracotta);">withfolia.com/privacy</a>. For privacy-related questions or requests, you may contact us at privacy@withfolia.com.</p>
+
+  <h2>14. Termination</h2>
+  <p>We reserve the right to suspend, limit, or terminate your account or access to all or part of the service at any time if we believe you have violated these Terms or if your use poses risk to Folia, other users, or third parties. You may delete your account at any time by contacting us at privacy@withfolia.com. Upon account deletion, your data will be deleted or de-identified within thirty (30) days, except where retention is required or permitted by law, including for legal compliance, security, fraud prevention, tax, accounting, billing, and dispute resolution purposes.</p>
+
+  <h2>15. Changes to These Terms</h2>
+  <p>We may update these Terms from time to time. When we make material changes, we will notify you by email at least 14 days before the changes take effect. Your continued use of Folia after that date constitutes your acceptance of the updated Terms.</p>
+
+  <h2>16. Governing Law; Dispute Resolution and Arbitration Agreement</h2>
+  <p>These Terms are governed by the laws of the State of California, without regard to its conflict of law provisions.</p>
+
+  <div class="arbitration-callout">
+    <p>BINDING ARBITRATION — PLEASE READ THIS SECTION CAREFULLY. IT SIGNIFICANTLY AFFECTS YOUR LEGAL RIGHTS, INCLUDING YOUR RIGHT TO FILE A LAWSUIT IN COURT AND YOUR RIGHT TO A JURY TRIAL.</p>
+  </div>
+
+  <p><strong>Informal Resolution.</strong> Before initiating any formal proceeding, you agree to contact us at privacy@withfolia.com with a written description of the dispute and the relief sought. The parties agree to make a good-faith effort to resolve the dispute informally for at least thirty (30) days before initiating arbitration or any other formal proceeding.</p>
+
+  <p><strong>Arbitration Agreement.</strong> Except for claims that may be properly brought in small claims court, you and Folia agree that any dispute, claim, or controversy arising out of or relating to these Terms or the service (each, a "Dispute") that cannot be resolved through the informal process above shall be resolved exclusively through final and binding individual arbitration, rather than in court. This Arbitration Agreement is governed by the Federal Arbitration Act (9 U.S.C. § 1 et seq.) and evidences a transaction involving interstate commerce. California substantive law governs the merits of any Dispute.</p>
+
+  <p><strong>Arbitration Procedures.</strong> Arbitration shall be administered by JAMS pursuant to its Streamlined Arbitration Rules and Procedures (for Disputes with a total claimed value under $250,000) or its Comprehensive Arbitration Rules and Procedures (for Disputes with a total claimed value of $250,000 or more), as applicable, each as modified by this Arbitration Agreement. JAMS rules are available at www.jamsadr.com or by calling 1-800-352-5267. Arbitration shall be conducted by a single neutral arbitrator in Santa Clara County, California, or, at your election, by telephone, videoconference, or written submission. The arbitrator may award any remedy available at law or in equity on an individual basis to the extent warranted by the individual claim. The arbitrator's decision shall be final and binding and may be entered as a judgment in any court of competent jurisdiction.</p>
+
+  <p><strong>Arbitration Fees.</strong> Folia will pay all JAMS filing, administration, and arbitrator fees for any Dispute in which the total amount in controversy does not exceed $10,000, unless the arbitrator determines the claim is frivolous or brought in bad faith. For Disputes in which the total amount in controversy exceeds $10,000, JAMS fee-allocation rules apply.</p>
+
+  <p><strong>Opt-Out Right.</strong> You may opt out of this Arbitration Agreement by sending written notice to privacy@withfolia.com within thirty (30) days of the date you first create a Folia account or first accept these Terms, whichever is earlier. Your opt-out notice must include your name, the email address associated with your Folia account, and a clear statement that you wish to opt out of arbitration. Opting out will not affect any other provision of these Terms, including the Class Action Waiver below, which shall continue to apply to the fullest extent permitted by law. If you timely opt out, all Disputes shall be resolved exclusively in the state or federal courts located in Santa Clara County, California, as set forth below.</p>
+
+  <p><strong>Mass Arbitration.</strong> If twenty-five (25) or more similar Disputes are submitted against Folia by the same or coordinated counsel within any ninety (90)-day period, the parties agree that such Disputes shall be resolved through a coordinated batch arbitration process as follows: (i) claims shall be grouped into batches of no more than fifty (50) per batch; (ii) each batch shall be treated as a single consolidated arbitration proceeding before one arbitrator, with a single set of filing and administrative fees; and (iii) if the parties cannot agree on the composition of a batch, JAMS shall determine the composition. This procedure is intended to reduce administrative costs and promote efficient resolution and shall not be construed to permit any form of class treatment.</p>
+
+  <p><strong>Class Action Waiver.</strong> TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, YOU AND FOLIA AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN AN INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS, COLLECTIVE, CONSOLIDATED, REPRESENTATIVE, OR PRIVATE ATTORNEY GENERAL PROCEEDING. This waiver applies to all Disputes, whether resolved in arbitration, in court, or through any other process. If a court or arbitrator of competent jurisdiction finds this class action waiver unenforceable as to any particular Dispute, that Dispute shall be severed and may proceed separately; the remainder of this Section 16 shall continue in full force and effect.</p>
+
+  <p><strong>Court Jurisdiction.</strong> For any Dispute not subject to arbitration under this Section — including Disputes brought in small claims court or following a valid and timely opt-out — the parties consent to exclusive personal jurisdiction and venue in the state or federal courts located in Santa Clara County, California, and each party waives any objection to personal jurisdiction or venue in those courts.</p>
+
+  <p><strong>Severability.</strong> If any portion of this Section 16 is found unenforceable, that portion shall be severed and the remaining provisions shall be enforced to the maximum extent permitted by applicable law.</p>
+
+  <h2>17. Contact</h2>
+  <p>If you have questions about these Terms, please contact us at hello@withfolia.com.</p>
+
+  <hr class="section-rule">
+  <p style="font-size:13px;color:var(--stone);">AJS Family, LLC d/b/a Folia &nbsp;·&nbsp; California &nbsp;·&nbsp; hello@withfolia.com</p>
+
+</div>
+
+<footer>
+  <a href="/" class="footer-logo">Folia</a>
+  <p>© 2026 AJS Family, LLC d/b/a Folia &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms.html">Terms of Service</a></p>
+</footer>
+
+</body>
+</html>
