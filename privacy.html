@@ -5,98 +5,457 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy — Folia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7GWVDTDNB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7GWVDTDNB');
+</script>
+
 <style>
 :root {
-  --stone-50:#F7F5F2;--stone-100:#EDE9E3;--stone-200:#DDD7CE;
-  --stone-300:#C9C0B4;--stone-400:#B5A898;--stone-500:#9A8E81;
-  --stone-700:#5C5147;--stone-900:#2E2820;
-  --parchment:#F0EBE1;--sage-lt:#EEF2EB;--sage-mid:#D6E0D0;
-  --taupe:#A89880;--accent:#7C6A52;--accent-lt:#C4B49E;--white:#FDFCFA;
-  --green:#4A7C59;--green-lt:#EAF2EC;
+  --cream: #FAF8F3;
+  --sand: #EDE8DC;
+  --stone: #B8A490;
+  --bark: #6B5D52;
+  --charcoal: #2C2520;
+  --sage: #8B9B82;
+  --sage-lt: #E8EDE5;
+  --terracotta: #C17F5D;
+  --white: #FFFFFF;
+  --green: #4A7C59;
+  --green-lt: #EAF2EC;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:'Jost',sans-serif;background:var(--parchment);color:var(--stone-900);min-height:100vh;}
 
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
 
-/* NAV */
-nav{padding:20px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--stone-200);background:rgba(240,235,225,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
-.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;font-style:italic;color:var(--accent);text-decoration:none;}
-.back-link{font-size:13px;color:var(--stone-500);text-decoration:none;letter-spacing:0.5px;transition:color 0.2s;}
-.back-link:hover{color:var(--stone-900);}
+body {
+  font-family: 'Work Sans', sans-serif;
+  background: var(--cream);
+  color: var(--bark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03' /%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9000;
+}
+
+nav {
+  position: sticky; top: 0; z-index: 1000;
+  padding: 20px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(250,248,243,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--stone);
+}
+
+.logo {
+  font-family: 'Crimson Pro', serif;
+  font-size: 28px; font-weight: 600; font-style: italic;
+  color: var(--charcoal); letter-spacing: -0.5px;
+  text-decoration: none;
+}
+
+.back-link {
+  font-size: 13px; color: var(--stone);
+  text-decoration: none; letter-spacing: 0.4px; transition: color 0.2s;
+}
+.back-link:hover { color: var(--charcoal); }
 
 /* HERO */
-.hero{padding:80px 40px 60px;text-align:center;background:linear-gradient(160deg,var(--parchment) 0%,var(--sage-lt) 100%);border-bottom:1px solid var(--sage-mid);}
-.eyebrow{font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,64px);font-weight:300;line-height:1.1;letter-spacing:-1px;margin-bottom:18px;}
-.hero h1 em{font-style:italic;}
-.hero p{font-size:17px;font-weight:300;color:var(--stone-500);line-height:1.75;max-width:560px;margin:0 auto;}
+.hero {
+  padding: 80px 48px 64px;
+  text-align: center;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--sage-lt) 100%);
+  border-bottom: 1px solid var(--sand);
+}
+
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--stone); margin-bottom: 16px;
+}
+
+.hero h1 {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 400; line-height: 1.1;
+  color: var(--charcoal); margin-bottom: 20px;
+}
+
+.hero h1 em { font-style: italic; font-weight: 600; color: var(--terracotta); }
+
+.hero p {
+  font-size: 17px; font-weight: 300;
+  color: var(--bark); line-height: 1.75;
+  max-width: 560px; margin: 0 auto;
+}
 
 /* TRUST STRIP */
-.trust-strip{background:var(--stone-900);padding:36px 40px;display:flex;gap:0;justify-content:center;}
-.trust-item{flex:1;max-width:220px;text-align:center;padding:0 20px;border-right:1px solid rgba(255,255,255,0.08);}
-.trust-item:last-child{border-right:none;}
-.trust-icon{font-size:24px;margin-bottom:8px;}
-.trust-title{font-size:13px;font-weight:500;color:var(--white);margin-bottom:4px;}
-.trust-sub{font-size:12px;color:var(--stone-500);font-weight:300;line-height:1.5;}
+.trust-strip {
+  background: var(--charcoal);
+  padding: 40px 48px;
+  display: flex; gap: 0; justify-content: center;
+}
+
+.trust-item {
+  flex: 1; max-width: 220px; text-align: center;
+  padding: 0 24px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.trust-item:last-child { border-right: none; }
+.trust-icon { font-size: 26px; margin-bottom: 10px; }
+.trust-title { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+.trust-sub { font-size: 12px; color: var(--stone); font-weight: 300; line-height: 1.55; }
 
 /* MAIN */
-.main{max-width:760px;margin:0 auto;padding:72px 40px 100px;}
+.main { max-width: 760px; margin: 0 auto; padding: 72px 40px 100px; }
 
 /* FAQ */
-.faq-section{margin-bottom:64px;}
-.section-label{font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;}
-.faq-item{border-bottom:1px solid var(--stone-200);padding:28px 0;}
-.faq-item:first-of-type{border-top:1px solid var(--stone-200);}
-.faq-q{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--stone-900);margin-bottom:12px;line-height:1.25;}
-.faq-a{font-size:15px;font-weight:300;color:var(--stone-500);line-height:1.8;}
-.faq-a strong{color:var(--stone-700);font-weight:500;}
+.section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--stone); margin-bottom: 28px;
+}
 
-/* HOW WE PROTECT */
-.protect-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--stone-200);border:1px solid var(--stone-200);margin-bottom:64px;}
-.protect-cell{background:var(--white);padding:32px 28px;transition:background 0.2s;}
-.protect-cell:hover{background:var(--stone-50);}
-.protect-icon{font-size:28px;margin-bottom:14px;}
-.protect-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--stone-900);margin-bottom:8px;}
-.protect-desc{font-size:14px;font-weight:300;color:var(--stone-500);line-height:1.7;}
+.faq-section { margin-bottom: 72px; }
 
-/* PROMISE BLOCK */
-.promise{background:var(--stone-900);padding:52px 48px;text-align:center;margin-bottom:64px;}
-.promise-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;font-style:italic;color:var(--white);margin-bottom:20px;line-height:1.3;}
-.promise-list{list-style:none;display:flex;flex-direction:column;gap:12px;max-width:480px;margin:0 auto 28px;}
-.promise-list li{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:rgba(245,240,232,0.7);line-height:1.55;font-weight:300;text-align:left;}
-.promise-check{color:var(--accent-lt);flex-shrink:0;margin-top:1px;}
-.promise-note{font-size:12px;color:var(--stone-500);letter-spacing:0.5px;}
+.faq-item {
+  border-bottom: 1px solid var(--sand);
+  padding: 28px 0;
+}
 
-/* COPPA */
-.coppa-block{background:var(--sage-lt);border:1px solid var(--sage-mid);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:28px 32px;margin-bottom:48px;}
-.coppa-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;font-weight:500;}
-.coppa-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--stone-900);margin-bottom:12px;}
-.coppa-body{font-size:14.5px;font-weight:300;color:var(--stone-700);line-height:1.8;}
+.faq-item:first-of-type { border-top: 1px solid var(--sand); }
+
+.faq-q {
+  font-family: 'Crimson Pro', serif;
+  font-size: 22px; font-weight: 600;
+  color: var(--charcoal); margin-bottom: 12px; line-height: 1.25;
+}
+
+.faq-a {
+  font-size: 15px; font-weight: 300;
+  color: var(--bark); line-height: 1.85;
+}
+
+.faq-a strong { font-weight: 600; color: var(--charcoal); }
+.faq-a a { color: var(--terracotta); text-decoration: none; }
+.faq-a a:hover { text-decoration: underline; }
+
+/* PROTECT GRID */
+.protect-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--sand);
+  border: 1px solid var(--sand);
+  margin-bottom: 72px; margin-top: 20px;
+}
+
+.protect-cell {
+  background: var(--white); padding: 32px 28px;
+  transition: background 0.2s;
+}
+
+.protect-cell:hover { background: var(--cream); }
+.protect-icon { font-size: 28px; margin-bottom: 14px; }
+
+.protect-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--charcoal); margin-bottom: 10px;
+}
+
+.protect-desc {
+  font-size: 14px; font-weight: 300;
+  color: var(--bark); line-height: 1.75;
+}
+
+/* PROMISE */
+.promise {
+  background: var(--charcoal); padding: 52px 48px;
+  text-align: center; margin-bottom: 72px;
+}
+
+.promise-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 32px; font-weight: 300; font-style: italic;
+  color: var(--white); margin-bottom: 24px; line-height: 1.3;
+}
+
+.promise-list {
+  list-style: none; display: flex; flex-direction: column;
+  gap: 12px; max-width: 520px; margin: 0 auto 28px;
+}
+
+.promise-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; color: rgba(245,240,232,0.75);
+  line-height: 1.6; font-weight: 300; text-align: left;
+  padding: 0;
+}
+
+.promise-list li::before { display: none; }
+
+.promise-check { color: var(--stone); flex-shrink: 0; margin-top: 1px; font-weight: 500; }
+.promise-note { font-size: 12px; color: var(--stone); letter-spacing: 0.5px; }
+.promise-note a { color: var(--stone); text-decoration: underline; }
+
+/* CHILDREN'S PRIVACY */
+.coppa-block {
+  background: var(--green-lt);
+  border: 1px solid var(--green);
+  border-left: 3px solid var(--green);
+  border-radius: 0 8px 8px 0;
+  padding: 28px 32px; margin-bottom: 48px;
+}
+
+.coppa-label {
+  font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--green);
+  margin-bottom: 10px; font-weight: 600;
+}
+
+.coppa-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 22px; font-weight: 600;
+  color: var(--charcoal); margin-bottom: 12px;
+}
+
+.coppa-body {
+  font-size: 14.5px; font-weight: 300;
+  color: var(--bark); line-height: 1.8;
+}
+
+/* RESPONSIBILITY */
+.responsibility-block {
+  background: var(--sand);
+  border: 1px solid var(--stone);
+  border-radius: 8px;
+  padding: 28px 32px; margin-bottom: 48px;
+}
+
+.responsibility-label {
+  font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--bark);
+  margin-bottom: 10px; font-weight: 600;
+}
+
+.responsibility-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 22px; font-weight: 600;
+  color: var(--charcoal); margin-bottom: 12px;
+}
+
+.responsibility-body {
+  font-size: 14.5px; font-weight: 300;
+  color: var(--bark); line-height: 1.8;
+}
 
 /* CONTACT */
-.contact-block{text-align:center;padding:40px;background:var(--white);border:1px solid var(--stone-200);}
-.contact-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;font-style:italic;color:var(--stone-900);margin-bottom:10px;}
-.contact-sub{font-size:14px;font-weight:300;color:var(--stone-500);margin-bottom:20px;line-height:1.65;}
-.contact-email{font-size:15px;font-weight:500;color:var(--accent);text-decoration:none;letter-spacing:0.5px;}
-.contact-email:hover{text-decoration:underline;}
+.contact-block {
+  text-align: center; padding: 48px 40px;
+  background: var(--white);
+  border: 1px solid var(--sand);
+  margin-bottom: 72px;
+}
+
+.contact-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 28px; font-weight: 400; font-style: italic;
+  color: var(--charcoal); margin-bottom: 10px;
+}
+
+.contact-sub {
+  font-size: 14px; font-weight: 300;
+  color: var(--stone); margin-bottom: 20px; line-height: 1.65;
+}
+
+.contact-email {
+  font-size: 15px; font-weight: 500;
+  color: var(--terracotta); text-decoration: none; letter-spacing: 0.5px;
+}
+
+.contact-email:hover { text-decoration: underline; }
+
+/* ── FULL LEGAL POLICY COLLAPSIBLE ── */
+.full-policy-toggle {
+  border-top: 1px solid var(--sand);
+  padding-top: 48px;
+}
+
+.toggle-btn {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; background: none; border: 1px solid var(--sand);
+  border-radius: 4px; padding: 20px 24px; cursor: pointer;
+  text-align: left; transition: background 0.2s;
+}
+
+.toggle-btn:hover { background: var(--sand); }
+
+.toggle-btn-left { display: flex; flex-direction: column; gap: 4px; }
+
+.toggle-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--stone);
+}
+
+.toggle-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--charcoal);
+}
+
+.toggle-arrow {
+  font-size: 20px; color: var(--stone);
+  transition: transform 0.3s ease; flex-shrink: 0;
+}
+
+.toggle-btn[aria-expanded="true"] .toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.full-policy-body {
+  display: none;
+  padding-top: 48px;
+}
+
+.full-policy-body.open {
+  display: block;
+}
+
+/* Full policy typography — matches terms.html */
+.full-policy-body h2 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 24px; font-weight: 600;
+  color: var(--charcoal); margin: 48px 0 16px;
+  padding-top: 8px;
+  border: none;
+}
+
+.full-policy-body h2:first-of-type { margin-top: 0; }
+
+.full-policy-body h3 {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--charcoal); margin: 24px 0 10px;
+}
+
+.full-policy-body p {
+  font-size: 15px; font-weight: 300;
+  color: var(--bark); line-height: 1.85;
+  margin-bottom: 14px;
+}
+
+.full-policy-body strong { font-weight: 600; color: var(--charcoal); }
+
+.full-policy-body a { color: var(--terracotta); text-decoration: none; }
+.full-policy-body a:hover { text-decoration: underline; }
+
+.full-policy-body ul {
+  margin: 12px 0 16px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.full-policy-body ul li {
+  font-size: 15px; font-weight: 300;
+  color: var(--bark); line-height: 1.8;
+  padding: 4px 0 4px 20px;
+  position: relative;
+}
+
+.full-policy-body ul li::before {
+  content: '·';
+  position: absolute; left: 6px;
+  color: var(--terracotta); font-weight: 600;
+}
+
+.full-policy-body table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 24px; font-size: 14px;
+}
+
+.full-policy-body th {
+  background: var(--charcoal); color: var(--white);
+  padding: 12px 16px; text-align: left;
+  font-weight: 500; font-size: 12px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+
+.full-policy-body td {
+  padding: 12px 16px; border-bottom: 1px solid var(--sand);
+  color: var(--bark); font-weight: 300; vertical-align: top;
+}
+
+.full-policy-body tr:last-child td { border-bottom: none; }
+.full-policy-body tr:nth-child(even) td { background: var(--cream); }
+
+.full-policy-body .arbitration-callout {
+  background: var(--sand);
+  border: 1px solid var(--stone);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 24px 0;
+}
+
+.full-policy-body .arbitration-callout p {
+  font-size: 13px;
+  color: var(--charcoal);
+  font-weight: 500;
+  margin-bottom: 0;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+}
+
+.full-policy-body .section-rule {
+  border: none;
+  border-top: 1px solid var(--sand);
+  margin: 48px 0;
+}
+
+.policy-effective {
+  font-size: 13px; color: var(--stone);
+  font-weight: 300; margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--sand);
+}
 
 /* FOOTER */
-footer{padding:28px 40px;border-top:1px solid var(--stone-200);display:flex;justify-content:space-between;align-items:center;background:var(--parchment);font-size:12px;color:var(--stone-300);}
-footer .logo{font-size:17px;}
+footer {
+  padding: 28px 48px;
+  border-top: 1px solid var(--stone);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream);
+}
 
-@media(max-width:700px){
-  nav{padding:16px 24px;}
-  .hero{padding:52px 24px 44px;}
-  .trust-strip{flex-direction:column;gap:20px;align-items:center;}
-  .trust-item{border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:20px;max-width:100%;}
-  .trust-item:last-child{border-bottom:none;}
-  .main{padding:48px 24px 80px;}
-  .protect-grid{grid-template-columns:1fr;}
-  .promise{padding:36px 28px;}
-  footer{flex-direction:column;gap:10px;text-align:center;}
+.footer-logo {
+  font-family: 'Crimson Pro', serif;
+  font-size: 20px; font-weight: 600; font-style: italic;
+  color: var(--stone); text-decoration: none;
+}
+
+footer p { font-size: 12px; color: var(--stone); }
+footer a { color: var(--stone); text-decoration: none; }
+footer a:hover { color: var(--bark); }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .hero { padding: 56px 24px 48px; }
+  .trust-strip { flex-direction: column; align-items: center; gap: 24px; padding: 36px 24px; }
+  .trust-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 24px; max-width: 100%; }
+  .trust-item:last-child { border-bottom: none; }
+  .main { padding: 48px 24px 80px; }
+  .protect-grid { grid-template-columns: 1fr; }
+  .promise { padding: 40px 28px; }
+  footer { flex-direction: column; gap: 10px; text-align: center; padding: 24px; }
 }
 </style>
 </head>
@@ -111,7 +470,7 @@ footer .logo{font-size:17px;}
 <div class="hero">
   <div class="eyebrow">Privacy at Folia</div>
   <h1>Your family's data<br>belongs to your <em>family.</em></h1>
-  <p>We built Folia to hold the most personal information in your life. That comes with a responsibility we take seriously — and a set of commitments we keep simply.</p>
+  <p>We built Folia to hold some of the most personal information in your life. Here's exactly what we do with it — and what we never do.</p>
 </div>
 
 <!-- TRUST STRIP -->
@@ -124,17 +483,17 @@ footer .logo{font-size:17px;}
   <div class="trust-item">
     <div class="trust-icon">👁</div>
     <div class="trust-title">Only you</div>
-    <div class="trust-sub">Only your account can access your family's information.</div>
+    <div class="trust-sub">Only your account can directly access your household data.</div>
   </div>
   <div class="trust-item">
     <div class="trust-icon">🗑</div>
     <div class="trust-title">Delete anytime</div>
-    <div class="trust-sub">Your data is yours. Delete your account and it's gone within 30 days.</div>
+    <div class="trust-sub">Request deletion and your personal information is gone within 30 days.</div>
   </div>
   <div class="trust-item">
     <div class="trust-icon">🧒</div>
-    <div class="trust-title">COPPA compliant</div>
-    <div class="trust-sub">Children's data is controlled entirely by adult account holders.</div>
+    <div class="trust-title">Children's privacy</div>
+    <div class="trust-sub">We do not knowingly collect personal information directly from children under 13.</div>
   </div>
 </div>
 
@@ -147,68 +506,73 @@ footer .logo{font-size:17px;}
 
     <div class="faq-item">
       <div class="faq-q">Who can see my family's information?</div>
-      <div class="faq-a">Only you. Every family's data is protected by row-level security — a technical safeguard that means even Folia employees cannot access your family's profile. Your household's information is yours and yours alone.</div>
+      <div class="faq-a">Only your account can directly access your household data. Your information is protected by row-level security — a technical safeguard that prevents even Folia staff from querying your family's profile. The service providers we use to operate Folia may receive limited information to do their specific jobs (like processing payments or generating your brief), but are not permitted to use it for any other purpose.</div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">Do you sell our data?</div>
-      <div class="faq-a"><strong>Never.</strong> Folia does not sell personal data. We don't share it with advertisers. We don't use it to train AI models without your explicit consent. The only parties who ever see your data are you and the infrastructure services that store it (like our secure database provider), who are contractually prohibited from using it for any other purpose.</div>
+      <div class="faq-a"><strong>No.</strong> Folia does not sell personal information or share it for cross-context behavioral advertising. We may disclose information to service providers that help us operate the service. These providers are permitted to use personal information only as needed to provide services to Folia, or as otherwise permitted by law.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">Is my children's health information secure?</div>
-      <div class="faq-a">Yes. Health information — including allergies, medications, and medical conditions — is treated with the highest level of care. It is encrypted in transit and at rest, access-controlled so only your account can read it, and never used for advertising or shared with any third party. Health changes in Folia always require your explicit confirmation before being applied.</div>
+      <div class="faq-q">Do you collect sensitive information?</div>
+      <div class="faq-a">You may choose to provide information in forms, generated briefs, PDFs, or optional notes. Please do not include sensitive personal information in optional notes or free-text fields unless it is necessary for your use of the service. We do not ask for health information or other highly sensitive information unless it is needed for a specific feature you choose to use, and we use reasonable safeguards to protect information you submit.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">What does the AI agent see?</div>
-      <div class="faq-a">When the agent processes information — like parsing a school email or learning from grocery history — it uses your data only to provide the service to you. We send anonymised prompts to our AI provider (Anthropic) to generate responses. We do not send personally identifiable health data to any AI system without your explicit consent, and we never use your family's information to train AI models.</div>
+      <div class="faq-q">How do AI-powered features use my information?</div>
+      <div class="faq-a">If you use Folia's AI-powered features, we may send the content you submit and related instructions to Anthropic to generate drafts, summaries, or other outputs for you. Under Anthropic's current API terms, Anthropic does not use inputs or outputs from API services to train its AI models by default. Folia does not independently use your submitted content to train any AI model. Because Anthropic's terms are subject to change, we encourage you to review Anthropic's privacy practices at <a href="https://anthropic.com" target="_blank" rel="noopener">anthropic.com</a> if you have questions.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do you use analytics or tracking?</div>
+      <div class="faq-a">Folia uses Google Analytics to understand how users interact with the service (for example, which features are used and how often). Google Analytics collects information such as pages visited, time spent on pages, and general geographic region. We have disabled Google's advertising features, meaning your information is not used for ad targeting or cross-site tracking through this tool. You can learn more about how Google uses data at <a href="https://policies.google.com/privacy/partners" target="_blank" rel="noopener">google.com/policies/privacy/partners</a>.</div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">Can I delete my data?</div>
-      <div class="faq-a">Yes, anytime. Delete your account and all associated family data is permanently removed within 30 days. You can also request deletion of specific information at any time by emailing <a href="mailto:privacy@withfolia.com" style="color:var(--accent);">privacy@withfolia.com</a>. Payment records are retained as required by financial regulations — everything else goes.</div>
+      <div class="faq-a">Yes. You can request deletion of your account or your personal information at any time by emailing <a href="mailto:privacy@withfolia.com">privacy@withfolia.com</a>. We will verify your identity before processing your request and will delete or de-identify your personal information within thirty (30) days. We may keep limited information where required by law, including for payments, tax, fraud prevention, security, and legal compliance.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">What happens if I connect Gmail or Google Calendar?</div>
-      <div class="faq-a">Folia only reads messages and events you explicitly authorise. We never read your full inbox — only what's needed to detect relevant family updates. You can disconnect any integration at any time from your account settings, and we immediately stop collecting new data from that source.</div>
+      <div class="faq-q">Is Folia intended for children?</div>
+      <div class="faq-a">No. Folia is intended for a general adult audience. You must be at least 18 years old to create a Folia account. Folia is not directed to children under 13, and we do not knowingly collect personal information directly from children under 13. If you believe a child under 13 has provided personal information to us, please contact us so we can investigate and delete the information as appropriate.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">Is Folia COPPA compliant?</div>
-      <div class="faq-a">Yes. Folia does not allow children under 13 to create accounts. All information about minor household members is entered and controlled by adult account holders — parents or legal guardians — who have full authority over that data. We do not knowingly market to children and we do not collect data directly from minors.</div>
+      <div class="faq-q">Will you send me marketing emails?</div>
+      <div class="faq-a">Only if you opt in. If you check the opt-in box at Step 1 of the brief generator, we will send you a welcome email and occasional tips or updates about Folia. You can unsubscribe at any time by clicking the unsubscribe link in any email we send. We will not send you marketing emails if you do not opt in, and opting out does not affect your ability to use the service.</div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">What if there's a data breach?</div>
-      <div class="faq-a">We implement industry-standard security — encryption in transit and at rest, access controls, regular security reviews. In the event of a breach affecting your personal information, we will notify you as required by applicable law, promptly and directly.</div>
+      <div class="faq-a">We protect your information using encryption in transit (TLS/HTTPS), encryption at rest, access controls, and regular security reviews. No system is completely secure. If a breach affects your personal information and requires notice, we will notify you as required by law.</div>
     </div>
 
   </div>
 
   <!-- HOW WE PROTECT -->
   <div class="section-label">How We Protect Your Data</div>
-  <div class="protect-grid" style="margin-top:20px;">
+  <div class="protect-grid">
     <div class="protect-cell">
       <div class="protect-icon">🔐</div>
       <div class="protect-title">Encryption everywhere</div>
-      <div class="protect-desc">All data is encrypted in transit (TLS/HTTPS) and at rest (AES-256). Your family's information is unreadable to anyone who doesn't have your credentials.</div>
+      <div class="protect-desc">All data is encrypted in transit (TLS/HTTPS) and at rest to protect the information you submit through Folia.</div>
     </div>
     <div class="protect-cell">
       <div class="protect-icon">🛡</div>
-      <div class="protect-title">Row-level security</div>
-      <div class="protect-desc">A database-level rule ensures that only your account can ever query your family's data. Not other users. Not Folia staff. Only you.</div>
+      <div class="protect-title">Access controls</div>
+      <div class="protect-desc">Row-level security at the database level ensures only your account can access your data — not other users, not Folia staff.</div>
     </div>
     <div class="protect-cell">
       <div class="protect-icon">⚕️</div>
-      <div class="protect-title">Health changes need your approval</div>
-      <div class="protect-desc">The agent never automatically updates medications, allergies, or medical information. Every health change requires your explicit confirmation before it's applied.</div>
+      <div class="protect-title">Optional notes are your choice</div>
+      <div class="protect-desc">You decide what goes in any free-text field. We strongly recommend against entering health details, financial information, or security credentials in optional notes.</div>
     </div>
     <div class="protect-cell">
       <div class="protect-icon">💳</div>
-      <div class="protect-title">We never touch your card</div>
-      <div class="protect-desc">Payment processing is handled entirely by Stripe. Your card details are never stored on Folia's servers — we never even see them.</div>
+      <div class="protect-title">Stripe handles payments</div>
+      <div class="protect-desc">Payment processing is handled by Stripe. Folia does not store full payment card numbers on its own servers.</div>
     </div>
   </div>
 
@@ -216,21 +580,28 @@ footer .logo{font-size:17px;}
   <div class="promise">
     <div class="promise-title">Our commitments to you</div>
     <ul class="promise-list">
-      <li><span class="promise-check">✓</span> We will never sell your personal data or your family's data</li>
-      <li><span class="promise-check">✓</span> We will never show you ads or share your data with advertisers</li>
-      <li><span class="promise-check">✓</span> We will never use your children's information for any purpose beyond providing the service to you</li>
-      <li><span class="promise-check">✓</span> We will never update health or medical information without your explicit approval</li>
-      <li><span class="promise-check">✓</span> We will notify you promptly if your data is ever at risk</li>
-      <li><span class="promise-check">✓</span> We will always give you a clear way to delete everything</li>
+      <li><span class="promise-check">✓</span> We will never sell your personal information</li>
+      <li><span class="promise-check">✓</span> We do not share your personal information for cross-context behavioral advertising</li>
+      <li><span class="promise-check">✓</span> We only use your information to run and improve Folia, as described in our Privacy Policy</li>
+      <li><span class="promise-check">✓</span> We encourage you not to submit unnecessary sensitive personal information in optional notes or free-text fields</li>
+      <li><span class="promise-check">✓</span> We will notify you as required by applicable law if your data is ever at risk</li>
+      <li><span class="promise-check">✓</span> We will always give you a clear way to request deletion of your data</li>
     </ul>
-    <div class="promise-note">These commitments are backed by our full Privacy Policy at withfolia.com/privacy-policy</div>
+    <div class="promise-note">These commitments are backed by our full Privacy Policy below.</div>
+  </div>
+
+  <!-- RESPONSIBILITY -->
+  <div class="responsibility-block">
+    <div class="responsibility-label">Your Responsibility</div>
+    <div class="responsibility-title">Review every brief before you share it.</div>
+    <div class="responsibility-body">Folia generates briefs based only on the information you enter. You are solely responsible for the accuracy, completeness, and currency of all information you enter. Before sharing any generated brief with a caregiver, you must verify that all information has been correctly assigned to the intended household member. <strong>You are solely responsible for reviewing each generated brief in its entirety before providing it to any caregiver.</strong> No caregiver should act on any brief without you first verbally confirming all critical details, including pick-up and drop-off locations, emergency contacts, and any care instructions.</div>
   </div>
 
   <!-- COPPA -->
   <div class="coppa-block">
     <div class="coppa-label">Children's Privacy</div>
-    <div class="coppa-title">We take children's data seriously.</div>
-    <div class="coppa-body">Folia stores health information, schedules, and personal details about children. We comply with the Children's Online Privacy Protection Act (COPPA). Children under 13 cannot create accounts. All minor data is entered and controlled exclusively by adult account holders. We never collect data directly from children, never market to children, and never share children's information with any third party for any purpose.</div>
+    <div class="coppa-title">We take children's privacy seriously.</div>
+    <div class="coppa-body">Folia is intended for adults. You must be at least 18 years old to create an account. We do not knowingly collect personal information directly from children under 13. When entering information about minor household members, we strongly recommend: entering only the minimum information necessary; avoiding sensitive identifying details about minors in free-text fields; reviewing each generated brief before sharing; and sharing generated briefs only directly and privately with the specific authorized caregiver — never in a public or group channel. Please review our full Privacy Policy below for further guidance.</div>
   </div>
 
   <!-- CONTACT -->
@@ -240,12 +611,194 @@ footer .logo{font-size:17px;}
     <a href="mailto:privacy@withfolia.com" class="contact-email">privacy@withfolia.com</a>
   </div>
 
-</div>
+  <!-- ── FULL LEGAL POLICY ── -->
+  <div class="full-policy-toggle" id="full-policy-section">
+    <button class="toggle-btn" aria-expanded="false" aria-controls="full-policy-body" onclick="togglePolicy(this)">
+      <div class="toggle-btn-left">
+        <span class="toggle-label">Legal</span>
+        <span class="toggle-title">Full Privacy Policy</span>
+      </div>
+      <span class="toggle-arrow">▼</span>
+    </button>
+
+    <div class="full-policy-body" id="full-policy-body">
+
+      <div class="policy-effective">Last updated: June 4, 2026 &nbsp;·&nbsp; Effective: June 4, 2026</div>
+
+      <h2>1. Who We Are</h2>
+      <p>Folia is a brief generator and caregiver information service operated by AJS Family, LLC, a California limited liability company doing business as Folia ("Folia," "we," "us," or "our"). Our website is withfolia.com. You can reach us with privacy questions at <a href="mailto:privacy@withfolia.com">privacy@withfolia.com</a>.</p>
+
+      <h2>2. Scope of This Policy</h2>
+      <p>This Privacy Policy describes how Folia collects, uses, discloses, and protects personal information when you visit our website, use the Folia brief generator, or create a Folia account. It also describes your rights with respect to your personal information.</p>
+      <p>By using Folia, you agree to the practices described in this Privacy Policy. If you do not agree, please do not use Folia.</p>
+      <p>This Privacy Policy is incorporated into and forms part of Folia's Terms of Service, available at <a href="/terms.html">withfolia.com/terms</a>.</p>
+
+      <h2>3. What Folia Does</h2>
+      <p>Folia is a brief generator that allows users to enter household and caregiver information and generate informational briefs and PDFs for personal, non-commercial household use. Folia is not a medical records system, a healthcare provider, or a substitute for professional medical, legal, financial, or other advice of any kind.</p>
+
+      <h2>4. Information We Collect</h2>
+
+      <h3>a. Information You Provide Directly</h3>
+      <p>When you use Folia, you may provide:</p>
+      <ul>
+        <li><strong>Account information:</strong> Your name, email address, and password when you create an account.</li>
+        <li><strong>Brief and form content:</strong> Household information, schedules, caregiver instructions, contact details, and other content you enter to generate briefs or PDFs.</li>
+        <li><strong>Optional notes:</strong> If you use optional free-text or notes fields, you decide what information to include. Folia strongly recommends against entering sensitive personal information in free-text fields, including health or medical details, financial account information, or government identification numbers. Folia also includes dedicated optional fields for home network and security credential information (such as wifi network name and password and home security or access codes); entry of information in those fields is entirely voluntary, and we strongly recommend entering security credentials only when strictly necessary for the specific caregiving engagement described in the brief. If you choose to include sensitive information in any field, you do so entirely at your own risk and discretion, and you are solely responsible for its accuracy, completeness, and currency.</li>
+        <li><strong>Payment information:</strong> If you subscribe to a paid plan, you provide payment information to Stripe, our payment processor. Folia does not store full payment card numbers on its own servers. We may receive limited transaction information from Stripe, such as payment status, billing name, and the last four digits of a card, for billing, records, and support purposes.</li>
+        <li><strong>Communications:</strong> If you contact us by email or otherwise, we collect the content of those communications.</li>
+      </ul>
+
+      <h3>b. Information Collected Automatically</h3>
+      <p>When you visit our website or use the service, we and our service providers may automatically collect:</p>
+      <ul>
+        <li><strong>Usage data:</strong> Pages visited, features used, brief completions, and similar activity data.</li>
+        <li><strong>Device and browser data:</strong> Browser type, operating system, IP address, and referring URLs.</li>
+        <li><strong>Analytics data:</strong> We use Google Analytics to collect aggregated traffic and usage data. Google's advertising features and data-sharing settings are disabled. We do not send personally identifiable information to Google Analytics.</li>
+      </ul>
+
+      <h3>c. Information We Do Not Solicit</h3>
+      <p>Folia does not solicit, prompt for, or maintain dedicated fields for health information, medical data, financial account numbers, or government identification numbers. Folia is not a medical records system and does not treat any information you enter as medical data. Folia does include dedicated fields for home network and security credential information, including wifi network name and password and home security or access codes, because this information is often necessary for caregiving engagements. Entry of this information is entirely optional. We strongly recommend that you enter security credentials only when strictly necessary for the specific caregiving engagement described in the brief. If you choose to include such information, you do so at your own risk and are solely responsible for any consequences, including unauthorized access to your home network or property. If you use optional free-text or notes fields to enter other sensitive information, you do so entirely at your own risk. Our Terms of Service disclaim liability for information you choose to enter voluntarily, and you are solely responsible for ensuring that any information you enter and share with caregivers is accurate, complete, and up to date.</p>
+
+      <h3>d. Do Not Track</h3>
+      <p>California's Online Privacy Protection Act (CalOPPA) requires us to disclose how we respond to web browser "Do Not Track" (DNT) signals. At this time, there is no universally accepted standard for responding to DNT signals, and Folia does not currently alter its data collection or use practices in response to DNT signals from your browser. We do not authorize third parties to collect personal information about individual users' online activities over time and across third-party websites through our service. If our practices change, we will update this Privacy Policy accordingly.</p>
+
+      <h2>5. How We Use Your Information</h2>
+      <p>We use the information we collect to:</p>
+      <ul>
+        <li>Provide, operate, and maintain the Folia service, including generating briefs and PDFs</li>
+        <li>Process payments and manage subscriptions</li>
+        <li>Send transactional emails, such as payment confirmations, subscription notices, and password resets</li>
+        <li>Add your email address to our marketing mailing list if you affirmatively opt in by checking the box labeled "Send me tips and updates from Folia" at Step 1 of the brief generator flow. This checkbox is unchecked by default. Only users who check this box will be added to the marketing list. You may unsubscribe at any time.</li>
+        <li>Respond to your questions, requests, and communications</li>
+        <li>Monitor and improve the security, reliability, and performance of the service</li>
+        <li>Comply with applicable law, respond to legal process, and enforce our Terms of Service</li>
+        <li>Detect, investigate, and prevent fraud and abuse</li>
+      </ul>
+      <p>We do not use your personal information to serve you targeted advertising or to build advertising profiles about you.</p>
+
+      <h2>6. How We Disclose Your Information</h2>
+      <p>We do not sell your personal information. We do not share your personal information for cross-context behavioral advertising.</p>
+      <p>We may disclose your personal information to the following categories of third parties:</p>
+
+      <h3>a. Service Providers</h3>
+      <p>We work with the following service providers that process personal information on our behalf to help us operate the service. These providers are permitted to use your personal information only as needed to deliver services to Folia or as otherwise required by law.</p>
+
+      <table>
+        <thead>
+          <tr><th>Provider</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Supabase</td><td>Database hosting and backend infrastructure</td></tr>
+          <tr><td>Stripe</td><td>Payment processing and subscription management</td></tr>
+          <tr><td>Anthropic</td><td>AI-powered brief generation</td></tr>
+          <tr><td>Klaviyo</td><td>Transactional and marketing email communications</td></tr>
+          <tr><td>Google Analytics</td><td>Aggregated website and service analytics</td></tr>
+        </tbody>
+      </table>
+
+      <h3>b. Legal and Safety Disclosures</h3>
+      <p>We may disclose your personal information if we believe in good faith that disclosure is necessary to: (i) comply with applicable law or legal process, including a valid subpoena, court order, or government request; (ii) enforce our Terms of Service; (iii) protect the rights, property, or safety of Folia, our users, or others; or (iv) detect, prevent, or address fraud, security, or technical issues.</p>
+
+      <h3>c. Business Transfers</h3>
+      <p>If Folia is involved in a merger, acquisition, asset sale, or similar transaction, your personal information may be transferred as part of that transaction. We will notify you by email or prominent notice on our website before your personal information is transferred and becomes subject to a different privacy policy.</p>
+
+      <h3>d. With Your Consent</h3>
+      <p>We may share your personal information for other purposes with your explicit consent.</p>
+
+      <h2>7. AI-Powered Features</h2>
+      <p>If you use Folia's brief generator or other AI-powered features, the content you submit may be transmitted, together with related processing instructions, to Anthropic, our AI service provider, solely to generate your requested brief, summary, or other output. Anthropic provides this service under its commercial API terms. Under Anthropic's current API terms, Anthropic does not use inputs or outputs from API services to train its AI models by default. Folia does not independently use your submitted content to train any AI model. Because Anthropic's terms are subject to change, we encourage you to review Anthropic's privacy practices at <a href="https://anthropic.com" target="_blank" rel="noopener">anthropic.com</a> if you have questions about how your content is handled at the API level.</p>
+
+      <h2>8. Children's Privacy</h2>
+      <p>Folia is intended for adults and is not directed to children. You must be at least 18 years old to create a Folia account. Children under 13 may not create accounts. All information about minor household members is entered and controlled exclusively by adult account holders. We do not knowingly collect personal information directly from children under 13, and we do not market to children. Our practices are designed to be consistent with the principles of the Children's Online Privacy Protection Act (COPPA).</p>
+      <p><strong>Information About Minor Household Members.</strong> Because Folia's brief generator may be used to document schedules, pick-up and drop-off locations, emergency contacts, and caregiving instructions for minor children, account holders should exercise particular care when entering information about minors. We strongly recommend: (i) entering only the minimum information necessary to generate a useful and accurate brief; (ii) avoiding entry of specific home addresses, school names or addresses, health or medical information, or other sensitive identifying details about minors in any free-text or notes fields; (iii) reviewing each generated brief in its entirety before sharing it with any caregiver to confirm it does not contain sensitive identifying information about a minor beyond what is necessary for the specific caregiving engagement; and (iv) sharing generated briefs only directly and privately with the specific authorized caregiver for the engagement described in that brief, and never distributing or posting a brief containing information about a minor in any public, group, or uncontrolled channel. Information about minor children in caregiving briefs — including location, schedule, and emergency contact data — is sensitive. You are solely responsible for controlling to whom you provide any brief that contains information about a minor household member.</p>
+      <p>If you believe that a child under 13 has provided personal information to us, please contact us at <a href="mailto:privacy@withfolia.com">privacy@withfolia.com</a>. If we learn that we have collected personal information directly from a child under 13 without appropriate authorization, we will take steps to delete that information promptly. Folia does not independently review, moderate, or restrict the type or volume of information entered about minor household members and cannot prevent account holders from entering sensitive information about minors. You are solely responsible for ensuring that any information you enter about a minor is limited to what is necessary for the intended caregiving purpose, is accurate and current, and is shared only with individuals you have specifically authorized to provide care.</p>
+
+      <h2>9. Data Retention</h2>
+      <p>We retain personal information for as long as necessary to provide the service, fulfill the purposes described in this Privacy Policy, and comply with our legal obligations. When you request deletion of your account, we will delete or de-identify your personal information within thirty (30) days, subject to information we are required or permitted to retain for legal, security, fraud-prevention, tax, accounting, billing, dispute resolution, or compliance purposes. For requests submitted pursuant to your rights under Section 12, we will provide a formal response within forty-five (45) days of receipt, consistent with the CCPA/CPRA.</p>
+
+      <h2>10. Security</h2>
+      <p>We use reasonable administrative, technical, and physical safeguards designed to protect your personal information, including encryption in transit (such as TLS/HTTPS), encryption at rest, and access controls designed to limit access to authorized personnel and service providers. We also implement row-level security at the database level, a technical control that ensures only your account can access your family's data — Folia staff and other users cannot query your household information. No method of transmission over the internet or electronic storage is completely secure. We cannot guarantee the absolute security of your information.</p>
+      <p>If we determine that a security breach affecting your personal information requires notification, we will notify you as required by applicable law, including as required by California Civil Code § 1798.82, which requires notification in the most expedient time possible and without unreasonable delay.</p>
+
+      <h2>11. User Responsibility for Accuracy</h2>
+      <p>Folia is a tool that generates informational briefs based solely on the information you provide. You are solely responsible for the accuracy, completeness, and currency of all information you enter into Folia. Folia does not verify, validate, or independently confirm any information you submit. Briefs generated by Folia reflect only the information you have entered at the time of generation and may not reflect subsequent changes to household circumstances, caregiver instructions, health status, or other relevant information. Each generated brief includes the date and time of generation; it is your responsibility to provide caregivers with the most recently generated brief and to update your information before each caregiving engagement.</p>
+      <p><strong>Data Accuracy and Profile Integrity.</strong> Where Folia provides individual household member profiles or similar features, it is your sole responsibility to verify, before sharing any generated brief with any caregiver, that all information in that brief has been correctly assigned to the intended household member. Folia does not guarantee that data entered for one household member will not be displayed, attributed, or associated with another household member as a result of user error, software error, or any other cause. YOU ARE SOLELY RESPONSIBLE FOR REVIEWING EACH GENERATED BRIEF IN ITS ENTIRETY BEFORE PROVIDING IT TO ANY CAREGIVER TO CONFIRM THAT ALL INFORMATION IS ACCURATELY ASSIGNED TO THE CORRECT INDIVIDUAL. No caregiver should act on any brief without the account holder first verbally confirming all critical details, including but not limited to pick-up and drop-off locations, emergency contacts, and any care instructions.</p>
+      <p>Folia expressly disclaims all liability for any harm, loss, or damage arising from: (i) inaccurate, incomplete, or outdated information entered by you; (ii) a caregiver's reliance on a brief that has not been updated to reflect current information; (iii) any discrepancy between information contained in a generated brief and actual household conditions; (iv) any mis-assignment, co-mingling, or incorrect attribution of data between household member profiles, whether caused by user error, software error, or any other cause; (v) any error, omission, or distortion in AI-generated output that does not accurately reflect the information you submitted; (vi) a caregiver's failure to independently verify information directly with you before providing care; or (vii) any brief shared with or accessed by an unintended third party as a result of your actions. You should review and update your briefs regularly and instruct any caregiver to verify all details directly with you before providing care.</p>
+
+      <h2>12. Your Rights and Choices</h2>
+      <p>Depending on where you live, you may have certain rights with respect to your personal information. Although Folia may not currently meet the revenue or data volume thresholds that trigger mandatory CCPA/CPRA compliance obligations, we voluntarily extend the following privacy rights to California residents, consistent with the principles of the California Consumer Privacy Act, as amended by the California Privacy Rights Act (CCPA/CPRA). Folia's voluntary extension of these rights does not constitute an admission that Folia meets the applicable statutory thresholds for mandatory CCPA/CPRA compliance, and nothing in this section shall be construed as such.</p>
+      <ul>
+        <li><strong>Right to Know:</strong> You may request that we disclose the categories and specific pieces of personal information we have collected about you, the categories of sources, the business or commercial purposes for collection, and the categories of third parties with whom we share your information.</li>
+        <li><strong>Right to Delete:</strong> You may request that we delete personal information we have collected from you, subject to certain exceptions.</li>
+        <li><strong>Right to Correct:</strong> You may request that we correct inaccurate personal information we maintain about you.</li>
+        <li><strong>Right to Opt Out of Sale/Sharing:</strong> We do not sell personal information or share it for cross-context behavioral advertising. If this changes, we will update this policy and provide an opt-out mechanism.</li>
+        <li><strong>Right to Limit Use of Sensitive Personal Information:</strong> We do not use or disclose sensitive personal information for purposes beyond those permitted by the CCPA/CPRA.</li>
+        <li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising any of your privacy rights.</li>
+      </ul>
+      <p>To submit a privacy request, email us at <a href="mailto:privacy@withfolia.com">privacy@withfolia.com</a>. We will verify your identity before processing your request and will respond within forty-five (45) days of receipt, consistent with the CCPA/CPRA. If we require additional time, we will notify you of the extension and the reason within the initial 45-day period. California residents may also designate an authorized agent to submit requests on their behalf, provided we can verify the agent's authority. Actual deletion or de-identification of your personal information will occur within thirty (30) days of identity verification, consistent with our data retention practices described in Section 9.</p>
+      <p><strong>California's Shine the Light Law.</strong> Under California Civil Code § 1798.83, California residents may request, once per calendar year, information about any personal information Folia has disclosed to third parties for their own direct marketing purposes during the prior calendar year. Folia does not disclose personal information to third parties for their own direct marketing purposes. All third-party service providers listed in Section 6 of this Privacy Policy are contractually restricted to processing your personal information only as necessary to provide services to Folia, and not for their own marketing or commercial purposes. If our practices change, we will update this Privacy Policy and provide a mechanism for California residents to submit Shine the Light requests by contacting us at <a href="mailto:privacy@withfolia.com">privacy@withfolia.com</a>.</p>
+
+      <h2>13. Email Communications</h2>
+      <p>When you use the Folia brief generator, you will be presented at Step 1 with an optional, unchecked checkbox with the label: "Send me tips and updates from Folia." By affirmatively checking that box, you consent to the addition of your email address to our marketing mailing list. This checkbox is unchecked by default; you will not be added to our marketing mailing list unless you check it. You may unsubscribe from marketing emails at any time by clicking the unsubscribe link in any email or by contacting us at <a href="mailto:privacy@withfolia.com">privacy@withfolia.com</a>. You cannot opt out of transactional emails (such as payment confirmations and password resets) while you have an active account.</p>
+
+      <h2>14. Links to Other Websites</h2>
+      <p>Our website or briefs may contain links to third-party websites or services. We are not responsible for the privacy practices of those third parties and encourage you to review their privacy policies.</p>
+
+      <h2>15. Dispute Resolution; Governing Law; Arbitration; Class Action Waiver</h2>
+      <p><strong>Governing Law.</strong> This Privacy Policy and any disputes arising out of or related to it or Folia's privacy practices are governed by the laws of the State of California, without regard to its conflict of law principles.</p>
+      <p><strong>Informal Resolution.</strong> Before initiating any formal proceeding, you agree to contact us at <a href="mailto:privacy@withfolia.com">privacy@withfolia.com</a> with a written description of the dispute and the relief sought. The parties agree to make a good-faith effort to resolve the dispute informally for at least thirty (30) days before initiating arbitration or any other formal proceeding.</p>
+      <p><strong>Arbitration; Incorporation by Reference.</strong> Any dispute, claim, or controversy arising out of or relating to this Privacy Policy or Folia's privacy practices that cannot be resolved through the informal process above is subject to binding individual arbitration. The full arbitration agreement — including the applicable JAMS rules and claimed-value thresholds, fee allocation, small claims carve-out, mass arbitration and batching procedures, opt-out right, court jurisdiction fallback, and severability — is set forth in Section 16 (Governing Law; Dispute Resolution and Arbitration Agreement) of Folia's Terms of Service, available at <a href="/terms.html">withfolia.com/terms</a>, which is incorporated into this Privacy Policy by this reference in its entirety. The Federal Arbitration Act (9 U.S.C. § 1 et seq.) governs the interpretation and enforcement of the arbitration agreement. California substantive law governs the merits of any dispute.</p>
+
+      <div class="arbitration-callout">
+        <p>CLASS ACTION WAIVER — TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, YOU AND FOLIA AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN AN INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS, COLLECTIVE, CONSOLIDATED, OR REPRESENTATIVE ACTION OR PROCEEDING. This waiver applies to all claims, whether in arbitration, in court, or otherwise. If an arbitrator or court finds this waiver unenforceable as to a particular claim, that claim shall be severed and the remainder of this Section 15 shall continue in full force.</p>
+      </div>
+
+      <p><strong>Severability.</strong> If any portion of this Section 15 is found unenforceable, that portion shall be severed and the remaining provisions shall be enforced to the maximum extent permitted by applicable law.</p>
+
+      <h2>16. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. When we make material changes, we will notify you by email or by posting a notice on our website at least 14 days before the changes take effect. The "Last Updated" date at the top of this policy reflects the most recent revision. Your continued use of Folia after the effective date of any changes constitutes your acceptance of the updated policy.</p>
+
+      <h2>17. Contact Us</h2>
+      <p>If you have questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:</p>
+      <p>AJS Family, LLC d/b/a Folia<br>
+      <a href="mailto:privacy@withfolia.com">privacy@withfolia.com</a><br>
+      withfolia.com</p>
+
+      <hr class="section-rule">
+      <p style="font-size:13px;color:var(--stone);">AJS Family, LLC d/b/a Folia &nbsp;·&nbsp; California &nbsp;·&nbsp; <a href="mailto:privacy@withfolia.com" style="color:var(--stone);">privacy@withfolia.com</a></p>
+
+    </div><!-- end full-policy-body -->
+  </div><!-- end full-policy-toggle -->
+
+</div><!-- end main -->
 
 <footer>
-  <a href="/" class="logo">Folia</a>
-  <p>© 2025 Folia · <a href="/privacy-policy" style="color:var(--stone-400);">Full Privacy Policy</a> · <a href="/terms" style="color:var(--stone-400);">Terms of Service</a></p>
+  <a href="/" class="footer-logo">Folia</a>
+  <p>© 2026 AJS Family, LLC d/b/a Folia &nbsp;·&nbsp; <a href="/privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="/terms.html">Terms of Service</a></p>
 </footer>
+
+<script>
+  function togglePolicy(btn) {
+    var body = document.getElementById('full-policy-body');
+    var isOpen = body.classList.contains('open');
+    if (isOpen) {
+      body.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    } else {
+      body.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      setTimeout(function() {
+        document.getElementById('full-policy-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+  }
+
+  // Auto-expand if URL contains #full-policy
+  if (window.location.hash === '#full-policy') {
+    var btn = document.querySelector('.toggle-btn');
+    if (btn) togglePolicy(btn);
+  }
+</script>
 
 </body>
 </html>
