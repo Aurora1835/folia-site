@@ -1248,9 +1248,10 @@ function openDashboard(firstTime = false, paymentSuccess = false) {
   const name = S.familyName ? `The ${S.familyName.replace(/^The\s+/i, '')}` : 'Your Family';
   document.getElementById('dashFamilyName').textContent = name;
 
-  if (paymentSuccess) {
+   if (paymentSuccess) {
     document.getElementById('successBanner').classList.add('show');
     gtag('event', 'payment_complete', { value: 9, currency: 'USD', tier: '9' });
+    fbq('track', 'Purchase', { value: 9.00, currency: 'USD' });
   }
   if (firstTime) {
     setTimeout(() => document.getElementById('foliaBanner').classList.add('show'), 2000);
