@@ -1,2 +1,7 @@
 [functions]
   directory = "netlify/functions"
+
+[[redirects]]
+  from = "/ig"
+  to = "/?utm_source=instagram&utm_medium=bio"
+  status = 301
