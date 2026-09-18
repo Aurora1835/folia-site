@@ -131,63 +131,7 @@ nav {
   padding: 60px 48px 60px;
   text-align: center;
 }
-.hero-flex {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 56px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
 
-.hero-copy {
-  flex: 1;
-  min-width: 280px;
-  text-align: center;
-}
-
-.hero-image {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.hero-image img {
-  width: 100%;
-  max-width: 340px;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(44,37,32,0.15);
-}
-.hero-flex h1 {
-  font-size: clamp(28px, 2.8vw, 38px);
-  text-align: left;
-  line-height: 1.25;
-  margin-bottom: 32px;
-}
-
-.hero-flex .badge {
-  margin-left: 0;
-  margin-bottom: 28px;
-}
-
-.hero-flex .cta-container {
-  align-items: flex-start;
-}
-.hero-flex .cta-container {
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-}
-.hero-flex .subtitle,
-.hero-flex .hero-copy {
-  text-align: left;
-}
-@media (max-width: 900px) {
-  .hero-flex {
-    flex-direction: column;
-    gap: 32px;
-  }
-}
 .badge {
   display: inline-block;
   padding: 8px 20px;
@@ -567,22 +511,13 @@ input:focus {
 </nav>
 
 <div class="hero">
-  <div class="hero-flex">
-    <div class="hero-copy">
-      <div class="badge">Share it once. Never repeat yourself.</div>
-      <h1><em>Fill in your family once.</em> Text your sitter in seconds.</h1>
-      <div class="cta-container">
-        <a href="/folia.html" class="btn-primary">Text your sitter in two minutes. →</a>
-        <p class="helper-text">$9/month</p>
-      </div>
-    </div>
-  <div class="hero-image">
-  <div style="position: relative; max-width: 300px;">
-    <img src="sample-brief.jpg" alt="Sample Folia sitter brief" style="width: 100%; border-radius: 10px; display: block;">
-    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, rgba(250,248,243,0), rgba(250,248,243,1)); border-radius: 0 0 10px 10px;"></div>
-  </div>
-</div>
-</div>
+  <div class="badge">Share it once. Never repeat yourself.</div>
+  <h1><em>Fill in your family once.</em><br>Text your sitter in seconds.</h1>
+
+  
+<div class="cta-container">
+    <a href="/folia.html" class="btn-primary">Build My Sitter Brief →</a>
+    <p class="helper-text">$9/month</p>
   </div>
 </div>
 
