@@ -158,7 +158,23 @@ nav {
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(44,37,32,0.15);
 }
+.hero-flex h1 {
+  font-size: clamp(32px, 3.5vw, 48px);
+  text-align: left;
+}
 
+.hero-flex .badge {
+  margin-left: 0;
+}
+
+.hero-flex .cta-container {
+  align-items: flex-start;
+}
+
+.hero-flex .subtitle,
+.hero-flex .hero-copy {
+  text-align: left;
+}
 @media (max-width: 900px) {
   .hero-flex {
     flex-direction: column;
