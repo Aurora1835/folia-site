@@ -133,7 +133,7 @@ nav {
 }
 .hero-flex {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 56px;
   max-width: 1100px;
@@ -170,7 +170,11 @@ nav {
 .hero-flex .cta-container {
   align-items: flex-start;
 }
-
+.hero-flex .cta-container {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
 .hero-flex .subtitle,
 .hero-flex .hero-copy {
   text-align: left;
@@ -569,9 +573,11 @@ input:focus {
         <p class="helper-text">$9/month</p>
       </div>
     </div>
-    <div class="hero-image">
-      <img src="sample-brief.jpg" alt="Sample Folia sitter brief">
-    </div>
+   <div class="hero-image">
+  <div style="background: var(--white); border-radius: 16px; padding: 20px; box-shadow: 0 20px 50px rgba(44,37,32,0.12); transform: rotate(-2deg);">
+    <img src="sample-brief.jpg" alt="Sample Folia sitter brief" style="width: 100%; max-width: 300px; border-radius: 8px; display: block;">
+  </div>
+</div>
   </div>
 </div>
 
